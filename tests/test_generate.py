@@ -19,15 +19,18 @@ def passage(page_id="models", anchor=None, title="Loading models", section="Load
 
 
 class PromptTest(unittest.TestCase):
-    def test_numbered_passages_and_urls(self):
-        messages = build_messages("How do I load a model?", [passage(), passage("peft", "add-an-adapter", "PEFT", "Add an adapter", 2)])
+    def test_numbered_passages_without_urls(self):
+        messages = build_messages(
+            "How do I load a model?",
+            [passage(), passage("peft", "add-an-adapter", "PEFT", "Add an adapter", 2)],
+        )
         self.assertEqual(messages[0]["role"], "system")
         self.assertIn(ABSTAIN_TEXT, messages[0]["content"])
+        self.assertIn("Never write a URL", messages[0]["content"])
         user = messages[1]["content"]
         self.assertIn("[1] Loading models", user)
         self.assertIn("[2] PEFT", user)
-        self.assertIn(f"{BASE}/models.md", user)
-        self.assertIn(f"{BASE}/peft.md#add-an-adapter", user)
+        self.assertNotIn("https://", user)
         self.assertTrue(user.rstrip().endswith("How do I load a model?"))
 
     def test_no_passages_stated(self):
@@ -44,38 +47,28 @@ class ParseTest(unittest.TestCase):
     def setUp(self):
         self.passages = [passage(), passage("peft", "add-an-adapter", "PEFT", "Add an adapter", 2)]
 
-    def test_valid_answer(self):
-        raw = (
-            "Answer: Call from_pretrained to load the weights [1]. "
-            "Adapters can be attached separately [2].\n"
-            f"Sources:\n[1] Loading models - {BASE}/models.md\n"
-            f"[2] PEFT - {BASE}/peft.md#add-an-adapter"
-        )
+    def test_valid_inline_answer_is_rendered_with_sources(self):
+        raw = "Answer: Call from_pretrained to load the weights [1]. Adapters attach separately [2]."
         parsed = parse_response(raw, self.passages)
         self.assertEqual(parsed["status"], "answered")
         self.assertEqual(parsed["citations"], [1, 2])
         self.assertTrue(parsed["format_ok"])
         self.assertEqual(parsed["repairs"], [])
+        self.assertIn("Sources:\n[1] Loading models", parsed["answer"])
+        self.assertIn(f"[2] PEFT - {BASE}/peft.md#add-an-adapter", parsed["answer"])
+        self.assertNotIn("Sources:", parsed["extracted_answer"])
         self.assertEqual(parsed["sources"][1]["anchor"], "add-an-adapter")
-        self.assertIn("[1]", parsed["answer"])
 
-    def test_missing_source_line_is_repaired(self):
-        raw = "Answer: Call from_pretrained [1].\nSources:\n"
+    def test_missing_sources_block_is_normal(self):
+        raw = "Answer: Call from_pretrained [1]."
         parsed = parse_response(raw, self.passages)
         self.assertEqual(parsed["status"], "answered")
         self.assertEqual(parsed["citations"], [1])
-        self.assertEqual(parsed["repairs"], [{"action": "added_missing_source", "n": 1}])
-        self.assertFalse(parsed["format_ok"])
+        self.assertEqual(parsed["repairs"], [])
+        self.assertTrue(parsed["format_ok"])
+        self.assertIn("Sources:", parsed["answer"])
 
-    def test_out_of_range_citation_forces_abstention(self):
-        raw = "Answer: Use the flag [9].\nSources:\n[9] Nope - https://example.com/x"
-        parsed = parse_response(raw, self.passages)
-        self.assertEqual(parsed["status"], "forced_abstain")
-        self.assertEqual(parsed["reason"], "no_valid_citations")
-        self.assertEqual(parsed["answer"], ABSTAIN_TEXT)
-        self.assertTrue(any(repair["action"] == "removed_out_of_range_citation" for repair in parsed["repairs"]))
-
-    def test_url_mismatch_is_repaired_and_flagged(self):
+    def test_model_written_sources_are_ignored_and_replaced(self):
         raw = (
             "Answer: Use from_pretrained [1].\n"
             f"Sources:\n[1] Loading models - {BASE}/peft.md"
@@ -84,14 +77,19 @@ class ParseTest(unittest.TestCase):
         self.assertEqual(parsed["status"], "answered")
         self.assertEqual(parsed["sources"][0]["url"], f"{BASE}/models.md")
         self.assertEqual(parsed["invalid_source_entries"][0]["reason"], "url_mismatch")
-        self.assertIn({"action": "replaced_bad_source_url", "n": 1}, parsed["repairs"])
-        self.assertFalse(parsed["format_ok"])
+        self.assertEqual(parsed["repairs"], [])
+        self.assertTrue(parsed["format_ok"])
+
+    def test_out_of_range_citation_forces_abstention(self):
+        raw = "Answer: Use the flag [9]."
+        parsed = parse_response(raw, self.passages)
+        self.assertEqual(parsed["status"], "forced_abstain")
+        self.assertEqual(parsed["reason"], "no_valid_citations")
+        self.assertEqual(parsed["answer"], ABSTAIN_TEXT)
+        self.assertEqual(parsed["repairs"], [{"action": "removed_out_of_range_citation", "n": 9}])
 
     def test_invented_url_in_answer_forces_abstention(self):
-        raw = (
-            "Answer: See https://example.com/fake for details [1].\n"
-            f"Sources:\n[1] Loading models - {BASE}/models.md"
-        )
+        raw = "Answer: See https://example.com/fake for details [1]."
         parsed = parse_response(raw, self.passages)
         self.assertEqual(parsed["status"], "forced_abstain")
         self.assertEqual(parsed["reason"], "unverified_url_in_answer")
@@ -107,47 +105,58 @@ class ParseTest(unittest.TestCase):
         parsed = parse_response(f"Answer: {ABSTAIN_TEXT}", self.passages)
         self.assertEqual(parsed["status"], "abstained")
 
-    def test_abstention_with_sources_is_format_failure(self):
+    def test_abstention_with_extra_sources_is_normalised(self):
         raw = f"{ABSTAIN_TEXT}\nSources:\n[1] Loading models - {BASE}/models.md"
         parsed = parse_response(raw, self.passages)
         self.assertEqual(parsed["status"], "abstained")
-        self.assertFalse(parsed["format_ok"])
+        self.assertTrue(parsed["format_ok"])
+        self.assertEqual(parsed["answer"], ABSTAIN_TEXT)
+        self.assertEqual(len(parsed["model_sources"]), 1)
 
-    def test_url_without_anchor_is_accepted_but_flagged(self):
+    def test_anchorless_model_source_is_diagnostic_only(self):
         raw = (
             "Answer: Adapters attach separately [2].\n"
             f"Sources:\n[2] PEFT - {BASE}/peft.md"
         )
         parsed = parse_response(raw, self.passages)
         self.assertEqual(parsed["status"], "answered")
-        self.assertFalse(parsed["sources"][0]["anchor_match"])
-        self.assertIn({"action": "url_missing_anchor", "n": 2}, parsed["repairs"])
-        self.assertFalse(parsed["format_ok"])
+        self.assertEqual(parsed["sources"][0]["url"], f"{BASE}/peft.md#add-an-adapter")
+        self.assertEqual(parsed["repairs"], [])
+        self.assertTrue(parsed["format_ok"])
 
     def test_citation_list_expands(self):
-        raw = "Answer: Both apply [1, 2].\nSources:\n"
+        raw = "Answer: Both apply [1, 2]."
         parsed = parse_response(raw, self.passages)
         self.assertEqual(parsed["citations"], [1, 2])
-        self.assertEqual(len(parsed["repairs"]), 2)
+        self.assertEqual(parsed["repairs"], [])
+        self.assertEqual(parsed["answer"].count("Sources:"), 1)
 
-    def test_sources_without_inline_citation(self):
+    def test_model_sources_without_inline_citation_do_not_count(self):
         raw = f"Answer: Loading is easy.\nSources:\n[1] Loading models - {BASE}/models.md"
         parsed = parse_response(raw, self.passages)
-        self.assertEqual(parsed["status"], "answered")
-        self.assertFalse(parsed["format_ok"])
+        self.assertEqual(parsed["status"], "forced_abstain")
+        self.assertEqual(parsed["reason"], "no_valid_citations")
 
     def test_missing_answer_prefix(self):
-        raw = f"Call from_pretrained [1].\nSources:\n[1] Loading models - {BASE}/models.md"
+        raw = "Call from_pretrained [1]."
         parsed = parse_response(raw, self.passages)
         self.assertEqual(parsed["status"], "answered")
         self.assertFalse(parsed["format_ok"])
+        self.assertTrue(parsed["answer"].startswith("Answer: "))
+
+    def test_repeated_answer_prefix_is_collapsed(self):
+        raw = "Answer: Answer: Call from_pretrained [1]."
+        parsed = parse_response(raw, self.passages)
+        self.assertEqual(parsed["status"], "answered")
+        self.assertTrue(parsed["format_ok"])
+        self.assertFalse(parsed["extracted_answer"].lower().startswith("answer:"))
 
     def test_empty_output(self):
         parsed = parse_response("", self.passages)
         self.assertEqual(parsed["status"], "forced_abstain")
         self.assertEqual(parsed["reason"], "no_valid_citations")
 
-    def test_unicode_dash_sources(self):
+    def test_unicode_dash_model_sources_are_ignored(self):
         raw = (
             "Answer: Call from_pretrained [1].\n"
             f"Sources:\n[1] Loading models \u2014 {BASE}/models.md"
@@ -155,6 +164,7 @@ class ParseTest(unittest.TestCase):
         parsed = parse_response(raw, self.passages)
         self.assertEqual(parsed["status"], "answered")
         self.assertEqual(parsed["citations"], [1])
+        self.assertTrue(parsed["format_ok"])
 
 
 if __name__ == "__main__":

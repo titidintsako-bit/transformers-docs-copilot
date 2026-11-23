@@ -28,17 +28,14 @@ SYSTEM_PROMPT = f"""You answer questions about the Hugging Face Transformers doc
 
 Rules:
 - Use only facts stated in the passages. Do not use outside knowledge.
-- Cite the passages you rely on with bracketed numbers like [1]. Put a citation after every sentence that makes a factual claim.
-- Do not cite a passage you did not use. Do not list sources you did not cite.
-- Copy the URL exactly as it appears in the passage. Never invent a URL, API name, argument or default value.
+- Cite every sentence that makes a factual claim with the passage number in brackets, like [1]. Use only the numbers 1-5 shown in the passages.
+- Do not cite a passage you did not use.
+- Never write a URL or a Sources section. The application adds the source list from your [n] citations.
+- Never invent an API name, argument or default value.
 - If the passages do not contain the answer, reply with exactly: {ABSTAIN_TEXT}
 
-When the passages do contain the answer, use exactly this format:
-Answer: <2-6 sentences>
-Sources:
-[1] <passage title> - <passage URL>
-
-List only the cited passages, one per line."""
+Answer format:
+Answer: <2-6 sentences; every factual sentence ends with one or more [n] citations>"""
 
 
 def build_messages(question: str, passages: list[dict]) -> list[dict]:
@@ -47,9 +44,7 @@ def build_messages(question: str, passages: list[dict]) -> list[dict]:
         for number, passage in enumerate(passages, start=1):
             text = passage["text"][:MAX_PASSAGE_CHARS]
             blocks.append(
-                f"[{number}] {passage['page_title']} - {passage['section']}\n"
-                f"URL: {passage['url']}\n"
-                f"{text}"
+                f"[{number}] {passage['page_title']} - {passage['section']}\n{text}"
             )
         context = "\n\n".join(blocks)
     else:
@@ -74,65 +69,52 @@ def _split_sources(text: str) -> tuple[str, str]:
 
 
 def parse_response(raw: str, passages: list[dict]) -> dict:
+    """Validate a model answer and render its canonical Sources block.
+
+    The model is asked for inline ``[n]`` citations only. Any URL or Sources block it
+    writes anyway is treated as untrusted diagnostic text: citations are taken from the
+    inline markers, and the final source lines always come from retrieved metadata.
+    """
     text = raw.strip()
     body, source_block = _split_sources(text)
-    stripped_body = ANSWER_PREFIX.sub("", body.strip()).strip()
+    stripped_body = body.strip()
+    while ANSWER_PREFIX.match(stripped_body):
+        stripped_body = ANSWER_PREFIX.sub("", stripped_body, count=1).strip()
     abstain_detected = stripped_body.lower().startswith(ABSTAIN_TEXT.lower())
+    prefix_ok = bool(ANSWER_PREFIX.match(text))
 
-    invalid_entries: list[dict] = []
-    entries: dict[int, dict] = {}
-    repairs_for_anchor: list[int] = []
-    bad_url_numbers: set[int] = set()
+    model_sources: list[dict] = []
     for match in SOURCE_LINE.finditer(source_block):
         number = int(match.group(1))
         title = match.group(2).strip()
         url = _normalize_url(match.group(3))
+        entry = {"n": number, "title": title, "url": url, "reason": None}
         if not 1 <= number <= len(passages):
-            invalid_entries.append({"n": number, "title": title, "url": url, "reason": "out_of_range"})
-            continue
-        passage = passages[number - 1]
-        expected = _normalize_url(passage["url"])
-        if url == expected:
-            anchor_match = True
-        elif url == expected.split("#", 1)[0]:
-            anchor_match = False
+            entry["reason"] = "out_of_range"
         else:
-            invalid_entries.append({"n": number, "title": title, "url": url, "reason": "url_mismatch"})
-            bad_url_numbers.add(number)
-            continue
-        if not anchor_match:
-            repairs_for_anchor.append(number)
-        entries.setdefault(
-            number,
-            {
-                "n": number,
-                "title": title,
-                "url": passage["url"],
-                "anchor_match": anchor_match,
-                "chunk_id": passage["chunk_id"],
-                "page_id": passage["page_id"],
-                "anchor": passage["anchor"],
-                "section": passage["section"],
-            },
-        )
+            expected = _normalize_url(passages[number - 1]["url"])
+            if url not in {expected, expected.split("#", 1)[0]}:
+                entry["reason"] = "url_mismatch"
+        model_sources.append(entry)
+    invalid_entries = [entry for entry in model_sources if entry["reason"]]
 
     if abstain_detected:
         return {
             "status": "abstained",
             "answer": ABSTAIN_TEXT,
+            "extracted_answer": stripped_body,
             "citations": [],
             "sources": [],
             "invalid_source_entries": invalid_entries,
-            "repairs": [{"action": "ignored_sources_with_abstention"}] if entries else [],
+            "model_sources": model_sources,
+            "repairs": [],
             "unverified_urls": [],
-            "format_ok": not entries and not invalid_entries,
+            "format_ok": True,
             "raw": raw,
         }
 
-    repairs: list[dict] = [
-        {"action": "url_missing_anchor", "n": number} for number in repairs_for_anchor
-    ]
-    known_urls = {_normalize_url(passage["url"]) for passage in passages}
+    entries: dict[int, dict] = {}
+    repairs: list[dict] = []
 
     def expand(match: re.Match) -> str:
         numbers = [int(part) for part in match.group(1).split(",")]
@@ -145,31 +127,25 @@ def parse_response(raw: str, passages: list[dict]) -> dict:
                         "n": number,
                         "title": passage["page_title"],
                         "url": passage["url"],
-                        "anchor_match": True,
                         "chunk_id": passage["chunk_id"],
                         "page_id": passage["page_id"],
                         "anchor": passage["anchor"],
                         "section": passage["section"],
                     }
-                    action = (
-                        "replaced_bad_source_url"
-                        if number in bad_url_numbers
-                        else "added_missing_source"
-                    )
-                    repairs.append({"action": action, "n": number})
                 kept.append(number)
             else:
                 repairs.append({"action": "removed_out_of_range_citation", "n": number})
         return " ".join(f"[{number}]" for number in kept)
 
     cleaned_body = CITATION_LIST.sub(expand, stripped_body).strip()
-    cited = sorted(entries)
+    known_urls = {_normalize_url(passage["url"]) for passage in passages}
     unverified_urls = [
         url
         for url in (_normalize_url(found) for found in URL_IN_TEXT.findall(cleaned_body))
         if url not in known_urls
     ]
 
+    cited = sorted(entries)
     sources = [entries[number] for number in cited]
     status = "answered"
     reason = None
@@ -178,21 +154,19 @@ def parse_response(raw: str, passages: list[dict]) -> dict:
     elif not cited:
         status, reason = "forced_abstain", "no_valid_citations"
 
-    inline_present = bool(CITATION_LIST.search(stripped_body))
-    prefix_ok = bool(ANSWER_PREFIX.match(text))
+    if status == "answered":
+        rendered = "\n".join(f"[{source['n']}] {source['title']} - {source['url']}" for source in sources)
+        answer = f"Answer: {cleaned_body}\n\nSources:\n{rendered}"
+    else:
+        answer = ABSTAIN_TEXT
+
     format_ok = (
         status == "answered"
         and prefix_ok
         and bool(sources)
-        and inline_present
-        and not invalid_entries
         and not repairs
+        and not unverified_urls
     )
-
-    if status == "forced_abstain":
-        answer = ABSTAIN_TEXT
-    else:
-        answer = cleaned_body
 
     return {
         "status": status,
@@ -202,6 +176,7 @@ def parse_response(raw: str, passages: list[dict]) -> dict:
         "citations": cited,
         "sources": sources,
         "invalid_source_entries": invalid_entries,
+        "model_sources": model_sources,
         "repairs": repairs,
         "unverified_urls": unverified_urls,
         "format_ok": format_ok,
@@ -309,8 +284,6 @@ def main(argv: list[str] | None = None) -> int:
     else:
         print(f"status: {parsed['status']}  ({elapsed:.1f}s)")
         print(parsed["answer"])
-        for source in parsed["sources"]:
-            print(f"  [{source['n']}] {source['title']} - {source['url']}")
         if parsed["repairs"]:
             print(f"repairs: {parsed['repairs']}")
     return 0

@@ -41,12 +41,12 @@ precision/dtype — which is the honest case for trying hybrid search later.
 question -> BM25 top-5 -> numbered passages -> Qwen2.5-1.5B-Instruct -> parser -> scored row
 ```
 
-The model must answer in 2–6 sentences with `[n]` citations and a `Sources:` block using
-the exact passage URLs, or emit exactly
-`Insufficient evidence in the retrieved documentation.` Every output is parsed as
-untrusted: out-of-range citations are removed, wrong URLs are replaced with the retrieved
-passage's canonical URL, and any invented URL in the prose forces an abstention. An answer
-can therefore never cite a URL that was not in the retrieved passages.
+The model must answer in 2–6 sentences with inline `[n]` citations only, or emit exactly
+`Insufficient evidence in the retrieved documentation.` It is never asked to write URLs or
+a `Sources:` block; the harness renders canonical source lines from the retrieved metadata.
+Every output is parsed as untrusted: out-of-range citations are stripped, any model-written
+source block is discarded, and a URL in the prose forces an abstention. The model cannot
+introduce a URL into the final answer.
 
 `src/eval_answers.py` auto-scores behaviour (answer vs abstain), grounded answers,
 citation hits/precision, strict format compliance, repairs and latency, then writes a

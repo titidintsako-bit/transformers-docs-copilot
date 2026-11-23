@@ -12,13 +12,10 @@ No tool calls, no web access, no hidden retrieval loop. Greedy decoding only.
 
 ## Output contract
 
-The system prompt (`src/generate.py`) asks for exactly one of:
+The model's job is only the answer text plus inline citations:
 
 ```
-Answer: <2-6 sentences, every factual claim followed by [n]>
-Sources:
-[1] <passage title> - <exact passage URL>
-[2] ...
+Answer: <2-6 sentences; every factual sentence ends with one or more [n]>
 ```
 
 or, when the passages do not answer the question:
@@ -27,39 +24,53 @@ or, when the passages do not answer the question:
 Insufficient evidence in the retrieved documentation.
 ```
 
-`Sources` lists only passages actually cited. The prompt tells the model to copy URLs
-verbatim and never to introduce outside knowledge, API names, defaults or URLs.
+The prompt explicitly tells the model **not** to write URLs or a `Sources:` section. The
+application renders the final deliverable from the inline citation numbers and the
+retrieved metadata:
+
+```
+Answer: ...
+Sources:
+[1] <passage title> - <canonical passage URL>
+```
+
+So the model never produces a URL at all; the only URLs in the output are the ones the
+retrieval layer supplied. Any `Sources:` block the model writes anyway is parsed for
+diagnostics and discarded, never shown.
 
 ## Parser and validator
 
-`parse_response()` treats every model output as untrusted. It never repairs by inventing
-text, only by substituting metadata that came from the retrieved passages.
+`parse_response()` treats every model output as untrusted. Citations are taken **only**
+from inline `[n]` markers; the source lines are always rendered from retrieved metadata.
+The model cannot introduce a URL into the final output.
 
 | Situation | Result | Counted as |
 |---|---|---|
-| Valid `[n]` + matching `Sources` line | answered | no repair |
-| `[n]` used inline but no `Sources` line | answered; canonical source added | `added_missing_source` |
-| `Sources` URL wrong for that passage | canonical passage URL substituted | `replaced_bad_source_url` |
-| Source URL lacks the section anchor | accepted; canonical anchored URL substituted | `url_missing_anchor` |
-| `[n]` outside 1..5 | marker removed | `removed_out_of_range_citation` |
-| No valid citation after repair | forced abstention | reason `no_valid_citations` |
-| URL in the answer prose not in the passages | forced abstention | reason `unverified_url_in_answer` |
+| Valid inline `[n]` | answered; canonical `Sources:` rendered | no repair |
+| Inline `[n]` outside 1..5 | marker removed | `removed_out_of_range_citation` |
+| No inline citation | forced abstention | reason `no_valid_citations` |
+| Model-written `Sources:` block | diagnostic only; ignored for the output | no repair |
+| Model-written source URL is wrong or missing | recorded in `invalid_source_entries`; ignored | no repair |
+| URL in the answer prose | forced abstention | reason `unverified_url_in_answer` |
 | Model raises during generation | forced abstention | reason `generation_error` |
 | No chunks retrieved (BM25 zero score) | forced abstention | reason `no_retrieved_passages` |
-| Exact abstention sentence | abstained | no repair |
+| Exact abstention sentence | abstained | normalized to the exact string |
 
 Statuses are `answered`, `abstained` (the model chose to) and `forced_abstain` (the
 parser refused its output). `behavior_accuracy` uses that model-level distinction: a forced
 abstention is never scored as a correct abstention, even though the delivered output is
 safe. The delivered/model split in the metrics table keeps both views visible.
-Final answers can only contain URLs that were present in the retrieved passages.
 
-`format_ok` is strict: `Answer:` prefix, at least one valid cited source, at least one
-inline `[n]`, and zero repairs. A correct answer with a broken citation format is still
-useful behaviourally but does not count as format-compliant.
+The delivered answer is normalised to start with `Answer:` and end with the rendered
+`Sources:` block, so the user-facing contract is guaranteed even if the model forgot the
+prefix. `format_ok` separately records whether the model itself supplied the prefix, at least
+one valid inline `[n]`, zero out-of-range removals, and no URL in the prose. A missing
+`Sources:` block is normal and is not a format failure. A model-written source block is
+ignored.
 
 The corpus is first-party, pinned documentation, so prompt-injection hardening is out of
-scope for v1. The "no invented URLs" rule is enforced at parse time regardless.
+scope for v1. The "no invented URLs" rule holds by construction: model text never becomes
+a URL in the output.
 
 ## Automatic metrics
 
@@ -77,9 +88,9 @@ scope for v1. The "no invented URLs" rule is enforced at parse time regardless.
 | `delivered_abstention_rate_on_negative` | final output was an abstention, whether chosen or forced |
 | `over_answer_rate_on_negative` | a non-abstention was delivered for a negative question |
 | `parser_save_rate_on_negative` | model attempted an answer on a negative question and the parser refused it |
-| `format_rate` | strict contract compliance |
+| `format_rate` | `Answer:` prefix + at least one valid inline citation + no removals + no URL in prose |
 | `retrieval_hit_rate` | section retrieval hit@5 on answerable questions (BM25 baseline) |
-| `repairs` / `forced_abstain` | parser interventions, by count |
+| `repairs` / `forced_abstain` | out-of-range citation removals and forced abstentions, by count |
 | latency | mean and median seconds per question, generation only |
 
 Not automated: whether the answer is actually supported and factually correct, and
@@ -112,13 +123,18 @@ python -m src.eval_answers --split test --model base --quantize on \
 
 The notebook records the resolved model commit hash in the report.
 
-## Local verification status
+## Verification status
 
 - The 0.5B CPU smoke run completed end to end: retrieval, prompt, generation, parsing,
   reports and label sheet were all produced. Both sampled answers were forced
-  abstentions because the 0.5B model ignored the citation format (it answered correctly
-  but emitted neither `[n]` nor `Sources`). The parser did what the contract says; this
-  is a plumbing check, not a quality measurement.
-- The 1.5B baseline was not run locally: this laptop has no CUDA GPU and the 3 GB model
-  download stalled (176 MB in 30 minutes). The official baseline is produced by the
-  Colab notebook and should be treated as pending until that report is committed.
+  abstentions because the 0.5B model ignored the citation format. The parser did what the
+  contract says; this is a plumbing check, not a quality measurement.
+- A Colab T4 quick run with the 1.5B model also completed end to end: public clone, pinned
+  installs, corpus check, index and two questions at ~6 s each. Both questions were forced
+  abstentions because the model emitted no inline `[n]`: one wrote a `Sources:` list
+  without URLs, the other wrote no citations at all. That exposed a prompt-design problem,
+  so the contract was changed to inline-citation-only with application-rendered sources.
+  The quick run is being repeated before the full 43-question baseline.
+- The full 1.5B baseline was not run locally: this laptop has no CUDA GPU and the 3 GB
+  model download stalled. The official baseline comes from the Colab notebook and is
+  pending until that report is committed.
