@@ -1,7 +1,9 @@
 PY := .venv/bin/python
 UV := uv
+MODEL ?= base
+SPLIT ?= test
 
-.PHONY: setup fetch check chunk index eval-retrieval validate-eval label-sheet test clean
+.PHONY: setup ml fetch check chunk index eval-retrieval validate-eval label-sheet answer eval-answers test clean
 
 setup: .venv/.installed
 
@@ -9,6 +11,9 @@ setup: .venv/.installed
 	@test -x .venv/bin/python || $(UV) venv --python 3.12 .venv
 	$(UV) pip install --python $(PY) -e .
 	@touch $@
+
+ml: setup
+	$(UV) pip install --python $(PY) -e ".[ml]"
 
 fetch: setup
 	$(PY) -m src.fetch_docs
@@ -30,6 +35,12 @@ validate-eval: setup
 
 label-sheet: validate-eval
 	$(PY) -m src.label_sheet
+
+answer: index ml
+	$(PY) -m src.generate "$(Q)" --model $(MODEL)
+
+eval-answers: index ml
+	$(PY) -m src.eval_answers --split $(SPLIT) --model $(MODEL)
 
 test: setup
 	$(PY) -m unittest discover -s tests -v

@@ -78,9 +78,13 @@ make validate-eval     # quotas, gold anchors, split separation
 make label-sheet       # data/eval/label_sheet.csv
 ```
 
-After generation runs, the harness fills `retrieved_top1` and `retrieval_hit`. Fill the
-remaining columns while looking at the cited passages, ideally before reading the
-`reference` column. 55 rows is roughly 20-30 minutes.
+After generation runs, `src/eval_answers.py` writes a prefilled copy
+(`results/label_sheet_baseline.csv`) with `retrieved_top1`, `retrieval_hit`, `abstained`,
+`status`, `auto_citation_hit`, `format_ok`, `latency_s` and `repairs`. Fill
+`supported_0_1_2`, `citation_precision_0_1` and `citation_recall_0_1` while looking at the
+cited passages, ideally before reading the `reference` column. 55 rows is roughly 20-30
+minutes. Automatic abstention is the delivered output, including parser-forced abstentions,
+so use `status` to tell a model choice from a parser save.
 
 ## Headline reporting
 

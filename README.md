@@ -5,8 +5,9 @@ Transformers documentation, and cites the section each claim comes from. Built a
 first RAG project: keyword retrieval baseline, untuned RAG, then QLoRA fine-tuning for
 answer format, citation behavior and abstention.
 
-**Status: Milestone 3 of 6 (evaluation set).** Retrieval baseline and the 55-question
-evaluation set are in place; grounded generation and QLoRA tuning land next.
+**Status: Milestone 4 of 6 (grounded RAG).** Retrieval, the 55-question evaluation set
+and the grounded-answer pipeline are in place. The 1.5B baseline runs on a Colab T4;
+QLoRA tuning lands next.
 
 ## Pinned corpus
 
@@ -34,6 +35,29 @@ invisible (`lower precision` ≠ `dtype`), and a related section on the same pag
 outrank the intended one. One of 21 probes misses at @5 — a synonym question about
 precision/dtype — which is the honest case for trying hybrid search later.
 
+## Grounded generation (untuned baseline)
+
+```
+question -> BM25 top-5 -> numbered passages -> Qwen2.5-1.5B-Instruct -> parser -> scored row
+```
+
+The model must answer in 2–6 sentences with `[n]` citations and a `Sources:` block using
+the exact passage URLs, or emit exactly
+`Insufficient evidence in the retrieved documentation.` Every output is parsed as
+untrusted: out-of-range citations are removed, wrong URLs are replaced with the retrieved
+passage's canonical URL, and any invented URL in the prose forces an abstention. An answer
+can therefore never cite a URL that was not in the retrieved passages.
+
+`src/eval_answers.py` auto-scores behaviour (answer vs abstain), grounded answers,
+citation hits/precision, strict format compliance, repairs and latency, then writes a
+report plus a prefilled human label sheet. Support and factual correctness stay manual.
+
+Local status is deliberately modest: the 0.5B CPU smoke run completes end to end, but both
+sampled answers were forced abstentions because the 0.5B model ignored the citation
+format. The 1.5B baseline is produced by
+[`notebooks/colab.ipynb`](notebooks/colab.ipynb) and is pending until that report is
+committed. Contract details and metric definitions: [`docs/GENERATION.md`](docs/GENERATION.md).
+
 ## Quickstart (local, no GPU)
 
 ```bash
@@ -46,6 +70,14 @@ make validate-eval   # 55-question quotas + held-out split
 make label-sheet     # blank human-scoring sheet
 make test            # unit tests
 make check           # offline provenance verification
+
+# generation is optional locally; on a CPU-only machine install the CPU torch wheel first
+uv pip install --python .venv/bin/python torch --index-url https://download.pytorch.org/whl/cpu
+make ml              # transformers/accelerate + the CPU-only 0.5B smoke model
+
+make answer Q="how do I save a GenerationConfig?" MODEL=smoke
+.venv/bin/python -m src.eval_answers --split test --limit 2 --model smoke \
+  --out-prefix /tmp/answers_smoke --labels /tmp/label_sheet_smoke.csv
 
 .venv/bin/python -m src.retrieve "how do I save a GenerationConfig" -k 3
 ```
@@ -80,6 +112,8 @@ src/retrieve.py            Retriever API + CLI
 src/eval_retrieval.py      Recall@k / MRR harness
 src/eval_questions.py      question-set validator + split manifest
 src/label_sheet.py         scoring sheet generator
+src/generate.py            prompt contract, HF generation, citation parser/validator
+src/eval_answers.py        grounded-answer runner + automatic scoring
 data/raw/                  fetched pages (byte-for-byte), manifest, docset
 data/chunks.jsonl          retrieval corpus
 data/eval/retrieval_probes.jsonl
@@ -87,6 +121,8 @@ data/eval/questions.jsonl   55-question evaluation set
 data/eval/split.json        generated split manifest (pages, counts, qids)
 data/eval/label_sheet.csv   blank human-scoring sheet
 docs/EVAL.md                rubric, near-miss notes, scoring workflow
+docs/GENERATION.md          answer contract, parser rules, metric definitions
+notebooks/colab.ipynb      T4 baseline run with Drive checkpoint
 results/                    baseline report (markdown + JSON)
-tests/                      provenance, chunking, BM25, retrieval, eval set
+tests/                      provenance, chunking, BM25, retrieval, eval set, generation
 ```
