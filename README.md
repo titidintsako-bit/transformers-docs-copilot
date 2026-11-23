@@ -58,6 +58,16 @@ format. The 1.5B baseline is produced by
 [`notebooks/colab.ipynb`](notebooks/colab.ipynb) and is pending until that report is
 committed. Contract details and metric definitions: [`docs/GENERATION.md`](docs/GENERATION.md).
 
+### Run it on Colab (T4)
+
+Open the notebook directly from GitHub — it is public, so no token is needed:
+
+<https://colab.research.google.com/github/titidintsako-bit/transformers-docs-copilot/blob/main/notebooks/colab.ipynb>
+
+Set the runtime to T4, run the preflight cell, then keep `QUICK_LIMIT = 2` for a two-question
+plumbing check. Once that passes, set `QUICK_LIMIT = 0` and rerun the run/display cells for
+the full 43-question baseline. The notebook checkpoints the report to Drive.
+
 ## Quickstart (local, no GPU)
 
 ```bash
@@ -122,7 +132,14 @@ data/eval/split.json        generated split manifest (pages, counts, qids)
 data/eval/label_sheet.csv   blank human-scoring sheet
 docs/EVAL.md                rubric, near-miss notes, scoring workflow
 docs/GENERATION.md          answer contract, parser rules, metric definitions
-notebooks/colab.ipynb      T4 baseline run with Drive checkpoint
+notebooks/colab.ipynb       T4 baseline run with preflight + Drive checkpoint
+LICENSE                    MIT for the code (bundled docs stay Apache-2.0)
 results/                    baseline report (markdown + JSON)
 tests/                      provenance, chunking, BM25, retrieval, eval set, generation
 ```
+
+## License
+
+- Code: [MIT](LICENSE)
+- Bundled Transformers documentation (`data/raw/md/`): Apache-2.0 by Hugging Face; see
+  [`docs/DATA-LICENSE.md`](docs/DATA-LICENSE.md) for attribution and per-page hashes.
