@@ -198,8 +198,9 @@ def _table(overall: dict) -> list[str]:
 
 def markdown(payload: dict) -> str:
     overall = payload["overall"]
+    title = "Grounded answer report (tuned adapter)" if payload.get("adapter") else "Grounded answer baseline (untuned)"
     lines = [
-        "# Grounded answer baseline (untuned)",
+        f"# {title}",
         "",
         f"- Docs: `{payload['docset']['repo']}` @ `{payload['docset']['tag']}` (`{payload['docset']['commit_sha'][:12]}`)",
         f"- Model: `{payload['model_id']}`"
@@ -279,7 +280,8 @@ def markdown(payload: dict) -> str:
         "  URL, or a generation error), not that the model chose to abstain.",
         "- Any model-written `Sources:` block or URL is discarded; the final source lines are",
         "  rendered from the retrieved metadata, so the model cannot introduce a URL.",
-        "- These numbers are a floor for the untuned model, not a RAG quality claim.",
+        "- These are automated contract metrics, not a RAG quality claim; support and",
+        "  factual correctness stay in the human label sheet.",
         "",
     ]
     return "\n".join(lines)
@@ -335,6 +337,7 @@ def run(
     quantization: str,
     max_new_tokens: int,
     model_commit: str | None = None,
+    adapter: str | None = None,
     log=sys.stderr,
 ) -> dict:
     selected = [
@@ -361,6 +364,7 @@ def run(
         "method": "grounded_rag_untuned",
         "model_id": model_id,
         "model_commit": model_commit,
+        "adapter": adapter,
         "quantization": quantization,
         "max_new_tokens": max_new_tokens,
         "docset": {
@@ -409,6 +413,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("-k", type=int, default=config["generation"]["top_k_passages"])
     parser.add_argument("--model", default="base", help="base | smoke | fallback | HF model id")
     parser.add_argument("--quantize", choices=["auto", "on", "off"], default="auto")
+    parser.add_argument("--adapter", type=Path, help="optional PEFT adapter directory")
     parser.add_argument("--max-new-tokens", type=int, default=config["generation"]["max_new_tokens"])
     parser.add_argument("--out-prefix", type=Path, default=RESULTS_DIR / "answers_baseline")
     parser.add_argument("--labels", type=Path, default=RESULTS_DIR / "label_sheet_baseline.csv")
@@ -435,7 +440,12 @@ def main(argv: list[str] | None = None) -> int:
         f"model: {model_id} | quantize: {quantize} | split: {args.split} | k: {args.k}",
         file=sys.stderr,
     )
-    model, tokenizer = load_hf(model_id, quantize_4bit=quantize)
+    if args.adapter and not args.adapter.exists():
+        print(f"adapter not found: {args.adapter}", file=sys.stderr)
+        return 1
+    model, tokenizer = load_hf(
+        model_id, quantize_4bit=quantize, adapter_path=str(args.adapter) if args.adapter else None
+    )
     model_commit = getattr(model.config, "_commit_hash", None) or getattr(
         tokenizer, "_commit_hash", None
     )
@@ -453,6 +463,7 @@ def main(argv: list[str] | None = None) -> int:
         quantization="4-bit NF4" if quantize else "full precision",
         max_new_tokens=args.max_new_tokens,
         model_commit=model_commit,
+        adapter=str(args.adapter) if args.adapter else None,
     )
     overall = payload["overall"]
     print(

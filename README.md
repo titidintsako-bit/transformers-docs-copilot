@@ -5,9 +5,9 @@ Transformers documentation, and cites the section each claim comes from. Built a
 first RAG project: keyword retrieval baseline, untuned RAG, then QLoRA fine-tuning for
 answer format, citation behavior and abstention.
 
-**Status: Milestone 4 of 6 (grounded RAG).** Retrieval, the 55-question evaluation set
-and the grounded-answer pipeline are in place. The full 1.5B baseline is committed;
-QLoRA tuning lands next.
+**Status: Milestone 5 of 6 (QLoRA).** Retrieval, the 55-question evaluation set, the
+grounded-answer pipeline and the 1.5B baseline are complete. The SFT recipe, QLoRA trainer
+and training notebook are in place; the adapter evaluation is the remaining step.
 
 ## Pinned corpus
 
@@ -41,7 +41,7 @@ precision/dtype — which is the honest case for trying hybrid search later.
 question -> BM25 top-5 -> numbered passages -> Qwen2.5-1.5B-Instruct -> parser -> scored row
 ```
 
-The model must answer in 2–6 sentences with inline `[n]` citations only, or emit exactly
+The model must answer with inline `[n]` citations only, or emit exactly
 `Insufficient evidence in the retrieved documentation.` It is never asked to write URLs or
 a `Sources:` block; the harness renders canonical source lines from the retrieved metadata.
 Every output is parsed as untrusted: out-of-range citations are stripped, any model-written
@@ -70,7 +70,28 @@ That gap — `Answer:` prefix, inline citations, and abstention — is exactly w
 adapter targets. The 0.5B CPU smoke run also completes end to end but fails the format for
 the same reason. Contract details and metric definitions: [`docs/GENERATION.md`](docs/GENERATION.md).
 
-### Run it on Colab (T4)
+## QLoRA adapter (milestone 5)
+
+`src/build_sft.py` builds 140 synthetic examples from the four SFT pages only: 85
+extractive cited answers and 55 abstention examples. The three held-out test pages never
+appear in a training context, and no evaluation question is used for training. Targets are
+copied from the cited passage, so the adapter learns `Answer:` + inline `[n]` + abstention
+without inventing facts.
+
+`src/train_qlora.py` trains a 4-bit NF4 LoRA adapter (r=16, alpha=32, all linear
+projections, 2 epochs, max length 2560). Only assistant tokens are supervised. The adapter
+is evaluated with the same 43-question test split via `--adapter`:
+
+```bash
+make sft
+make train-qlora   # CUDA only
+make eval-tuned    # -> results/answers_tuned.md
+```
+
+The tuned result is pending until the Colab training run finishes. Data recipe,
+hyperparameters and limitations: [`docs/TRAINING.md`](docs/TRAINING.md).
+
+### Run the baseline on Colab (T4)
 
 Open the notebook directly from GitHub — it is public, so no token is needed:
 
@@ -79,6 +100,10 @@ Open the notebook directly from GitHub — it is public, so no token is needed:
 Set the runtime to T4, run the preflight cell, then keep `QUICK_LIMIT = 2` for a two-question
 plumbing check. Set `QUICK_LIMIT = 0` and rerun the run/display cells for the full
 43-question baseline. The notebook checkpoints the report to Drive.
+
+Train and evaluate the adapter with the separate training notebook:
+
+<https://colab.research.google.com/github/titidintsako-bit/transformers-docs-copilot/blob/main/notebooks/colab_train.ipynb>
 
 ## Quickstart (local, no GPU)
 
@@ -90,6 +115,7 @@ make index           # BM25 index
 make eval-retrieval  # probe metrics -> results/
 make validate-eval   # 55-question quotas + held-out split
 make label-sheet     # blank human-scoring sheet
+make sft             # 140-example synthetic SFT split
 make test            # unit tests
 make check           # offline provenance verification
 
@@ -135,16 +161,21 @@ src/eval_retrieval.py      Recall@k / MRR harness
 src/eval_questions.py      question-set validator + split manifest
 src/label_sheet.py         scoring sheet generator
 src/generate.py            prompt contract, HF generation, citation parser/validator
-src/eval_answers.py        grounded-answer runner + automatic scoring
+src/build_sft.py           synthetic SFT builder (SFT pages only, no leakage)
+src/train_qlora.py         4-bit QLoRA trainer (assistant-token loss)
+src/eval_answers.py        grounded-answer runner + automatic scoring + adapter eval
 data/raw/                  fetched pages (byte-for-byte), manifest, docset
 data/chunks.jsonl          retrieval corpus
 data/eval/retrieval_probes.jsonl
 data/eval/questions.jsonl   55-question evaluation set
 data/eval/split.json        generated split manifest (pages, counts, qids)
 data/eval/label_sheet.csv   blank human-scoring sheet
+data/sft/                   train/val synthetic SFT split + manifest
 docs/EVAL.md                rubric, near-miss notes, scoring workflow
 docs/GENERATION.md          answer contract, parser rules, metric definitions
+docs/TRAINING.md            SFT recipe, QLoRA config, leakage controls, limitations
 notebooks/colab.ipynb       T4 baseline run with preflight + Drive checkpoint
+notebooks/colab_train.ipynb T4 QLoRA training + tuned evaluation
 LICENSE                    MIT for the code (bundled docs stay Apache-2.0)
 results/                    baseline reports, predictions and label sheets
 tests/                      provenance, chunking, BM25, retrieval, eval set, generation

@@ -65,7 +65,7 @@ models:
     lora_dropout: 0.05
     learning_rate: 2.0e-4
     epochs: 2
-    max_seq_length: 2048
+    max_seq_length: 2560
 
 retrieval:
   k: 5

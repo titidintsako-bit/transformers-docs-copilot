@@ -21,3 +21,4 @@ ml = [
     "huggingface-hub==2.4.0",
 ]
 gpu = ["bitsandbytes==0.50.2"]
+train = ["peft==0.22.0"]

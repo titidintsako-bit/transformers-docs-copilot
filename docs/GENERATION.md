@@ -122,6 +122,17 @@ python -m src.eval_answers --split test --model base --quantize on \
   --out-prefix results/answers_baseline --labels results/label_sheet_baseline.csv
 ```
 
+Evaluate a trained adapter on the same split:
+
+```bash
+python -m src.eval_answers --split test --model base --quantize on \
+  --adapter artifacts/adapter --out-prefix results/answers_tuned \
+  --labels results/label_sheet_tuned.csv
+```
+
+The report records the adapter path, and `format_ok` is still measured on the model output
+before the harness renders sources. Training recipe: [`TRAINING.md`](TRAINING.md).
+
 ## Verification status
 
 - The 0.5B CPU smoke run completed end to end: retrieval, prompt, generation, parsing,
@@ -136,6 +147,7 @@ python -m src.eval_answers --split test --model base --quantize on \
 - A one-shot system-prompt example (one cited answer, one abstention) did not fix citation
   compliance: one answered row contained `[1]`, and it still omitted the prefix. This is
   the format gap QLoRA targets, not a parser bug.
-- The full baseline artifacts are committed under `results/`. The next step is the adapter;
-  if it cannot learn the format, switch to a stronger base or relax the citation contract
-  before trying more prompt variants.
+- The full baseline artifacts are committed under `results/`. The SFT split and QLoRA
+  trainer are implemented in `src/build_sft.py` and `src/train_qlora.py`; the adapter run
+  is pending. If the adapter cannot learn the format, the next variable is a stronger base
+  (3B/4B), not more prompt variants.

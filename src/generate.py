@@ -201,7 +201,7 @@ def resolve_model(name: str, config: dict | None = None) -> str:
     return alias.get(name, name)
 
 
-def load_hf(model_id: str, *, quantize_4bit: bool = False):
+def load_hf(model_id: str, *, quantize_4bit: bool = False, adapter_path: str | None = None):
     import torch
     from transformers import AutoModelForCausalLM, AutoTokenizer
 
@@ -225,6 +225,10 @@ def load_hf(model_id: str, *, quantize_4bit: bool = False):
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
     model = AutoModelForCausalLM.from_pretrained(model_id, **kwargs)
+    if adapter_path:
+        from peft import PeftModel
+
+        model = PeftModel.from_pretrained(model, str(adapter_path))
     model.eval()
     return model, tokenizer
 
@@ -236,7 +240,8 @@ def make_generate_fn(model, tokenizer, *, max_new_tokens: int = 320):
         prompt = tokenizer.apply_chat_template(
             build_messages(question, passages), tokenize=False, add_generation_prompt=True
         )
-        inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
+        device = getattr(model, "device", None) or next(model.parameters()).device
+        inputs = tokenizer(prompt, return_tensors="pt").to(device)
         with torch.inference_mode():
             output = model.generate(
                 **inputs,
@@ -258,6 +263,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--model", default="smoke", help="base | smoke | fallback | HF model id")
     parser.add_argument("--max-new-tokens", type=int, default=config["generation"]["max_new_tokens"])
     parser.add_argument("--quantize", action="store_true", help="4-bit (GPU only)")
+    parser.add_argument("--adapter", help="optional PEFT adapter directory")
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args(argv)
 
@@ -279,7 +285,9 @@ def main(argv: list[str] | None = None) -> int:
 
     model_id = resolve_model(args.model, config)
     print(f"model: {model_id} | passages: {len(passages)}", file=sys.stderr)
-    model, tokenizer = load_hf(model_id, quantize_4bit=args.quantize)
+    model, tokenizer = load_hf(
+        model_id, quantize_4bit=args.quantize, adapter_path=args.adapter
+    )
     started = time.time()
     raw = make_generate_fn(model, tokenizer, max_new_tokens=args.max_new_tokens)(args.question, passages)
     elapsed = time.time() - started
