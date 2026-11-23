@@ -34,6 +34,98 @@ def slugify(text: str) -> str:
     return s.strip("-")
 
 
+def estimate_tokens(text: str) -> int:
+    """Cheap, deterministic token estimate (~4 chars per token).
+
+    Good enough for chunk sizing and metrics; we never feed these estimates to a
+    model. The fine-tuning stage uses the real tokenizer.
+    """
+    return max(1, round(len(text) / 4))
+
+
+def iter_paragraphs(text: str):
+    """Yield (paragraph, start_line) splitting on blank lines outside code fences."""
+    lines = text.splitlines()
+    buffer: list[str] = []
+    start: int | None = None
+    in_fence = False
+    for lineno, line in enumerate(lines, start=1):
+        if _FENCE.match(line):
+            in_fence = not in_fence
+            if start is None:
+                start = lineno
+            buffer.append(line)
+            continue
+        if not in_fence and not line.strip():
+            if buffer:
+                yield "\n".join(buffer).strip(), start
+                buffer, start = [], None
+            continue
+        if start is None:
+            start = lineno
+        buffer.append(line)
+    if buffer:
+        yield "\n".join(buffer).strip(), start
+
+
+def split_sections(text: str) -> tuple[str | None, list[dict]]:
+    """Split a page into H2/H3 sections, tracking the heading path.
+
+    Returns (title, sections) where each section has:
+      level, anchor (None for the intro), heading, path (list of labels),
+      anchors (list of ancestors incl. itself), body, line.
+    """
+    clean = strip_html_comments(text)
+    title, headings = parse_markdown(clean)
+    lines = clean.splitlines()
+
+    sections: list[dict] = []
+    first_heading_line = headings[0]["line"] if headings else len(lines) + 1
+    intro_lines = [
+        line
+        for line in lines[: first_heading_line - 1]
+        if not _HEADING.match(line)  # drop the H1; keep any H4+ prose
+    ]
+    intro = "\n".join(intro_lines).strip()
+    if intro:
+        sections.append(
+            {
+                "level": 0,
+                "anchor": None,
+                "heading": title,
+                "path": [title] if title else [],
+                "anchors": [],
+                "body": intro,
+                "line": 1,
+            }
+        )
+
+    last_h2: dict | None = None
+    for index, heading in enumerate(headings):
+        body_start = heading["line"]  # 0-indexed slice starts on the line after the heading
+        body_end = headings[index + 1]["line"] - 1 if index + 1 < len(headings) else len(lines)
+        body = "\n".join(lines[body_start:body_end]).strip()
+        if heading["level"] == 2:
+            last_h2 = heading
+            path = [heading["text"]]
+            anchors = [heading["anchor"]]
+        else:
+            path = ([last_h2["text"]] if last_h2 else []) + [heading["text"]]
+            anchors = ([last_h2["anchor"]] if last_h2 else []) + [heading["anchor"]]
+        sections.append(
+            {
+                "level": heading["level"],
+                "anchor": heading["anchor"],
+                "heading": heading["text"],
+                "path": path,
+                "anchors": anchors,
+                "body": body,
+                "line": heading["line"],
+            }
+        )
+    return title, sections
+
+
 def parse_markdown(text: str) -> tuple[str | None, list[dict]]:
     """Return the H1 title and every H2/H3 heading with its GitHub-style anchor.
 

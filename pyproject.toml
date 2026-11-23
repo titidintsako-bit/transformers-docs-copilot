@@ -9,8 +9,5 @@ description = "Citation-grounded Q&A over a pinned subset of the Hugging Face Tr
 requires-python = ">=3.12"
 dependencies = ["PyYAML==6.0.2"]
 
-[project.optional-dependencies]
-retrieval = ["bm25s==0.3.16"]
-
 [tool.setuptools]
 packages = ["src"]
