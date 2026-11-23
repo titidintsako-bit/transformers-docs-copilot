@@ -26,7 +26,8 @@ class PromptTest(unittest.TestCase):
         )
         self.assertEqual(messages[0]["role"], "system")
         self.assertIn(ABSTAIN_TEXT, messages[0]["content"])
-        self.assertIn("Never write a URL", messages[0]["content"])
+        self.assertIn("Do not write URLs", messages[0]["content"])
+        self.assertIn("Cats are obligate carnivores [1]", messages[0]["content"])
         user = messages[1]["content"]
         self.assertIn("[1] Loading models", user)
         self.assertIn("[2] PEFT", user)

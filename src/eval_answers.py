@@ -206,8 +206,8 @@ def markdown(payload: dict) -> str:
         + (f" @ `{payload['model_commit'][:12]}`" if payload.get("model_commit") else "")
         + f" ({payload['quantization']}), greedy decoding, max_new_tokens={payload['max_new_tokens']}",
         f"- Split: **{payload['split']}**, n={payload['n']}, k={payload['k']} passages",
-        "- Contract: 2-6 sentences, `[n]` citations after claims, a `Sources:` block with the exact passage URL,",
-        f"  or exactly `{ABSTAIN_TEXT}`",
+        "- Contract: `Answer:` plus inline `[n]` citations, canonical `Sources:` rendered by the harness,"
+        f" or exactly `{ABSTAIN_TEXT}`",
         "- Automated only: format, abstention, citation validity. Support/factual correctness: see the label sheet.",
         "",
         "## Overall",
@@ -277,8 +277,8 @@ def markdown(payload: dict) -> str:
         "- Retrieval is the untouched BM25 baseline; this run isolates generation behaviour.",
         "- A forced abstention means the parser refused the output (no valid citation, an invented",
         "  URL, or a generation error), not that the model chose to abstain.",
-        "- Invalid URLs are replaced with the canonical passage URL and counted as repairs; the",
-        "  output can never contain a URL that is absent from the retrieved passages.",
+        "- Any model-written `Sources:` block or URL is discarded; the final source lines are",
+        "  rendered from the retrieved metadata, so the model cannot introduce a URL.",
         "- These numbers are a floor for the untuned model, not a RAG quality claim.",
         "",
     ]

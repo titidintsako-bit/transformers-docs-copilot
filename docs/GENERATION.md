@@ -24,9 +24,10 @@ or, when the passages do not answer the question:
 Insufficient evidence in the retrieved documentation.
 ```
 
-The prompt explicitly tells the model **not** to write URLs or a `Sources:` section. The
-application renders the final deliverable from the inline citation numbers and the
-retrieved metadata:
+The prompt explicitly tells the model **not** to write URLs or a `Sources:` section. It also
+includes two tiny synthetic examples (one cited answer, one abstention), because the 1.5B
+model ignored the rules when only prose instructions were given. The application renders
+the final deliverable from the inline citation numbers and the retrieved metadata:
 
 ```
 Answer: ...

@@ -28,14 +28,24 @@ SYSTEM_PROMPT = f"""You answer questions about the Hugging Face Transformers doc
 
 Rules:
 - Use only facts stated in the passages. Do not use outside knowledge.
-- Cite every sentence that makes a factual claim with the passage number in brackets, like [1]. Use only the numbers 1-5 shown in the passages.
-- Do not cite a passage you did not use.
-- Never write a URL or a Sources section. The application adds the source list from your [n] citations.
-- Never invent an API name, argument or default value.
+- End every sentence that makes a factual claim with the passage number in brackets, like [2].
+- Use only the numbers 1-5 shown in the passages. Do not cite a passage you did not use.
+- Do not write URLs.
 - If the passages do not contain the answer, reply with exactly: {ABSTAIN_TEXT}
 
-Answer format:
-Answer: <2-6 sentences; every factual sentence ends with one or more [n] citations>"""
+Example (not part of the task):
+
+Passages:
+[1] Cats - Diet
+Cats are obligate carnivores.
+[2] Dogs - Diet
+Dogs are omnivores.
+
+Question: What do cats eat?
+Answer: Cats are obligate carnivores [1].
+
+Question: What do cats drink?
+Answer: {ABSTAIN_TEXT}"""
 
 
 def build_messages(question: str, passages: list[dict]) -> list[dict]:
