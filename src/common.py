@@ -14,6 +14,9 @@ MANIFEST_PATH = ROOT / "data" / "raw" / "manifest.jsonl"
 CHUNKS_PATH = ROOT / "data" / "chunks.jsonl"
 INDEX_DIR = ROOT / "artifacts" / "index"
 PROBES_PATH = ROOT / "data" / "eval" / "retrieval_probes.jsonl"
+QUESTIONS_PATH = ROOT / "data" / "eval" / "questions.jsonl"
+SPLIT_PATH = ROOT / "data" / "eval" / "split.json"
+LABEL_SHEET_PATH = ROOT / "data" / "eval" / "label_sheet.csv"
 RESULTS_DIR = ROOT / "results"
 
 

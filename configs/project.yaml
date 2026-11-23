@@ -76,3 +76,13 @@ generation:
   max_new_tokens: 350
   temperature: 0.0
   top_k_passages: 5
+
+eval:
+  total: 55
+  dev: 12
+  test: 43
+  answerable: 40
+  unanswerable: 10
+  parametric: 5
+  min_per_test_page: 5
+  min_per_dev_page: 1

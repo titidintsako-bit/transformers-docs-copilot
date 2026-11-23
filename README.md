@@ -5,8 +5,8 @@ Transformers documentation, and cites the section each claim comes from. Built a
 first RAG project: keyword retrieval baseline, untuned RAG, then QLoRA fine-tuning for
 answer format, citation behavior and abstention.
 
-**Status: Milestone 2 of 6 (retrieval baseline).** The BM25 number below is the baseline
-to beat; generation, evaluation set and tuning land in the next milestones.
+**Status: Milestone 3 of 6 (evaluation set).** Retrieval baseline and the 55-question
+evaluation set are in place; grounded generation and QLoRA tuning land next.
 
 ## Pinned corpus
 
@@ -42,7 +42,9 @@ make fetch           # download pinned pages, write manifest + license note
 make chunk           # section-aware chunks with breadcrumbs
 make index           # BM25 index
 make eval-retrieval  # probe metrics -> results/
-make test            # 41 unit tests
+make validate-eval   # 55-question quotas + held-out split
+make label-sheet     # blank human-scoring sheet
+make test            # unit tests
 make check           # offline provenance verification
 
 .venv/bin/python -m src.retrieve "how do I save a GenerationConfig" -k 3
@@ -50,6 +52,20 @@ make check           # offline provenance verification
 
 The local machine has no NVIDIA GPU; 4-bit QLoRA training runs on a Colab T4. The local
 environment handles ingestion, retrieval, evaluation and a CPU smoke test with a 0.5B model.
+
+## Evaluation set
+
+55 questions, split by page so nothing answerable in `test` was ever used for tuning:
+
+| Split | Answerable | Source pages | Purpose |
+|---|---|---|---|
+| dev | 12 | 4 SFT pages | prompt/pipeline development |
+| test | 28 answerable + 15 abstain | 3 held-out pages | headline results |
+
+The 15 abstain questions are 10 out-of-scope topics (DeepSpeed config, vLLM, GPTQ, tokenizer
+training, ...) and 5 parametric-memory traps (Attention paper authorship/year, BERT, GPT-2 XL
+parameters, LoRA expansion). All 7 pages stay indexed; held out means "never used to
+synthesize fine-tuning data". Rubric and near-miss notes: [`docs/EVAL.md`](docs/EVAL.md).
 
 ## Layout
 
@@ -62,9 +78,15 @@ src/bm25.py                dependency-free Okapi BM25 with camelCase tokenizatio
 src/index.py               persist/verify the index
 src/retrieve.py            Retriever API + CLI
 src/eval_retrieval.py      Recall@k / MRR harness
+src/eval_questions.py      question-set validator + split manifest
+src/label_sheet.py         scoring sheet generator
 data/raw/                  fetched pages (byte-for-byte), manifest, docset
 data/chunks.jsonl          retrieval corpus
 data/eval/retrieval_probes.jsonl
-results/                   baseline report (markdown + JSON)
-tests/                     provenance, chunking, BM25, retrieval
+data/eval/questions.jsonl   55-question evaluation set
+data/eval/split.json        generated split manifest (pages, counts, qids)
+data/eval/label_sheet.csv   blank human-scoring sheet
+docs/EVAL.md                rubric, near-miss notes, scoring workflow
+results/                    baseline report (markdown + JSON)
+tests/                      provenance, chunking, BM25, retrieval, eval set
 ```

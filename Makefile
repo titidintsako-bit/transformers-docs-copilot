@@ -1,7 +1,7 @@
 PY := .venv/bin/python
 UV := uv
 
-.PHONY: setup fetch check chunk index eval-retrieval test clean
+.PHONY: setup fetch check chunk index eval-retrieval validate-eval label-sheet test clean
 
 setup: .venv/.installed
 
@@ -24,6 +24,12 @@ index: chunk
 
 eval-retrieval: index
 	$(PY) -m src.eval_retrieval
+
+validate-eval: setup
+	$(PY) -m src.eval_questions --write
+
+label-sheet: validate-eval
+	$(PY) -m src.label_sheet
 
 test: setup
 	$(PY) -m unittest discover -s tests -v
