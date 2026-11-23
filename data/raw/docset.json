@@ -1,0 +1,94 @@
+{
+  "repo": "huggingface/transformers",
+  "tag": "v5.24.0",
+  "commit_sha": "eeee11099135592f1d03c2871fbd3d8132e5a4d7",
+  "source_dir": "docs/source/en",
+  "license": "Apache-2.0",
+  "license_url": "https://github.com/huggingface/transformers/blob/eeee11099135592f1d03c2871fbd3d8132e5a4d7/LICENSE",
+  "license_sha256": "77fd4710def9ec3c0f6225800e0235f15a425abd4a8b03559127fcd782612049",
+  "retrieved_at": "2026-11-23T14:53:03Z",
+  "page_count": 7,
+  "total_bytes": 94375,
+  "total_chars": 94294,
+  "pages": [
+    {
+      "page_id": "quicktour",
+      "path": "quicktour.md",
+      "title": "Quickstart",
+      "role": "sft",
+      "topics": [
+        "overview",
+        "loading"
+      ],
+      "bytes": 12489,
+      "sha256": "20d63e71852595c83bb58c7c8181aab1786ccf735d78b10f7bf8fcd1aee89501"
+    },
+    {
+      "page_id": "models",
+      "path": "models.md",
+      "title": "Loading models",
+      "role": "sft",
+      "topics": [
+        "loading"
+      ],
+      "bytes": 13355,
+      "sha256": "c8df2f1dd26c5c25fd594c717fea99ba638ff1e77f08691adb758fd93b6cf5d4"
+    },
+    {
+      "page_id": "llm_tutorial",
+      "path": "llm_tutorial.md",
+      "title": "Text generation",
+      "role": "sft",
+      "topics": [
+        "generation"
+      ],
+      "bytes": 15675,
+      "sha256": "eff6d8e41b8fe3256fd19d8c30e3c6202fbd1942d0061305e80c7723c7284881"
+    },
+    {
+      "page_id": "training",
+      "path": "training.md",
+      "title": "Fine-tuning",
+      "role": "sft",
+      "topics": [
+        "fine-tuning"
+      ],
+      "bytes": 8862,
+      "sha256": "1a12e1548b0a0d05db5ea7bf2c117e76addbd875948e57a261dbeeee41a6ff48"
+    },
+    {
+      "page_id": "generation_strategies",
+      "path": "generation_strategies.md",
+      "title": "Generation strategies",
+      "role": "test",
+      "topics": [
+        "generation"
+      ],
+      "bytes": 19697,
+      "sha256": "cf819920c69ab4734988aa5f049f4922667ee109e7c2150467b149bfa05df15a"
+    },
+    {
+      "page_id": "tasks_language_modeling",
+      "path": "tasks/language_modeling.md",
+      "title": "Causal language modeling",
+      "role": "test",
+      "topics": [
+        "fine-tuning",
+        "generation"
+      ],
+      "bytes": 13922,
+      "sha256": "6dcf5ada2e200da8cdae2da88b4ad40028e4231060a194f439dd3d94673063fe"
+    },
+    {
+      "page_id": "peft",
+      "path": "peft.md",
+      "title": "Parameter-efficient fine-tuning",
+      "role": "test",
+      "topics": [
+        "fine-tuning"
+      ],
+      "bytes": 10375,
+      "sha256": "97144da5d061bcec33640c4c5b9c56672838569e65abf5903842a940091369f4"
+    }
+  ]
+}

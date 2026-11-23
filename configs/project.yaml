@@ -1,0 +1,78 @@
+project:
+  name: transformers-docs-copilot
+  seed: 42
+
+docs:
+  repo: huggingface/transformers
+  tag: v5.24.0
+  source_dir: docs/source/en
+  license: Apache-2.0
+  license_path: LICENSE
+  docs_site: https://huggingface.co/docs/transformers/{tag}/en
+  blob_base: https://github.com/{repo}/blob/{rev}/{source_dir}
+
+# role: sft = passages may be used to synthesize fine-tuning data
+#       test = held out from all fine-tuning data, always indexed for retrieval
+pages:
+  - id: quicktour
+    path: quicktour.md
+    title: Quickstart
+    role: sft
+    topics: [overview, loading]
+  - id: models
+    path: models.md
+    title: Loading models
+    role: sft
+    topics: [loading]
+  - id: llm_tutorial
+    path: llm_tutorial.md
+    title: Text generation
+    role: sft
+    topics: [generation]
+  - id: training
+    path: training.md
+    title: Fine-tuning
+    role: sft
+    topics: [fine-tuning]
+  - id: generation_strategies
+    path: generation_strategies.md
+    title: Generation strategies
+    role: test
+    topics: [generation]
+  - id: tasks_language_modeling
+    path: tasks/language_modeling.md
+    title: Causal language modeling
+    role: test
+    topics: [fine-tuning, generation]
+  - id: peft
+    path: peft.md
+    title: Parameter-efficient fine-tuning
+    role: test
+    topics: [fine-tuning]
+
+models:
+  base: Qwen/Qwen2.5-1.5B-Instruct
+  base_license: apache-2.0
+  smoke: Qwen/Qwen2.5-0.5B-Instruct
+  smoke_license: apache-2.0
+  fallback: Qwen/Qwen3-4B-Instruct-2507
+  qlora:
+    load_in_4bit: true
+    bnb_4bit_quant_type: nf4
+    bnb_4bit_use_double_quant: true
+    lora_r: 16
+    lora_alpha: 32
+    lora_dropout: 0.05
+    learning_rate: 2.0e-4
+    epochs: 2
+    max_seq_length: 2048
+
+retrieval:
+  k: 5
+  chunk_tokens: 550
+  chunk_overlap: 0.15
+
+generation:
+  max_new_tokens: 350
+  temperature: 0.0
+  top_k_passages: 5
