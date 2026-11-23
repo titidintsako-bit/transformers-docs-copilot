@@ -122,20 +122,20 @@ python -m src.eval_answers --split test --model base --quantize on \
   --out-prefix results/answers_baseline --labels results/label_sheet_baseline.csv
 ```
 
-The notebook records the resolved model commit hash in the report.
-
 ## Verification status
 
 - The 0.5B CPU smoke run completed end to end: retrieval, prompt, generation, parsing,
   reports and label sheet were all produced. Both sampled answers were forced
-  abstentions because the 0.5B model ignored the citation format. The parser did what the
-  contract says; this is a plumbing check, not a quality measurement.
-- A Colab T4 quick run with the 1.5B model also completed end to end: public clone, pinned
-  installs, corpus check, index and two questions at ~6 s each. Both questions were forced
-  abstentions because the model emitted no inline `[n]`: one wrote a `Sources:` list
-  without URLs, the other wrote no citations at all. That exposed a prompt-design problem,
-  so the contract was changed to inline-citation-only with application-rendered sources.
-  The quick run is being repeated before the full 43-question baseline.
-- The full 1.5B baseline was not run locally: this laptop has no CUDA GPU and the 3 GB
-  model download stalled. The official baseline comes from the Colab notebook and is
-  pending until that report is committed.
+  abstentions because the 0.5B model ignored the citation format.
+- The full 1.5B baseline ran in Colab at `adff134` (T4, 4-bit NF4, greedy, n=43):
+  `format_rate` 0.093, `grounded_answer_rate` 0.0, `behavior_accuracy` 0.116,
+  `retrieval_hit_rate` 0.964; 38 of 43 outputs were forced abstentions and mean latency
+  was 7.4 s. The prose answers were often on-topic, but the model usually omitted the
+  `Answer:` prefix and all inline citations. On the 15 negatives it chose to abstain only
+  26.7% of the time; the parser kept every delivered negative safe.
+- A one-shot system-prompt example (one cited answer, one abstention) did not fix citation
+  compliance: one answered row contained `[1]`, and it still omitted the prefix. This is
+  the format gap QLoRA targets, not a parser bug.
+- The full baseline artifacts are committed under `results/`. The next step is the adapter;
+  if it cannot learn the format, switch to a stronger base or relax the citation contract
+  before trying more prompt variants.

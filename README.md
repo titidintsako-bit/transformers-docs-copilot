@@ -6,7 +6,7 @@ first RAG project: keyword retrieval baseline, untuned RAG, then QLoRA fine-tuni
 answer format, citation behavior and abstention.
 
 **Status: Milestone 4 of 6 (grounded RAG).** Retrieval, the 55-question evaluation set
-and the grounded-answer pipeline are in place. The 1.5B baseline runs on a Colab T4;
+and the grounded-answer pipeline are in place. The full 1.5B baseline is committed;
 QLoRA tuning lands next.
 
 ## Pinned corpus
@@ -52,11 +52,23 @@ introduce a URL into the final answer.
 citation hits/precision, strict format compliance, repairs and latency, then writes a
 report plus a prefilled human label sheet. Support and factual correctness stay manual.
 
-Local status is deliberately modest: the 0.5B CPU smoke run completes end to end, but both
-sampled answers were forced abstentions because the 0.5B model ignored the citation
-format. The 1.5B baseline is produced by
-[`notebooks/colab.ipynb`](notebooks/colab.ipynb) and is pending until that report is
-committed. Contract details and metric definitions: [`docs/GENERATION.md`](docs/GENERATION.md).
+The full 1.5B baseline is committed in [`results/answers_baseline.md`](results/answers_baseline.md).
+It is deliberately a floor, not a demo: the model often answers correctly in prose but
+ignores the citation contract, so 38 of 43 outputs were forced abstentions.
+
+| metric | value |
+|---|---|
+| exact format | 0.093 |
+| grounded answer (answerable) | 0.000 |
+| behaviour accuracy | 0.116 |
+| retrieval hit@5 (answerable) | 0.964 |
+| model abstains on negatives | 0.267 |
+| delivered abstention on negatives | 1.000 |
+| median latency | 3.67 s |
+
+That gap — `Answer:` prefix, inline citations, and abstention — is exactly what the QLoRA
+adapter targets. The 0.5B CPU smoke run also completes end to end but fails the format for
+the same reason. Contract details and metric definitions: [`docs/GENERATION.md`](docs/GENERATION.md).
 
 ### Run it on Colab (T4)
 
@@ -65,8 +77,8 @@ Open the notebook directly from GitHub — it is public, so no token is needed:
 <https://colab.research.google.com/github/titidintsako-bit/transformers-docs-copilot/blob/main/notebooks/colab.ipynb>
 
 Set the runtime to T4, run the preflight cell, then keep `QUICK_LIMIT = 2` for a two-question
-plumbing check. Once that passes, set `QUICK_LIMIT = 0` and rerun the run/display cells for
-the full 43-question baseline. The notebook checkpoints the report to Drive.
+plumbing check. Set `QUICK_LIMIT = 0` and rerun the run/display cells for the full
+43-question baseline. The notebook checkpoints the report to Drive.
 
 ## Quickstart (local, no GPU)
 
@@ -134,7 +146,7 @@ docs/EVAL.md                rubric, near-miss notes, scoring workflow
 docs/GENERATION.md          answer contract, parser rules, metric definitions
 notebooks/colab.ipynb       T4 baseline run with preflight + Drive checkpoint
 LICENSE                    MIT for the code (bundled docs stay Apache-2.0)
-results/                    baseline report (markdown + JSON)
+results/                    baseline reports, predictions and label sheets
 tests/                      provenance, chunking, BM25, retrieval, eval set, generation
 ```
 

@@ -1,0 +1,3092 @@
+{
+  "method": "grounded_rag_untuned",
+  "model_id": "Qwen/Qwen2.5-1.5B-Instruct",
+  "model_commit": null,
+  "quantization": "4bit",
+  "max_new_tokens": 350,
+  "docset": {
+    "repo": "huggingface/transformers",
+    "tag": "v5.24.0",
+    "commit_sha": "eeee11099135592f1d03c2871fbd3d8132e5a4d7"
+  },
+  "split": "test",
+  "k": 5,
+  "n": 43,
+  "overall": {
+    "n": 43,
+    "behavior_accuracy": 0.116,
+    "answered_rate": 0.023,
+    "abstained_rate": 0.977,
+    "model_abstain_rate_on_negative": 0.267,
+    "delivered_abstention_rate_on_negative": 1.0,
+    "over_answer_rate_on_negative": 0.0,
+    "parser_save_rate_on_negative": 0.733,
+    "false_abstain_rate_on_answerable": 0.964,
+    "grounded_answer_rate": 0.0,
+    "citation_hit_rate": 0.0,
+    "page_citation_hit_rate": 0.0,
+    "mean_citation_precision": 0.0,
+    "format_rate": 0.093,
+    "retrieval_hit_rate": 0.964,
+    "repairs": 2,
+    "forced_abstain": 38,
+    "mean_latency_s": 7.39,
+    "median_latency_s": 3.67
+  },
+  "per_category": {
+    "answerable": {
+      "n": 28,
+      "behavior_accuracy": 0.036,
+      "answered_rate": 0.036,
+      "abstained_rate": 0.964,
+      "model_abstain_rate_on_negative": null,
+      "delivered_abstention_rate_on_negative": null,
+      "over_answer_rate_on_negative": null,
+      "parser_save_rate_on_negative": null,
+      "false_abstain_rate_on_answerable": 0.964,
+      "grounded_answer_rate": 0.0,
+      "citation_hit_rate": 0.0,
+      "page_citation_hit_rate": 0.0,
+      "mean_citation_precision": 0.0,
+      "format_rate": 0.0,
+      "retrieval_hit_rate": 0.964,
+      "repairs": 0,
+      "forced_abstain": 27,
+      "mean_latency_s": 5.57,
+      "median_latency_s": 3.25
+    },
+    "parametric": {
+      "n": 5,
+      "behavior_accuracy": 0.6,
+      "answered_rate": 0.0,
+      "abstained_rate": 1.0,
+      "model_abstain_rate_on_negative": 0.6,
+      "delivered_abstention_rate_on_negative": 1.0,
+      "over_answer_rate_on_negative": 0.0,
+      "parser_save_rate_on_negative": 0.4,
+      "false_abstain_rate_on_answerable": null,
+      "grounded_answer_rate": null,
+      "citation_hit_rate": null,
+      "page_citation_hit_rate": null,
+      "mean_citation_precision": null,
+      "format_rate": 0.6,
+      "retrieval_hit_rate": null,
+      "repairs": 0,
+      "forced_abstain": 2,
+      "mean_latency_s": 2.12,
+      "median_latency_s": 1.47
+    },
+    "unanswerable": {
+      "n": 10,
+      "behavior_accuracy": 0.1,
+      "answered_rate": 0.0,
+      "abstained_rate": 1.0,
+      "model_abstain_rate_on_negative": 0.1,
+      "delivered_abstention_rate_on_negative": 1.0,
+      "over_answer_rate_on_negative": 0.0,
+      "parser_save_rate_on_negative": 0.9,
+      "false_abstain_rate_on_answerable": null,
+      "grounded_answer_rate": null,
+      "citation_hit_rate": null,
+      "page_citation_hit_rate": null,
+      "mean_citation_precision": null,
+      "format_rate": 0.1,
+      "retrieval_hit_rate": null,
+      "repairs": 2,
+      "forced_abstain": 9,
+      "mean_latency_s": 15.118,
+      "median_latency_s": 16.9
+    }
+  },
+  "per_topic": {
+    "fine-tuning": {
+      "n": 18,
+      "behavior_accuracy": 0.056,
+      "answered_rate": 0.056,
+      "abstained_rate": 0.944,
+      "model_abstain_rate_on_negative": null,
+      "delivered_abstention_rate_on_negative": null,
+      "over_answer_rate_on_negative": null,
+      "parser_save_rate_on_negative": null,
+      "false_abstain_rate_on_answerable": 0.944,
+      "grounded_answer_rate": 0.0,
+      "citation_hit_rate": 0.0,
+      "page_citation_hit_rate": 0.0,
+      "mean_citation_precision": 0.0,
+      "format_rate": 0.0,
+      "retrieval_hit_rate": 0.944,
+      "repairs": 0,
+      "forced_abstain": 17,
+      "mean_latency_s": 3.586,
+      "median_latency_s": 2.29
+    },
+    "generation": {
+      "n": 10,
+      "behavior_accuracy": 0.0,
+      "answered_rate": 0.0,
+      "abstained_rate": 1.0,
+      "model_abstain_rate_on_negative": null,
+      "delivered_abstention_rate_on_negative": null,
+      "over_answer_rate_on_negative": null,
+      "parser_save_rate_on_negative": null,
+      "false_abstain_rate_on_answerable": 1.0,
+      "grounded_answer_rate": 0.0,
+      "citation_hit_rate": 0.0,
+      "page_citation_hit_rate": 0.0,
+      "mean_citation_precision": null,
+      "format_rate": 0.0,
+      "retrieval_hit_rate": 1.0,
+      "repairs": 0,
+      "forced_abstain": 10,
+      "mean_latency_s": 9.143,
+      "median_latency_s": 8.0
+    },
+    "out-of-scope": {
+      "n": 15,
+      "behavior_accuracy": 0.267,
+      "answered_rate": 0.0,
+      "abstained_rate": 1.0,
+      "model_abstain_rate_on_negative": 0.267,
+      "delivered_abstention_rate_on_negative": 1.0,
+      "over_answer_rate_on_negative": 0.0,
+      "parser_save_rate_on_negative": 0.733,
+      "false_abstain_rate_on_answerable": null,
+      "grounded_answer_rate": null,
+      "citation_hit_rate": null,
+      "page_citation_hit_rate": null,
+      "mean_citation_precision": null,
+      "format_rate": 0.267,
+      "retrieval_hit_rate": null,
+      "repairs": 2,
+      "forced_abstain": 11,
+      "mean_latency_s": 10.785,
+      "median_latency_s": 6.55
+    }
+  },
+  "rows": [
+    {
+      "qid": "gs-01",
+      "split": "test",
+      "topic": "generation",
+      "category": "answerable",
+      "expected": "answer",
+      "question": "Which decoding strategy does generate use by default, and how many new tokens can it produce at most when no GenerationConfig is specified?",
+      "reference": "Greedy search is the default. Without a GenerationConfig it generates at most 20 new tokens.",
+      "gold": "generation_strategies#greedy-search",
+      "status": "forced_abstain",
+      "reason": "no_valid_citations",
+      "error": null,
+      "abstained": true,
+      "model_abstained": false,
+      "forced_abstain_attempt": true,
+      "expected_abstain": false,
+      "behavior_ok": false,
+      "over_answer": false,
+      "false_abstain": true,
+      "format_ok": false,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": false,
+      "page_citation_hit": false,
+      "citation_precision": null,
+      "retrieval_hit": true,
+      "retrieval_page_hit": true,
+      "retrieved_top1": "llm_tutorial#decoding-strategy",
+      "retrieved": [
+        {
+          "chunk_id": "llm_tutorial:decoding-strategy:0",
+          "page_id": "llm_tutorial",
+          "anchor": "decoding-strategy",
+          "score": 19.8816
+        },
+        {
+          "chunk_id": "generation_strategies:greedy-search:0",
+          "page_id": "generation_strategies",
+          "anchor": "greedy-search",
+          "score": 18.0066
+        },
+        {
+          "chunk_id": "llm_tutorial:output-length:0",
+          "page_id": "llm_tutorial",
+          "anchor": "output-length",
+          "score": 13.9327
+        },
+        {
+          "chunk_id": "llm_tutorial:generation-configuration:0",
+          "page_id": "llm_tutorial",
+          "anchor": "generation-configuration",
+          "score": 12.858
+        },
+        {
+          "chunk_id": "generation_strategies:_intro:0",
+          "page_id": "generation_strategies",
+          "anchor": null,
+          "score": 12.6386
+        }
+      ],
+      "latency_s": 4.46,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "Generate uses greedy search by default, producing up to 20 new tokens at most when no GenerationConfig is specified.",
+      "raw": "Generate uses greedy search by default, producing up to 20 new tokens at most when no GenerationConfig is specified."
+    },
+    {
+      "qid": "gs-02",
+      "split": "test",
+      "topic": "generation",
+      "category": "answerable",
+      "expected": "answer",
+      "question": "Why does greedy search break down when generating long sequences?",
+      "reference": "It begins to repeat itself because it always takes the locally most likely next token.",
+      "gold": "generation_strategies#greedy-search",
+      "status": "forced_abstain",
+      "reason": "no_valid_citations",
+      "error": null,
+      "abstained": true,
+      "model_abstained": false,
+      "forced_abstain_attempt": true,
+      "expected_abstain": false,
+      "behavior_ok": false,
+      "over_answer": false,
+      "false_abstain": true,
+      "format_ok": false,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": false,
+      "page_citation_hit": false,
+      "citation_precision": null,
+      "retrieval_hit": true,
+      "retrieval_page_hit": true,
+      "retrieved_top1": "generation_strategies#greedy-search",
+      "retrieved": [
+        {
+          "chunk_id": "generation_strategies:greedy-search:0",
+          "page_id": "generation_strategies",
+          "anchor": "greedy-search",
+          "score": 17.5456
+        },
+        {
+          "chunk_id": "generation_strategies:beam-search:0",
+          "page_id": "generation_strategies",
+          "anchor": "beam-search",
+          "score": 10.9006
+        },
+        {
+          "chunk_id": "llm_tutorial:decoding-strategy:0",
+          "page_id": "llm_tutorial",
+          "anchor": "decoding-strategy",
+          "score": 6.922
+        },
+        {
+          "chunk_id": "llm_tutorial:common-options:0",
+          "page_id": "llm_tutorial",
+          "anchor": "common-options",
+          "score": 5.4287
+        },
+        {
+          "chunk_id": "generation_strategies:sampling:0",
+          "page_id": "generation_strategies",
+          "anchor": "sampling",
+          "score": 4.3626
+        }
+      ],
+      "latency_s": 8.68,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "Greedy search starts from the beginning of the input and tries to predict the next token based solely on the current context. As the sequence grows longer, the likelihood of selecting the correct next token decreases exponentially. This results in the model repeating itself after a while, leading to poor performance for longer inputs.",
+      "raw": "Greedy search starts from the beginning of the input and tries to predict the next token based solely on the current context. As the sequence grows longer, the likelihood of selecting the correct next token decreases exponentially. This results in the model repeating itself after a while, leading to poor performance for longer inputs."
+    },
+    {
+      "qid": "gs-03",
+      "split": "test",
+      "topic": "generation",
+      "category": "answerable",
+      "expected": "answer",
+      "question": "How do I enable multinomial sampling instead of greedy decoding?",
+      "reference": "Set do_sample=True and num_beams=1.",
+      "gold": "generation_strategies#sampling",
+      "status": "forced_abstain",
+      "reason": "no_valid_citations",
+      "error": null,
+      "abstained": true,
+      "model_abstained": false,
+      "forced_abstain_attempt": true,
+      "expected_abstain": false,
+      "behavior_ok": false,
+      "over_answer": false,
+      "false_abstain": true,
+      "format_ok": false,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": false,
+      "page_citation_hit": false,
+      "citation_precision": null,
+      "retrieval_hit": true,
+      "retrieval_page_hit": true,
+      "retrieved_top1": "llm_tutorial#decoding-strategy",
+      "retrieved": [
+        {
+          "chunk_id": "llm_tutorial:decoding-strategy:0",
+          "page_id": "llm_tutorial",
+          "anchor": "decoding-strategy",
+          "score": 18.8778
+        },
+        {
+          "chunk_id": "generation_strategies:sampling:0",
+          "page_id": "generation_strategies",
+          "anchor": "sampling",
+          "score": 15.477
+        },
+        {
+          "chunk_id": "llm_tutorial:generation-configuration:0",
+          "page_id": "llm_tutorial",
+          "anchor": "generation-configuration",
+          "score": 7.5552
+        },
+        {
+          "chunk_id": "generation_strategies:greedy-search:0",
+          "page_id": "generation_strategies",
+          "anchor": "greedy-search",
+          "score": 6.4329
+        },
+        {
+          "chunk_id": "generation_strategies:beam-search:0",
+          "page_id": "generation_strategies",
+          "anchor": "beam-search",
+          "score": 6.005
+        }
+      ],
+      "latency_s": 22.49,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "To enable multinomial sampling instead of greedy decoding, you should set the `do_sample=True` option within the `generate` method. Here’s an example of how you might implement this in Python:\n\n```python\nimport torch\nfrom transformers import AutoModelForCausalLM, AutoTokenizer\nfrom accelerate import Accelerator\n\ndevice = Accelerator().device\n\ntokenizer = AutoTokenizer.from_pretrained(\"meta-llama/Llama-2-7b-hf\")\ninputs = tokenizer(\"Hugging Face is an open-source company\", return_tensors=\"pt\").to(device)\n\nmodel = AutoModelForCausalLM.from_pretrained(\"meta-llama/Llama-2-7b-hf\", dtype=torch.float16).to(device)\n# explicitly set to 100 because Llama2 generation length is 4096\noutputs = model.generate(**inputs, max_new_tokens=50, do_sample=True, num_beams=1)\ntokenizer.batch_decode(outputs, skip_special_tokens=True)\n\"Hugging Face is an open-source company 🤗\\nWe are open-source and believe that open-source is the best way to build technology. Our mission is to make AI accessible to everyone, and we believe that open-source is the best way to achieve that.\"\n```\n\nThis code sets up the necessary options to perform multinomial sampling during the generation process.",
+      "raw": "To enable multinomial sampling instead of greedy decoding, you should set the `do_sample=True` option within the `generate` method. Here’s an example of how you might implement this in Python:\n\n```python\nimport torch\nfrom transformers import AutoModelForCausalLM, AutoTokenizer\nfrom accelerate import Accelerator\n\ndevice = Accelerator().device\n\ntokenizer = AutoTokenizer.from_pretrained(\"meta-llama/Llama-2-7b-hf\")\ninputs = tokenizer(\"Hugging Face is an open-source company\", return_tensors=\"pt\").to(device)\n\nmodel = AutoModelForCausalLM.from_pretrained(\"meta-llama/Llama-2-7b-hf\", dtype=torch.float16).to(device)\n# explicitly set to 100 because Llama2 generation length is 4096\noutputs = model.generate(**inputs, max_new_tokens=50, do_sample=True, num_beams=1)\ntokenizer.batch_decode(outputs, skip_special_tokens=True)\n\"Hugging Face is an open-source company 🤗\\nWe are open-source and believe that open-source is the best way to build technology. Our mission is to make AI accessible to everyone, and we believe that open-source is the best way to achieve that.\"\n```\n\nThis code sets up the necessary options to perform multinomial sampling during the generation process."
+    },
+    {
+      "qid": "gs-04",
+      "split": "test",
+      "topic": "generation",
+      "category": "answerable",
+      "expected": "answer",
+      "question": "What are the benefits of sampling compared with greedy search?",
+      "reference": "Sampling reduces repetition and can generate more creative and diverse outputs.",
+      "gold": "generation_strategies#sampling",
+      "status": "forced_abstain",
+      "reason": "no_valid_citations",
+      "error": null,
+      "abstained": true,
+      "model_abstained": false,
+      "forced_abstain_attempt": true,
+      "expected_abstain": false,
+      "behavior_ok": false,
+      "over_answer": false,
+      "false_abstain": true,
+      "format_ok": false,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": false,
+      "page_citation_hit": false,
+      "citation_precision": null,
+      "retrieval_hit": true,
+      "retrieval_page_hit": true,
+      "retrieved_top1": "llm_tutorial#decoding-strategy",
+      "retrieved": [
+        {
+          "chunk_id": "llm_tutorial:decoding-strategy:0",
+          "page_id": "llm_tutorial",
+          "anchor": "decoding-strategy",
+          "score": 11.4598
+        },
+        {
+          "chunk_id": "generation_strategies:sampling:0",
+          "page_id": "generation_strategies",
+          "anchor": "sampling",
+          "score": 9.3222
+        },
+        {
+          "chunk_id": "generation_strategies:greedy-search:0",
+          "page_id": "generation_strategies",
+          "anchor": "greedy-search",
+          "score": 7.7137
+        },
+        {
+          "chunk_id": "generation_strategies:beam-search:0",
+          "page_id": "generation_strategies",
+          "anchor": "beam-search",
+          "score": 7.6781
+        },
+        {
+          "chunk_id": "llm_tutorial:generation-configuration:0",
+          "page_id": "llm_tutorial",
+          "anchor": "generation-configuration",
+          "score": 6.3966
+        }
+      ],
+      "latency_s": 12.24,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "Sampling offers several benefits over greedy search, including:\n\n1. **Increased Diversity**: By selecting tokens randomly according to their probabilities, sampling helps avoid repeating previously generated tokens, leading to more varied and unique output sequences.\n2. **Reduced Repetition**: Greedy search tends to produce similar outputs due to its deterministic approach, whereas sampling allows for exploration of different paths within the vocabulary space.\n3. **Creative Outputs**: The randomness inherent in sampling encourages the generation of novel and unexpected content, making it suitable for creative applications such as story writing or chat interfaces.\n4. **Better Exploration**: Sampling enables the model to explore different parts of the vocabulary during the generation process, potentially leading to more innovative and contextually relevant results.\n\nIn summary, sampling enhances diversity, reduces repetition, promotes creativity, and better explores the vocabulary space, making it a valuable technique for various generative tasks.",
+      "raw": "Sampling offers several benefits over greedy search, including:\n\n1. **Increased Diversity**: By selecting tokens randomly according to their probabilities, sampling helps avoid repeating previously generated tokens, leading to more varied and unique output sequences.\n2. **Reduced Repetition**: Greedy search tends to produce similar outputs due to its deterministic approach, whereas sampling allows for exploration of different paths within the vocabulary space.\n3. **Creative Outputs**: The randomness inherent in sampling encourages the generation of novel and unexpected content, making it suitable for creative applications such as story writing or chat interfaces.\n4. **Better Exploration**: Sampling enables the model to explore different parts of the vocabulary during the generation process, potentially leading to more innovative and contextually relevant results.\n\nIn summary, sampling enhances diversity, reduces repetition, promotes creativity, and better explores the vocabulary space, making it a valuable technique for various generative tasks."
+    },
+    {
+      "qid": "gs-05",
+      "split": "test",
+      "topic": "generation",
+      "category": "answerable",
+      "expected": "answer",
+      "question": "How does beam search differ from greedy search?",
+      "reference": "Beam search tracks several sequences and selects the one with the highest overall probability, so it can look ahead; greedy search follows only the most likely next token.",
+      "gold": "generation_strategies#beam-search",
+      "status": "forced_abstain",
+      "reason": "no_valid_citations",
+      "error": null,
+      "abstained": true,
+      "model_abstained": false,
+      "forced_abstain_attempt": true,
+      "expected_abstain": false,
+      "behavior_ok": false,
+      "over_answer": false,
+      "false_abstain": true,
+      "format_ok": false,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": false,
+      "page_citation_hit": false,
+      "citation_precision": null,
+      "retrieval_hit": true,
+      "retrieval_page_hit": true,
+      "retrieved_top1": "generation_strategies#beam-search",
+      "retrieved": [
+        {
+          "chunk_id": "generation_strategies:beam-search:0",
+          "page_id": "generation_strategies",
+          "anchor": "beam-search",
+          "score": 13.3186
+        },
+        {
+          "chunk_id": "llm_tutorial:common-options:0",
+          "page_id": "llm_tutorial",
+          "anchor": "common-options",
+          "score": 9.3437
+        },
+        {
+          "chunk_id": "generation_strategies:greedy-search:0",
+          "page_id": "generation_strategies",
+          "anchor": "greedy-search",
+          "score": 7.7137
+        },
+        {
+          "chunk_id": "llm_tutorial:decoding-strategy:0",
+          "page_id": "llm_tutorial",
+          "anchor": "decoding-strategy",
+          "score": 6.922
+        },
+        {
+          "chunk_id": "llm_tutorial:generation-configuration:0",
+          "page_id": "llm_tutorial",
+          "anchor": "generation-configuration",
+          "score": 5.4559
+        }
+      ],
+      "latency_s": 7.33,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "Beam search differs from greedy search by keeping track of multiple generated sequences at each time step. After a certain number of steps, it selects the sequence with the highest overall probability. Unlike greedy search, beam search allows picking a sequence with a higher probability overall, even if the initial tokens have a lower probability. It is best suited for input-grounded tasks such as describing images or speech recognition. Beam search also enables sampling at each step, though it will still select the sequence with the highest overall probability.",
+      "raw": "Beam search differs from greedy search by keeping track of multiple generated sequences at each time step. After a certain number of steps, it selects the sequence with the highest overall probability. Unlike greedy search, beam search allows picking a sequence with a higher probability overall, even if the initial tokens have a lower probability. It is best suited for input-grounded tasks such as describing images or speech recognition. Beam search also enables sampling at each step, though it will still select the sequence with the highest overall probability."
+    },
+    {
+      "qid": "gs-06",
+      "split": "test",
+      "topic": "generation",
+      "category": "answerable",
+      "expected": "answer",
+      "question": "For which kinds of tasks is beam search best suited?",
+      "reference": "Input-grounded tasks such as describing an image or speech recognition.",
+      "gold": "generation_strategies#beam-search",
+      "status": "forced_abstain",
+      "reason": "no_valid_citations",
+      "error": null,
+      "abstained": true,
+      "model_abstained": false,
+      "forced_abstain_attempt": true,
+      "expected_abstain": false,
+      "behavior_ok": false,
+      "over_answer": false,
+      "false_abstain": true,
+      "format_ok": false,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": false,
+      "page_citation_hit": false,
+      "citation_precision": null,
+      "retrieval_hit": true,
+      "retrieval_page_hit": true,
+      "retrieved_top1": "generation_strategies#beam-search",
+      "retrieved": [
+        {
+          "chunk_id": "generation_strategies:beam-search:0",
+          "page_id": "generation_strategies",
+          "anchor": "beam-search",
+          "score": 17.1233
+        },
+        {
+          "chunk_id": "llm_tutorial:common-options:0",
+          "page_id": "llm_tutorial",
+          "anchor": "common-options",
+          "score": 9.8465
+        },
+        {
+          "chunk_id": "generation_strategies:sampling:0",
+          "page_id": "generation_strategies",
+          "anchor": "sampling",
+          "score": 5.7807
+        },
+        {
+          "chunk_id": "generation_strategies:greedy-search:0",
+          "page_id": "generation_strategies",
+          "anchor": "greedy-search",
+          "score": 5.5039
+        },
+        {
+          "chunk_id": "llm_tutorial:generation-configuration:0",
+          "page_id": "llm_tutorial",
+          "anchor": "generation-configuration",
+          "score": 5.4559
+        }
+      ],
+      "latency_s": 3.67,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "Beam search is best suited for input-grounded tasks such as describing images or speech recognition. It allows the model to consider multiple possible continuations of a sequence during training, potentially leading to better generalization and diversity in its output.",
+      "raw": "Beam search is best suited for input-grounded tasks such as describing images or speech recognition. It allows the model to consider multiple possible continuations of a sequence during training, potentially leading to better generalization and diversity in its output."
+    },
+    {
+      "qid": "gs-07",
+      "split": "test",
+      "topic": "generation",
+      "category": "answerable",
+      "expected": "answer",
+      "question": "Which files must a model repository contain to publish a custom generation method?",
+      "reference": "The model, custom_generate/generate.py, an optional custom_generate/requirements.txt, and a README tagged custom_generate.",
+      "gold": "generation_strategies#creating-a-custom-generation-method",
+      "status": "forced_abstain",
+      "reason": "no_valid_citations",
+      "error": null,
+      "abstained": true,
+      "model_abstained": false,
+      "forced_abstain_attempt": true,
+      "expected_abstain": false,
+      "behavior_ok": false,
+      "over_answer": false,
+      "false_abstain": true,
+      "format_ok": false,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": false,
+      "page_citation_hit": false,
+      "citation_precision": null,
+      "retrieval_hit": true,
+      "retrieval_page_hit": true,
+      "retrieved_top1": "generation_strategies#creating-a-custom-generation-method",
+      "retrieved": [
+        {
+          "chunk_id": "generation_strategies:creating-a-custom-generation-method:1",
+          "page_id": "generation_strategies",
+          "anchor": "creating-a-custom-generation-method",
+          "score": 21.3019
+        },
+        {
+          "chunk_id": "generation_strategies:creating-a-custom-generation-method:0",
+          "page_id": "generation_strategies",
+          "anchor": "creating-a-custom-generation-method",
+          "score": 16.0882
+        },
+        {
+          "chunk_id": "generation_strategies:creating-a-custom-generation-method:3",
+          "page_id": "generation_strategies",
+          "anchor": "creating-a-custom-generation-method",
+          "score": 12.0736
+        },
+        {
+          "chunk_id": "generation_strategies:reusing-generates-input-preparation:0",
+          "page_id": "generation_strategies",
+          "anchor": "reusing-generates-input-preparation",
+          "score": 10.578
+        },
+        {
+          "chunk_id": "generation_strategies:custom-generation-methods:0",
+          "page_id": "generation_strategies",
+          "anchor": "custom-generation-methods",
+          "score": 10.4196
+        }
+      ],
+      "latency_s": 12.92,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "A model repository must contain the following files to publish a custom generation method:\n\n1. A `custom_generate/generate.py` file containing all the logic for your custom generation method.\n2. A `custom_generate/requirements.txt` file listing any additional Python dependencies needed for your custom generation method.\n3. A `README.md` file detailing how to use your custom generation method, including any changes in input/output compared to the standard `~GenerationMixin.generate` method.",
+      "raw": "A model repository must contain the following files to publish a custom generation method:\n\n1. A `custom_generate/generate.py` file containing all the logic for your custom generation method.\n2. A `custom_generate/requirements.txt` file listing any additional Python dependencies needed for your custom generation method.\n3. A `README.md` file detailing how to use your custom generation method, including any changes in input/output compared to the standard `~GenerationMixin.generate` method."
+    },
+    {
+      "qid": "gs-08",
+      "split": "test",
+      "topic": "generation",
+      "category": "answerable",
+      "expected": "answer",
+      "question": "In a custom generation method, what must the generate function's first argument be?",
+      "reference": "A model argument.",
+      "gold": "generation_strategies#creating-a-custom-generation-method",
+      "status": "forced_abstain",
+      "reason": "no_valid_citations",
+      "error": null,
+      "abstained": true,
+      "model_abstained": false,
+      "forced_abstain_attempt": true,
+      "expected_abstain": false,
+      "behavior_ok": false,
+      "over_answer": false,
+      "false_abstain": true,
+      "format_ok": false,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": false,
+      "page_citation_hit": false,
+      "citation_precision": null,
+      "retrieval_hit": true,
+      "retrieval_page_hit": true,
+      "retrieved_top1": "generation_strategies#creating-a-custom-generation-method",
+      "retrieved": [
+        {
+          "chunk_id": "generation_strategies:creating-a-custom-generation-method:1",
+          "page_id": "generation_strategies",
+          "anchor": "creating-a-custom-generation-method",
+          "score": 23.1953
+        },
+        {
+          "chunk_id": "generation_strategies:creating-a-custom-generation-method:3",
+          "page_id": "generation_strategies",
+          "anchor": "creating-a-custom-generation-method",
+          "score": 14.956
+        },
+        {
+          "chunk_id": "generation_strategies:custom-generation-methods:0",
+          "page_id": "generation_strategies",
+          "anchor": "custom-generation-methods",
+          "score": 12.8038
+        },
+        {
+          "chunk_id": "generation_strategies:creating-a-custom-generation-method:2",
+          "page_id": "generation_strategies",
+          "anchor": "creating-a-custom-generation-method",
+          "score": 11.7395
+        },
+        {
+          "chunk_id": "generation_strategies:custom-generation-methods:1",
+          "page_id": "generation_strategies",
+          "anchor": "custom-generation-methods",
+          "score": 10.8467
+        }
+      ],
+      "latency_s": 2.49,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "A custom generation method must accept a model instance as its first argument, allowing access to all attributes and methods within the model.",
+      "raw": "A custom generation method must accept a model instance as its first argument, allowing access to all attributes and methods within the model."
+    },
+    {
+      "qid": "gs-09",
+      "split": "test",
+      "topic": "generation",
+      "category": "answerable",
+      "expected": "answer",
+      "question": "How can I find custom generation methods on the Hub?",
+      "reference": "Search models for the custom_generate tag or browse the curated community and tutorial collections.",
+      "gold": "generation_strategies#finding-custom-generation-methods",
+      "status": "forced_abstain",
+      "reason": "unverified_url_in_answer",
+      "error": null,
+      "abstained": true,
+      "model_abstained": false,
+      "forced_abstain_attempt": true,
+      "expected_abstain": false,
+      "behavior_ok": false,
+      "over_answer": false,
+      "false_abstain": true,
+      "format_ok": false,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [
+        "https://huggingface.co/models?other=custom_generate",
+        "https://huggingface.co/collections/transformers-community/custom-generation-methods-community-6888fb1da0efbc592d3a8ab6",
+        "https://huggingface.co/collections/transformers-community/custom-generation-methods-tutorials-6823589657a94940ea02cfec"
+      ],
+      "citation_hit": false,
+      "page_citation_hit": false,
+      "citation_precision": null,
+      "retrieval_hit": true,
+      "retrieval_page_hit": true,
+      "retrieved_top1": "generation_strategies#finding-custom-generation-methods",
+      "retrieved": [
+        {
+          "chunk_id": "generation_strategies:finding-custom-generation-methods:0",
+          "page_id": "generation_strategies",
+          "anchor": "finding-custom-generation-methods",
+          "score": 12.593
+        },
+        {
+          "chunk_id": "generation_strategies:custom-generation-methods:1",
+          "page_id": "generation_strategies",
+          "anchor": "custom-generation-methods",
+          "score": 10.5536
+        },
+        {
+          "chunk_id": "generation_strategies:creating-a-custom-generation-method:0",
+          "page_id": "generation_strategies",
+          "anchor": "creating-a-custom-generation-method",
+          "score": 8.307
+        },
+        {
+          "chunk_id": "generation_strategies:custom-generation-methods:0",
+          "page_id": "generation_strategies",
+          "anchor": "custom-generation-methods",
+          "score": 7.7655
+        },
+        {
+          "chunk_id": "generation_strategies:creating-a-custom-generation-method:3",
+          "page_id": "generation_strategies",
+          "anchor": "creating-a-custom-generation-method",
+          "score": 7.5742
+        }
+      ],
+      "latency_s": 13.62,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "You can find all custom generation methods by searching for their custom tag. [Search for their custom tag.](https://huggingface.co/models?other=custom_generate), `custom_generate`. In addition to the tag, we curate two collections of `custom_generate` methods:\n\n- [Custom generation methods - Community](https://huggingface.co/collections/transformers-community/custom-generation-methods-community-6888fb1da0efbc592d3a8ab6) -- a collection of powerful methods contributed by the community;\n- [Custom generation methods - Tutorials](https://huggingface.co/collections/transformers-community/custom-generation-methods-tutorials-6823589657a94940ea02cfec) -- a collection of reference implementations for methods that previously were part of `transformers`, as well as tutorials for `custom_generate`.",
+      "raw": "You can find all custom generation methods by searching for their custom tag. [Search for their custom tag.](https://huggingface.co/models?other=custom_generate), `custom_generate`. In addition to the tag, we curate two collections of `custom_generate` methods:\n\n- [Custom generation methods - Community](https://huggingface.co/collections/transformers-community/custom-generation-methods-community-6888fb1da0efbc592d3a8ab6) -- a collection of powerful methods contributed by the community;\n- [Custom generation methods - Tutorials](https://huggingface.co/collections/transformers-community/custom-generation-methods-tutorials-6823589657a94940ea02cfec) -- a collection of reference implementations for methods that previously were part of `transformers`, as well as tutorials for `custom_generate`."
+    },
+    {
+      "qid": "gs-10",
+      "split": "test",
+      "topic": "generation",
+      "category": "answerable",
+      "expected": "answer",
+      "question": "Can a custom decoding loop reuse generate's input preparation, and what does that preserve?",
+      "reference": "Yes; pass a callable to custom_generate to reuse batch expansion, attention masks, logits processors and stopping criteria while replacing the decoding loop.",
+      "gold": "generation_strategies#reusing-generates-input-preparation",
+      "status": "forced_abstain",
+      "reason": "no_valid_citations",
+      "error": null,
+      "abstained": true,
+      "model_abstained": false,
+      "forced_abstain_attempt": true,
+      "expected_abstain": false,
+      "behavior_ok": false,
+      "over_answer": false,
+      "false_abstain": true,
+      "format_ok": false,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": false,
+      "page_citation_hit": false,
+      "citation_precision": null,
+      "retrieval_hit": true,
+      "retrieval_page_hit": true,
+      "retrieved_top1": "generation_strategies#reusing-generates-input-preparation",
+      "retrieved": [
+        {
+          "chunk_id": "generation_strategies:reusing-generates-input-preparation:0",
+          "page_id": "generation_strategies",
+          "anchor": "reusing-generates-input-preparation",
+          "score": 30.2378
+        },
+        {
+          "chunk_id": "generation_strategies:creating-a-custom-generation-method:2",
+          "page_id": "generation_strategies",
+          "anchor": "creating-a-custom-generation-method",
+          "score": 15.4034
+        },
+        {
+          "chunk_id": "generation_strategies:custom-generation-methods:0",
+          "page_id": "generation_strategies",
+          "anchor": "custom-generation-methods",
+          "score": 7.9109
+        },
+        {
+          "chunk_id": "generation_strategies:creating-a-custom-generation-method:3",
+          "page_id": "generation_strategies",
+          "anchor": "creating-a-custom-generation-method",
+          "score": 7.8545
+        },
+        {
+          "chunk_id": "generation_strategies:creating-a-custom-generation-method:4",
+          "page_id": "generation_strategies",
+          "anchor": "creating-a-custom-generation-method",
+          "score": 7.2132
+        }
+      ],
+      "latency_s": 3.53,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "A custom decoding loop can reuse generate's input preparation, preserving batch expansion, attention masks, logits processors, stopping criteria, and other aspects of the input preparation process.",
+      "raw": "A custom decoding loop can reuse generate's input preparation, preserving batch expansion, attention masks, logits processors, stopping criteria, and other aspects of the input preparation process."
+    },
+    {
+      "qid": "lm-01",
+      "split": "test",
+      "topic": "fine-tuning",
+      "category": "answerable",
+      "expected": "answer",
+      "question": "What is causal language modeling?",
+      "reference": "Predicting the next token from the tokens to its left; the model cannot attend to future tokens.",
+      "gold": "tasks_language_modeling#",
+      "status": "forced_abstain",
+      "reason": "no_valid_citations",
+      "error": null,
+      "abstained": true,
+      "model_abstained": false,
+      "forced_abstain_attempt": true,
+      "expected_abstain": false,
+      "behavior_ok": false,
+      "over_answer": false,
+      "false_abstain": true,
+      "format_ok": false,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": false,
+      "page_citation_hit": false,
+      "citation_precision": null,
+      "retrieval_hit": true,
+      "retrieval_page_hit": true,
+      "retrieved_top1": "tasks_language_modeling#None",
+      "retrieved": [
+        {
+          "chunk_id": "tasks_language_modeling:_intro:0",
+          "page_id": "tasks_language_modeling",
+          "anchor": null,
+          "score": 7.456
+        },
+        {
+          "chunk_id": "tasks_language_modeling:preprocess:2",
+          "page_id": "tasks_language_modeling",
+          "anchor": "preprocess",
+          "score": 7.0443
+        },
+        {
+          "chunk_id": "tasks_language_modeling:train:0",
+          "page_id": "tasks_language_modeling",
+          "anchor": "train",
+          "score": 5.9743
+        },
+        {
+          "chunk_id": "tasks_language_modeling:inference:1",
+          "page_id": "tasks_language_modeling",
+          "anchor": "inference",
+          "score": 5.0271
+        },
+        {
+          "chunk_id": "tasks_language_modeling:load-eli5-dataset:0",
+          "page_id": "tasks_language_modeling",
+          "anchor": "load-eli5-dataset",
+          "score": 4.8424
+        }
+      ],
+      "latency_s": 1.98,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "Causal language modeling involves predicting the next token in a sequence of tokens based on previously predicted tokens.",
+      "raw": "Causal language modeling involves predicting the next token in a sequence of tokens based on previously predicted tokens."
+    },
+    {
+      "qid": "lm-02",
+      "split": "test",
+      "topic": "fine-tuning",
+      "category": "answerable",
+      "expected": "answer",
+      "question": "Which pretrained model does the causal language modeling guide fine-tune?",
+      "reference": "DistilGPT2.",
+      "gold": "tasks_language_modeling#",
+      "status": "answered",
+      "reason": null,
+      "error": null,
+      "abstained": false,
+      "model_abstained": false,
+      "forced_abstain_attempt": false,
+      "expected_abstain": false,
+      "behavior_ok": true,
+      "over_answer": false,
+      "false_abstain": false,
+      "format_ok": false,
+      "citations": [
+        1
+      ],
+      "sources": [
+        {
+          "n": 1,
+          "title": "Fine-tuning",
+          "url": "https://github.com/huggingface/transformers/blob/eeee11099135592f1d03c2871fbd3d8132e5a4d7/docs/source/en/training.md#loading-a-model",
+          "chunk_id": "training:loading-a-model:0",
+          "page_id": "training",
+          "anchor": "loading-a-model",
+          "section": "Loading a model",
+          "relevant": false,
+          "on_page": false
+        }
+      ],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": false,
+      "page_citation_hit": false,
+      "citation_precision": 0.0,
+      "retrieval_hit": true,
+      "retrieval_page_hit": true,
+      "retrieved_top1": "training#loading-a-model",
+      "retrieved": [
+        {
+          "chunk_id": "training:loading-a-model:0",
+          "page_id": "training",
+          "anchor": "loading-a-model",
+          "score": 10.9377
+        },
+        {
+          "chunk_id": "tasks_language_modeling:_intro:0",
+          "page_id": "tasks_language_modeling",
+          "anchor": null,
+          "score": 10.2067
+        },
+        {
+          "chunk_id": "quicktour:agent-skills:0",
+          "page_id": "quicktour",
+          "anchor": "agent-skills",
+          "score": 8.7046
+        },
+        {
+          "chunk_id": "tasks_language_modeling:train:0",
+          "page_id": "tasks_language_modeling",
+          "anchor": "train",
+          "score": 7.0561
+        },
+        {
+          "chunk_id": "tasks_language_modeling:preprocess:2",
+          "page_id": "tasks_language_modeling",
+          "anchor": "preprocess",
+          "score": 7.0443
+        }
+      ],
+      "latency_s": 1.5,
+      "answer": "Answer: The causal language modeling guide fine-tunes DistilBERT [1].\n\nSources:\n[1] Fine-tuning - https://github.com/huggingface/transformers/blob/eeee11099135592f1d03c2871fbd3d8132e5a4d7/docs/source/en/training.md#loading-a-model",
+      "extracted_answer": "The causal language modeling guide fine-tunes DistilBERT [1].",
+      "raw": "The causal language modeling guide fine-tunes DistilBERT [1]."
+    },
+    {
+      "qid": "lm-03",
+      "split": "test",
+      "topic": "fine-tuning",
+      "category": "answerable",
+      "expected": "answer",
+      "question": "Which dataset and how many examples does the guide load for fine-tuning?",
+      "reference": "The ELI5-Category dataset, first 5,000 examples.",
+      "gold": "tasks_language_modeling#load-eli5-dataset",
+      "status": "forced_abstain",
+      "reason": "no_valid_citations",
+      "error": null,
+      "abstained": true,
+      "model_abstained": false,
+      "forced_abstain_attempt": true,
+      "expected_abstain": false,
+      "behavior_ok": false,
+      "over_answer": false,
+      "false_abstain": true,
+      "format_ok": false,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": false,
+      "page_citation_hit": false,
+      "citation_precision": null,
+      "retrieval_hit": true,
+      "retrieval_page_hit": true,
+      "retrieved_top1": "training#None",
+      "retrieved": [
+        {
+          "chunk_id": "training:_intro:0",
+          "page_id": "training",
+          "anchor": null,
+          "score": 10.6697
+        },
+        {
+          "chunk_id": "training:next-steps:0",
+          "page_id": "training",
+          "anchor": "next-steps",
+          "score": 9.5745
+        },
+        {
+          "chunk_id": "tasks_language_modeling:load-eli5-dataset:0",
+          "page_id": "tasks_language_modeling",
+          "anchor": "load-eli5-dataset",
+          "score": 8.5659
+        },
+        {
+          "chunk_id": "training:loading-a-model:0",
+          "page_id": "training",
+          "anchor": "loading-a-model",
+          "score": 7.8911
+        },
+        {
+          "chunk_id": "training:training:0",
+          "page_id": "training",
+          "anchor": "training",
+          "score": 7.7359
+        }
+      ],
+      "latency_s": 2.23,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "The guide loads the first 5000 examples from the ELI5-Category dataset with the 🤗 Datasets library.",
+      "raw": "The guide loads the first 5000 examples from the ELI5-Category dataset with the 🤗 Datasets library."
+    },
+    {
+      "qid": "lm-04",
+      "split": "test",
+      "topic": "fine-tuning",
+      "category": "answerable",
+      "expected": "answer",
+      "question": "How does the guide split the loaded dataset into train and test sets?",
+      "reference": "train_test_split with test_size=0.2.",
+      "gold": "tasks_language_modeling#load-eli5-dataset",
+      "status": "forced_abstain",
+      "reason": "no_valid_citations",
+      "error": null,
+      "abstained": true,
+      "model_abstained": false,
+      "forced_abstain_attempt": true,
+      "expected_abstain": false,
+      "behavior_ok": false,
+      "over_answer": false,
+      "false_abstain": true,
+      "format_ok": false,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": false,
+      "page_citation_hit": false,
+      "citation_precision": null,
+      "retrieval_hit": true,
+      "retrieval_page_hit": true,
+      "retrieved_top1": "tasks_language_modeling#load-eli5-dataset",
+      "retrieved": [
+        {
+          "chunk_id": "tasks_language_modeling:load-eli5-dataset:0",
+          "page_id": "tasks_language_modeling",
+          "anchor": "load-eli5-dataset",
+          "score": 17.497
+        },
+        {
+          "chunk_id": "training:tokenization:0",
+          "page_id": "training",
+          "anchor": "tokenization",
+          "score": 14.9076
+        },
+        {
+          "chunk_id": "tasks_language_modeling:load-eli5-dataset:1",
+          "page_id": "tasks_language_modeling",
+          "anchor": "load-eli5-dataset",
+          "score": 13.4689
+        },
+        {
+          "chunk_id": "quicktour:trainer:1",
+          "page_id": "quicktour",
+          "anchor": "trainer",
+          "score": 9.9345
+        },
+        {
+          "chunk_id": "training:training:0",
+          "page_id": "training",
+          "anchor": "training",
+          "score": 9.8613
+        }
+      ],
+      "latency_s": 2.33,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "The guide splits the dataset's `train` split into a train and test set with the `~datasets.Dataset.train_test_split` method.",
+      "raw": "The guide splits the dataset's `train` split into a train and test set with the `~datasets.Dataset.train_test_split` method."
+    },
+    {
+      "qid": "lm-05",
+      "split": "test",
+      "topic": "fine-tuning",
+      "category": "answerable",
+      "expected": "answer",
+      "question": "Why does the guide flatten the ELI5 dataset before tokenizing?",
+      "reference": "Because the text field is nested inside answers.",
+      "gold": "tasks_language_modeling#preprocess",
+      "status": "forced_abstain",
+      "reason": "no_valid_citations",
+      "error": null,
+      "abstained": true,
+      "model_abstained": false,
+      "forced_abstain_attempt": true,
+      "expected_abstain": false,
+      "behavior_ok": false,
+      "over_answer": false,
+      "false_abstain": true,
+      "format_ok": false,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": false,
+      "page_citation_hit": false,
+      "citation_precision": null,
+      "retrieval_hit": true,
+      "retrieval_page_hit": true,
+      "retrieved_top1": "tasks_language_modeling#load-eli5-dataset",
+      "retrieved": [
+        {
+          "chunk_id": "tasks_language_modeling:load-eli5-dataset:0",
+          "page_id": "tasks_language_modeling",
+          "anchor": "load-eli5-dataset",
+          "score": 10.9104
+        },
+        {
+          "chunk_id": "tasks_language_modeling:preprocess:1",
+          "page_id": "tasks_language_modeling",
+          "anchor": "preprocess",
+          "score": 9.2358
+        },
+        {
+          "chunk_id": "tasks_language_modeling:_intro:0",
+          "page_id": "tasks_language_modeling",
+          "anchor": null,
+          "score": 8.7185
+        },
+        {
+          "chunk_id": "tasks_language_modeling:preprocess:0",
+          "page_id": "tasks_language_modeling",
+          "anchor": "preprocess",
+          "score": 8.6608
+        },
+        {
+          "chunk_id": "tasks_language_modeling:load-eli5-dataset:1",
+          "page_id": "tasks_language_modeling",
+          "anchor": "load-eli5-dataset",
+          "score": 6.0151
+        }
+      ],
+      "latency_s": 7.2,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "The guide flattens the ELI5 dataset before tokenizing because the `text` field is nested within other fields, specifically under the `answers` key. To properly handle the nested structure, the guide uses the `flatten` method provided by the `datasets` library. This ensures that the `text` field is extracted correctly and processed independently of the other fields, allowing for efficient tokenization and subsequent processing steps.",
+      "raw": "The guide flattens the ELI5 dataset before tokenizing because the `text` field is nested within other fields, specifically under the `answers` key. To properly handle the nested structure, the guide uses the `flatten` method provided by the `datasets` library. This ensures that the `text` field is extracted correctly and processed independently of the other fields, allowing for efficient tokenization and subsequent processing steps."
+    },
+    {
+      "qid": "lm-06",
+      "split": "test",
+      "topic": "fine-tuning",
+      "category": "answerable",
+      "expected": "answer",
+      "question": "What does the group_texts function do?",
+      "reference": "Concatenates token sequences, splits them into block_size chunks (128), and copies input_ids into labels.",
+      "gold": "tasks_language_modeling#preprocess",
+      "status": "forced_abstain",
+      "reason": "no_valid_citations",
+      "error": null,
+      "abstained": true,
+      "model_abstained": false,
+      "forced_abstain_attempt": true,
+      "expected_abstain": false,
+      "behavior_ok": false,
+      "over_answer": false,
+      "false_abstain": true,
+      "format_ok": false,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": false,
+      "page_citation_hit": false,
+      "citation_precision": null,
+      "retrieval_hit": true,
+      "retrieval_page_hit": true,
+      "retrieved_top1": "tasks_language_modeling#preprocess",
+      "retrieved": [
+        {
+          "chunk_id": "tasks_language_modeling:preprocess:2",
+          "page_id": "tasks_language_modeling",
+          "anchor": "preprocess",
+          "score": 13.6797
+        },
+        {
+          "chunk_id": "tasks_language_modeling:preprocess:1",
+          "page_id": "tasks_language_modeling",
+          "anchor": "preprocess",
+          "score": 11.5542
+        },
+        {
+          "chunk_id": "training:training-configuration:0",
+          "page_id": "training",
+          "anchor": "training-configuration",
+          "score": 4.4385
+        },
+        {
+          "chunk_id": "quicktour:trainer:0",
+          "page_id": "quicktour",
+          "anchor": "trainer",
+          "score": 3.1297
+        },
+        {
+          "chunk_id": "models:models-and-configurations:0",
+          "page_id": "models",
+          "anchor": "models-and-configurations",
+          "score": 2.7171
+        }
+      ],
+      "latency_s": 1.99,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "The `group_texts` function applies the `group_texts` function over the entire dataset.",
+      "raw": "The `group_texts` function applies the `group_texts` function over the entire dataset."
+    },
+    {
+      "qid": "lm-07",
+      "split": "test",
+      "topic": "fine-tuning",
+      "category": "answerable",
+      "expected": "answer",
+      "question": "Which data collator does the guide use, and with what mlm setting?",
+      "reference": "DataCollatorForLanguageModeling with mlm=False; the EOS token is used for padding.",
+      "gold": "tasks_language_modeling#preprocess",
+      "status": "forced_abstain",
+      "reason": "no_valid_citations",
+      "error": null,
+      "abstained": true,
+      "model_abstained": false,
+      "forced_abstain_attempt": true,
+      "expected_abstain": false,
+      "behavior_ok": false,
+      "over_answer": false,
+      "false_abstain": true,
+      "format_ok": false,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": false,
+      "page_citation_hit": false,
+      "citation_precision": null,
+      "retrieval_hit": true,
+      "retrieval_page_hit": true,
+      "retrieved_top1": "tasks_language_modeling#preprocess",
+      "retrieved": [
+        {
+          "chunk_id": "tasks_language_modeling:preprocess:2",
+          "page_id": "tasks_language_modeling",
+          "anchor": "preprocess",
+          "score": 14.7316
+        },
+        {
+          "chunk_id": "training:tokenization:0",
+          "page_id": "training",
+          "anchor": "tokenization",
+          "score": 12.0834
+        },
+        {
+          "chunk_id": "training:training:0",
+          "page_id": "training",
+          "anchor": "training",
+          "score": 11.3382
+        },
+        {
+          "chunk_id": "tasks_language_modeling:train:0",
+          "page_id": "tasks_language_modeling",
+          "anchor": "train",
+          "score": 9.6094
+        },
+        {
+          "chunk_id": "quicktour:trainer:0",
+          "page_id": "quicktour",
+          "anchor": "trainer",
+          "score": 8.7697
+        }
+      ],
+      "latency_s": 2.03,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "The guide uses the `DataCollatorWithPadding` data collator with `mlm=False`.",
+      "raw": "The guide uses the `DataCollatorWithPadding` data collator with `mlm=False`."
+    },
+    {
+      "qid": "lm-08",
+      "split": "test",
+      "topic": "fine-tuning",
+      "category": "answerable",
+      "expected": "answer",
+      "question": "How does the guide run inference after fine-tuning the causal language model?",
+      "reference": "Use pipeline('text-generation', model=...) or load with AutoModelForCausalLM and call generate with max_new_tokens.",
+      "gold": "tasks_language_modeling#inference",
+      "status": "forced_abstain",
+      "reason": "no_valid_citations",
+      "error": null,
+      "abstained": true,
+      "model_abstained": false,
+      "forced_abstain_attempt": true,
+      "expected_abstain": false,
+      "behavior_ok": false,
+      "over_answer": false,
+      "false_abstain": true,
+      "format_ok": false,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": false,
+      "page_citation_hit": false,
+      "citation_precision": null,
+      "retrieval_hit": false,
+      "retrieval_page_hit": true,
+      "retrieved_top1": "training#None",
+      "retrieved": [
+        {
+          "chunk_id": "training:_intro:0",
+          "page_id": "training",
+          "anchor": null,
+          "score": 9.8941
+        },
+        {
+          "chunk_id": "tasks_language_modeling:_intro:0",
+          "page_id": "tasks_language_modeling",
+          "anchor": null,
+          "score": 8.9227
+        },
+        {
+          "chunk_id": "peft:fully-fine-tuning-specific-layers:0",
+          "page_id": "peft",
+          "anchor": "fully-fine-tuning-specific-layers",
+          "score": 8.8987
+        },
+        {
+          "chunk_id": "training:next-steps:0",
+          "page_id": "training",
+          "anchor": "next-steps",
+          "score": 8.6785
+        },
+        {
+          "chunk_id": "training:loading-a-model:0",
+          "page_id": "training",
+          "anchor": "loading-a-model",
+          "score": 8.111
+        }
+      ],
+      "latency_s": 4.28,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "After fine-tuning the causal language model, the guide provides instructions on running inference. Specifically, it mentions creating a model instance using the fine-tuned model and then using this model to generate text based on input prompts. The guide suggests reading the relevant sections for detailed information on how to achieve this.",
+      "raw": "After fine-tuning the causal language model, the guide provides instructions on running inference. Specifically, it mentions creating a model instance using the fine-tuned model and then using this model to generate text based on input prompts. The guide suggests reading the relevant sections for detailed information on how to achieve this."
+    },
+    {
+      "qid": "peft-01",
+      "split": "test",
+      "topic": "fine-tuning",
+      "category": "answerable",
+      "expected": "answer",
+      "question": "Why do PEFT methods use less memory than full fine-tuning?",
+      "reference": "Only adapter parameters are updated, so the optimizer tracks far fewer gradients and states.",
+      "gold": "peft#",
+      "status": "forced_abstain",
+      "reason": "no_valid_citations",
+      "error": null,
+      "abstained": true,
+      "model_abstained": false,
+      "forced_abstain_attempt": true,
+      "expected_abstain": false,
+      "behavior_ok": false,
+      "over_answer": false,
+      "false_abstain": true,
+      "format_ok": false,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": false,
+      "page_citation_hit": false,
+      "citation_precision": null,
+      "retrieval_hit": true,
+      "retrieval_page_hit": true,
+      "retrieved_top1": "peft#next-steps",
+      "retrieved": [
+        {
+          "chunk_id": "peft:next-steps:0",
+          "page_id": "peft",
+          "anchor": "next-steps",
+          "score": 13.7935
+        },
+        {
+          "chunk_id": "training:_intro:0",
+          "page_id": "training",
+          "anchor": null,
+          "score": 13.6737
+        },
+        {
+          "chunk_id": "peft:_intro:0",
+          "page_id": "peft",
+          "anchor": null,
+          "score": 13.611
+        },
+        {
+          "chunk_id": "peft:managing-multiple-adapters:0",
+          "page_id": "peft",
+          "anchor": "managing-multiple-adapters",
+          "score": 10.5292
+        },
+        {
+          "chunk_id": "peft:add-an-adapter:0",
+          "page_id": "peft",
+          "anchor": "add-an-adapter",
+          "score": 7.6767
+        }
+      ],
+      "latency_s": 2.03,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "Because only adapter parameters are updated, the optimizer tracks far fewer gradients and states, reducing memory usage significantly.",
+      "raw": "Because only adapter parameters are updated, the optimizer tracks far fewer gradients and states, reducing memory usage significantly."
+    },
+    {
+      "qid": "peft-02",
+      "split": "test",
+      "topic": "fine-tuning",
+      "category": "answerable",
+      "expected": "answer",
+      "question": "Which mixin class gives all PreTrainedModel classes adapter support?",
+      "reference": "PeftAdapterMixin.",
+      "gold": "peft#",
+      "status": "forced_abstain",
+      "reason": "no_valid_citations",
+      "error": null,
+      "abstained": true,
+      "model_abstained": false,
+      "forced_abstain_attempt": true,
+      "expected_abstain": false,
+      "behavior_ok": false,
+      "over_answer": false,
+      "false_abstain": true,
+      "format_ok": false,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": false,
+      "page_citation_hit": false,
+      "citation_precision": null,
+      "retrieval_hit": true,
+      "retrieval_page_hit": true,
+      "retrieved_top1": "models#model-classes",
+      "retrieved": [
+        {
+          "chunk_id": "models:model-classes:0",
+          "page_id": "models",
+          "anchor": "model-classes",
+          "score": 13.8104
+        },
+        {
+          "chunk_id": "peft:_intro:0",
+          "page_id": "peft",
+          "anchor": null,
+          "score": 12.1383
+        },
+        {
+          "chunk_id": "quicktour:pretrained-models:0",
+          "page_id": "quicktour",
+          "anchor": "pretrained-models",
+          "score": 11.5902
+        },
+        {
+          "chunk_id": "peft:managing-multiple-adapters:0",
+          "page_id": "peft",
+          "anchor": "managing-multiple-adapters",
+          "score": 9.5153
+        },
+        {
+          "chunk_id": "models:custom-models:0",
+          "page_id": "models",
+          "anchor": "custom-models",
+          "score": 9.3554
+        }
+      ],
+      "latency_s": 2.78,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "The `~integrations.PeftAdapterMixin` gives all `PreTrainedModel` classes adapter support.",
+      "raw": "The `~integrations.PeftAdapterMixin` gives all `PreTrainedModel` classes adapter support."
+    },
+    {
+      "qid": "peft-03",
+      "split": "test",
+      "topic": "fine-tuning",
+      "category": "answerable",
+      "expected": "answer",
+      "question": "How do I attach a LoRA adapter to a model?",
+      "reference": "Create a LoraConfig and call model.add_adapter(config, adapter_name=...).",
+      "gold": "peft#add-an-adapter",
+      "status": "forced_abstain",
+      "reason": "no_valid_citations",
+      "error": null,
+      "abstained": true,
+      "model_abstained": false,
+      "forced_abstain_attempt": true,
+      "expected_abstain": false,
+      "behavior_ok": false,
+      "over_answer": false,
+      "false_abstain": true,
+      "format_ok": false,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": false,
+      "page_citation_hit": false,
+      "citation_precision": null,
+      "retrieval_hit": true,
+      "retrieval_page_hit": true,
+      "retrieved_top1": "peft#hotswapping-adapters",
+      "retrieved": [
+        {
+          "chunk_id": "peft:hotswapping-adapters:0",
+          "page_id": "peft",
+          "anchor": "hotswapping-adapters",
+          "score": 13.6813
+        },
+        {
+          "chunk_id": "peft:distributed-training:0",
+          "page_id": "peft",
+          "anchor": "distributed-training",
+          "score": 13.2913
+        },
+        {
+          "chunk_id": "peft:_intro:0",
+          "page_id": "peft",
+          "anchor": null,
+          "score": 11.5219
+        },
+        {
+          "chunk_id": "peft:torchcompile:0",
+          "page_id": "peft",
+          "anchor": "torchcompile",
+          "score": 10.8359
+        },
+        {
+          "chunk_id": "peft:add-an-adapter:0",
+          "page_id": "peft",
+          "anchor": "add-an-adapter",
+          "score": 9.3044
+        }
+      ],
+      "latency_s": 5.84,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "To attach a LoRA adapter to a model, create a PEFT config, such as `LoraConfig`, and then use the `add_adapter` method from the `PeftAdapterMixin` class. Here's how you can do it:\n\n1. Create a PEFT config, for example, `LoraConfig`.\n2. Attach this config to the model using `add_adapter` with the desired adapter name.",
+      "raw": "To attach a LoRA adapter to a model, create a PEFT config, such as `LoraConfig`, and then use the `add_adapter` method from the `PeftAdapterMixin` class. Here's how you can do it:\n\n1. Create a PEFT config, for example, `LoraConfig`.\n2. Attach this config to the model using `add_adapter` with the desired adapter name."
+    },
+    {
+      "qid": "peft-04",
+      "split": "test",
+      "topic": "fine-tuning",
+      "category": "answerable",
+      "expected": "answer",
+      "question": "How can I fully fine-tune the language model head alongside a LoRA adapter?",
+      "reference": "Set modules_to_save=['lm_head'] in the LoraConfig.",
+      "gold": "peft#fully-fine-tuning-specific-layers",
+      "status": "forced_abstain",
+      "reason": "no_valid_citations",
+      "error": null,
+      "abstained": true,
+      "model_abstained": false,
+      "forced_abstain_attempt": true,
+      "expected_abstain": false,
+      "behavior_ok": false,
+      "over_answer": false,
+      "false_abstain": true,
+      "format_ok": false,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": false,
+      "page_citation_hit": false,
+      "citation_precision": null,
+      "retrieval_hit": true,
+      "retrieval_page_hit": true,
+      "retrieved_top1": "peft#fully-fine-tuning-specific-layers",
+      "retrieved": [
+        {
+          "chunk_id": "peft:fully-fine-tuning-specific-layers:0",
+          "page_id": "peft",
+          "anchor": "fully-fine-tuning-specific-layers",
+          "score": 27.0373
+        },
+        {
+          "chunk_id": "peft:_intro:0",
+          "page_id": "peft",
+          "anchor": null,
+          "score": 16.3913
+        },
+        {
+          "chunk_id": "peft:hotswapping-adapters:0",
+          "page_id": "peft",
+          "anchor": "hotswapping-adapters",
+          "score": 15.0965
+        },
+        {
+          "chunk_id": "peft:distributed-training:0",
+          "page_id": "peft",
+          "anchor": "distributed-training",
+          "score": 14.7066
+        },
+        {
+          "chunk_id": "peft:torchcompile:0",
+          "page_id": "peft",
+          "anchor": "torchcompile",
+          "score": 11.9565
+        }
+      ],
+      "latency_s": 3.93,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "To fully fine-tune the language model head alongside a LoRA adapter, specify it in `modules_to_save` as follows:\n\n```py\nlora_config = LoraConfig(\n    modules_to_save=[\"lm_head\"],\n    ...\n)\nmodel.add_adapter(lora_config)\n```",
+      "raw": "To fully fine-tune the language model head alongside a LoRA adapter, specify it in `modules_to_save` as follows:\n\n```py\nlora_config = LoraConfig(\n    modules_to_save=[\"lm_head\"],\n    ...\n)\nmodel.add_adapter(lora_config)\n```"
+    },
+    {
+      "qid": "peft-05",
+      "split": "test",
+      "topic": "fine-tuning",
+      "category": "answerable",
+      "expected": "answer",
+      "question": "Do I need to specify target_modules for Llama or Gemma models?",
+      "reference": "No; PEFT provides defaults such as q_proj and v_proj for common architectures. Specify target_modules for other layers or architectures without defaults.",
+      "gold": "peft#choosing-which-layers-to-adapt",
+      "status": "forced_abstain",
+      "reason": "no_valid_citations",
+      "error": null,
+      "abstained": true,
+      "model_abstained": false,
+      "forced_abstain_attempt": true,
+      "expected_abstain": false,
+      "behavior_ok": false,
+      "over_answer": false,
+      "false_abstain": true,
+      "format_ok": false,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": false,
+      "page_citation_hit": false,
+      "citation_precision": null,
+      "retrieval_hit": true,
+      "retrieval_page_hit": true,
+      "retrieved_top1": "peft#choosing-which-layers-to-adapt",
+      "retrieved": [
+        {
+          "chunk_id": "peft:choosing-which-layers-to-adapt:0",
+          "page_id": "peft",
+          "anchor": "choosing-which-layers-to-adapt",
+          "score": 24.785
+        },
+        {
+          "chunk_id": "peft:fully-fine-tuning-specific-layers:0",
+          "page_id": "peft",
+          "anchor": "fully-fine-tuning-specific-layers",
+          "score": 12.5434
+        },
+        {
+          "chunk_id": "models:model-classes:0",
+          "page_id": "models",
+          "anchor": "model-classes",
+          "score": 9.293
+        },
+        {
+          "chunk_id": "models:disk-offloading:0",
+          "page_id": "models",
+          "anchor": "disk-offloading",
+          "score": 7.0903
+        },
+        {
+          "chunk_id": "peft:torchcompile:0",
+          "page_id": "peft",
+          "anchor": "torchcompile",
+          "score": 6.223
+        }
+      ],
+      "latency_s": 2.88,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "No, you do not need to specify `target_modules` for Llama or Gemma models. They come with predefined default targets.",
+      "raw": "No, you do not need to specify `target_modules` for Llama or Gemma models. They come with predefined default targets."
+    },
+    {
+      "qid": "peft-06",
+      "split": "test",
+      "topic": "fine-tuning",
+      "category": "answerable",
+      "expected": "answer",
+      "question": "What do Trainer checkpoints contain when training a PEFT model?",
+      "reference": "Only adapter_model.safetensors and adapter_config.json; the base model is not included.",
+      "gold": "peft#training",
+      "status": "forced_abstain",
+      "reason": "no_valid_citations",
+      "error": null,
+      "abstained": true,
+      "model_abstained": false,
+      "forced_abstain_attempt": true,
+      "expected_abstain": false,
+      "behavior_ok": false,
+      "over_answer": false,
+      "false_abstain": true,
+      "format_ok": false,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": false,
+      "page_citation_hit": false,
+      "citation_precision": null,
+      "retrieval_hit": true,
+      "retrieval_page_hit": true,
+      "retrieved_top1": "peft#training",
+      "retrieved": [
+        {
+          "chunk_id": "peft:training:0",
+          "page_id": "peft",
+          "anchor": "training",
+          "score": 14.3345
+        },
+        {
+          "chunk_id": "peft:distributed-training:0",
+          "page_id": "peft",
+          "anchor": "distributed-training",
+          "score": 13.2178
+        },
+        {
+          "chunk_id": "peft:resuming-from-a-checkpoint:0",
+          "page_id": "peft",
+          "anchor": "resuming-from-a-checkpoint",
+          "score": 8.9282
+        },
+        {
+          "chunk_id": "tasks_language_modeling:train:0",
+          "page_id": "tasks_language_modeling",
+          "anchor": "train",
+          "score": 6.6361
+        },
+        {
+          "chunk_id": "training:training:0",
+          "page_id": "training",
+          "anchor": "training",
+          "score": 6.358
+        }
+      ],
+      "latency_s": 2.98,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "Trainer checkpoints contain only the adapter weights (`adapter_model.safetensors`) and configuration (`adapter_config.json`), keeping checkpoints small. The base model isn't included.",
+      "raw": "Trainer checkpoints contain only the adapter weights (`adapter_model.safetensors`) and configuration (`adapter_config.json`), keeping checkpoints small. The base model isn't included."
+    },
+    {
+      "qid": "peft-07",
+      "split": "test",
+      "topic": "fine-tuning",
+      "category": "answerable",
+      "expected": "answer",
+      "question": "Does Trainer detect adapter checkpoints automatically when resuming?",
+      "reference": "Yes; Trainer scans for adapter checkpoints and reloads each adapter with its trainable state.",
+      "gold": "peft#resuming-from-a-checkpoint",
+      "status": "forced_abstain",
+      "reason": "no_valid_citations",
+      "error": null,
+      "abstained": true,
+      "model_abstained": false,
+      "forced_abstain_attempt": true,
+      "expected_abstain": false,
+      "behavior_ok": false,
+      "over_answer": false,
+      "false_abstain": true,
+      "format_ok": false,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": false,
+      "page_citation_hit": false,
+      "citation_precision": null,
+      "retrieval_hit": true,
+      "retrieval_page_hit": true,
+      "retrieved_top1": "peft#resuming-from-a-checkpoint",
+      "retrieved": [
+        {
+          "chunk_id": "peft:resuming-from-a-checkpoint:0",
+          "page_id": "peft",
+          "anchor": "resuming-from-a-checkpoint",
+          "score": 21.287
+        },
+        {
+          "chunk_id": "peft:training:0",
+          "page_id": "peft",
+          "anchor": "training",
+          "score": 11.3279
+        },
+        {
+          "chunk_id": "peft:distributed-training:0",
+          "page_id": "peft",
+          "anchor": "distributed-training",
+          "score": 8.9895
+        },
+        {
+          "chunk_id": "peft:torchcompile:0",
+          "page_id": "peft",
+          "anchor": "torchcompile",
+          "score": 8.1011
+        },
+        {
+          "chunk_id": "quicktour:pipeline:0",
+          "page_id": "quicktour",
+          "anchor": "pipeline",
+          "score": 7.6319
+        }
+      ],
+      "latency_s": 1.26,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "Yes, Trainer automatically detects adapter checkpoints when resuming.",
+      "raw": "Yes, Trainer automatically detects adapter checkpoints when resuming."
+    },
+    {
+      "qid": "peft-08",
+      "split": "test",
+      "topic": "fine-tuning",
+      "category": "answerable",
+      "expected": "answer",
+      "question": "What must a repository or directory contain for from_pretrained to load an adapter automatically?",
+      "reference": "adapter_config.json and the adapter weights; base_model_name_or_path points to the correct base model.",
+      "gold": "peft#loading-an-adapter",
+      "status": "forced_abstain",
+      "reason": "no_valid_citations",
+      "error": null,
+      "abstained": true,
+      "model_abstained": false,
+      "forced_abstain_attempt": true,
+      "expected_abstain": false,
+      "behavior_ok": false,
+      "over_answer": false,
+      "false_abstain": true,
+      "format_ok": false,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": false,
+      "page_citation_hit": false,
+      "citation_precision": null,
+      "retrieval_hit": true,
+      "retrieval_page_hit": true,
+      "retrieved_top1": "peft#loading-an-adapter",
+      "retrieved": [
+        {
+          "chunk_id": "peft:loading-an-adapter:0",
+          "page_id": "peft",
+          "anchor": "loading-an-adapter",
+          "score": 19.7733
+        },
+        {
+          "chunk_id": "generation_strategies:creating-a-custom-generation-method:1",
+          "page_id": "generation_strategies",
+          "anchor": "creating-a-custom-generation-method",
+          "score": 12.2221
+        },
+        {
+          "chunk_id": "peft:resuming-from-a-checkpoint:0",
+          "page_id": "peft",
+          "anchor": "resuming-from-a-checkpoint",
+          "score": 10.4544
+        },
+        {
+          "chunk_id": "peft:training:0",
+          "page_id": "peft",
+          "anchor": "training",
+          "score": 8.5672
+        },
+        {
+          "chunk_id": "peft:hotswapping-adapters:0",
+          "page_id": "peft",
+          "anchor": "hotswapping-adapters",
+          "score": 7.0099
+        }
+      ],
+      "latency_s": 2.22,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "A repository or directory must contain an `adapter_config.json` file and the adapter weights for from_pretrained to load an adapter automatically.",
+      "raw": "A repository or directory must contain an `adapter_config.json` file and the adapter weights for from_pretrained to load an adapter automatically."
+    },
+    {
+      "qid": "peft-09",
+      "split": "test",
+      "topic": "fine-tuning",
+      "category": "answerable",
+      "expected": "answer",
+      "question": "How do I switch to a different adapter when a model has several attached?",
+      "reference": "Call model.set_adapter(name); the other adapters are disabled but remain in memory.",
+      "gold": "peft#managing-multiple-adapters",
+      "status": "forced_abstain",
+      "reason": "no_valid_citations",
+      "error": null,
+      "abstained": true,
+      "model_abstained": false,
+      "forced_abstain_attempt": true,
+      "expected_abstain": false,
+      "behavior_ok": false,
+      "over_answer": false,
+      "false_abstain": true,
+      "format_ok": false,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": false,
+      "page_citation_hit": false,
+      "citation_precision": null,
+      "retrieval_hit": true,
+      "retrieval_page_hit": true,
+      "retrieved_top1": "peft#managing-multiple-adapters",
+      "retrieved": [
+        {
+          "chunk_id": "peft:managing-multiple-adapters:0",
+          "page_id": "peft",
+          "anchor": "managing-multiple-adapters",
+          "score": 10.8151
+        },
+        {
+          "chunk_id": "peft:training:0",
+          "page_id": "peft",
+          "anchor": "training",
+          "score": 7.9772
+        },
+        {
+          "chunk_id": "models:model-classes:0",
+          "page_id": "models",
+          "anchor": "model-classes",
+          "score": 7.114
+        },
+        {
+          "chunk_id": "peft:_intro:0",
+          "page_id": "peft",
+          "anchor": null,
+          "score": 6.3735
+        },
+        {
+          "chunk_id": "peft:choosing-which-layers-to-adapt:0",
+          "page_id": "peft",
+          "anchor": "choosing-which-layers-to-adapt",
+          "score": 5.4708
+        }
+      ],
+      "latency_s": 14.83,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "When a model has several attached adapters, you can switch between them using the following steps:\n\n1. First, identify the current adapter(s) being used. You can check this by calling the `active_adapters()` method on the model object. For example:\n   ```python\n   model.active_adapters() # returns [\"adapter_1\"]\n   ```\n\n2. Next, disable all adapters except the one you want to switch to. To do this, set each adapter to `None` using the `set_adapter()` method. For instance, if you want to switch to `\"adapter_2\"`, you would first disable all adapters:\n   ```python\n   model.disable_adapters()\n   ```\n\n3. Then, enable just the desired adapter:\n   ```python\n   model.set_adapter(adapter_name=\"adapter_2\")\n   ```\n\nBy following these steps, you effectively switch the model's focus to the new adapter while leaving the rest of the adapters inactive. This allows you to dynamically adjust the model’s capabilities based on the context or requirements during runtime.",
+      "raw": "When a model has several attached adapters, you can switch between them using the following steps:\n\n1. First, identify the current adapter(s) being used. You can check this by calling the `active_adapters()` method on the model object. For example:\n   ```python\n   model.active_adapters() # returns [\"adapter_1\"]\n   ```\n\n2. Next, disable all adapters except the one you want to switch to. To do this, set each adapter to `None` using the `set_adapter()` method. For instance, if you want to switch to `\"adapter_2\"`, you would first disable all adapters:\n   ```python\n   model.disable_adapters()\n   ```\n\n3. Then, enable just the desired adapter:\n   ```python\n   model.set_adapter(adapter_name=\"adapter_2\")\n   ```\n\nBy following these steps, you effectively switch the model's focus to the new adapter while leaving the rest of the adapters inactive. This allows you to dynamically adjust the model’s capabilities based on the context or requirements during runtime."
+    },
+    {
+      "qid": "peft-10",
+      "split": "test",
+      "topic": "fine-tuning",
+      "category": "answerable",
+      "expected": "answer",
+      "question": "What is adapter hotswapping and which adapter type does it support?",
+      "reference": "Replacing adapter weights in place to avoid new memory allocation and torch.compile recompilation; only LoRA is supported.",
+      "gold": "peft#hotswapping-adapters",
+      "status": "forced_abstain",
+      "reason": "no_valid_citations",
+      "error": null,
+      "abstained": true,
+      "model_abstained": false,
+      "forced_abstain_attempt": true,
+      "expected_abstain": false,
+      "behavior_ok": false,
+      "over_answer": false,
+      "false_abstain": true,
+      "format_ok": false,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": false,
+      "page_citation_hit": false,
+      "citation_precision": null,
+      "retrieval_hit": true,
+      "retrieval_page_hit": true,
+      "retrieved_top1": "peft#hotswapping-adapters",
+      "retrieved": [
+        {
+          "chunk_id": "peft:hotswapping-adapters:0",
+          "page_id": "peft",
+          "anchor": "hotswapping-adapters",
+          "score": 9.1323
+        },
+        {
+          "chunk_id": "peft:torchcompile:0",
+          "page_id": "peft",
+          "anchor": "torchcompile",
+          "score": 8.1011
+        },
+        {
+          "chunk_id": "peft:next-steps:0",
+          "page_id": "peft",
+          "anchor": "next-steps",
+          "score": 7.8785
+        },
+        {
+          "chunk_id": "peft:add-an-adapter:0",
+          "page_id": "peft",
+          "anchor": "add-an-adapter",
+          "score": 7.8446
+        },
+        {
+          "chunk_id": "peft:managing-multiple-adapters:0",
+          "page_id": "peft",
+          "anchor": "managing-multiple-adapters",
+          "score": 4.2314
+        }
+      ],
+      "latency_s": 2.25,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "Hotswapping supports LoRA adapters. It allows replacing adapter weights in-place without triggering recompilation. Only LoRA adapters are supported.",
+      "raw": "Hotswapping supports LoRA adapters. It allows replacing adapter weights in-place without triggering recompilation. Only LoRA adapters are supported."
+    },
+    {
+      "qid": "pt-01",
+      "split": "test",
+      "topic": "out-of-scope",
+      "category": "parametric",
+      "expected": "abstain",
+      "question": "Who authored the paper 'Attention Is All You Need'?",
+      "reference": "Vaswani et al. World knowledge, absent from the corpus.",
+      "gold": "",
+      "status": "abstained",
+      "reason": null,
+      "error": null,
+      "abstained": true,
+      "model_abstained": true,
+      "forced_abstain_attempt": false,
+      "expected_abstain": true,
+      "behavior_ok": true,
+      "over_answer": false,
+      "false_abstain": false,
+      "format_ok": true,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": null,
+      "page_citation_hit": null,
+      "citation_precision": null,
+      "retrieval_hit": false,
+      "retrieval_page_hit": false,
+      "retrieved_top1": "generation_strategies#reusing-generates-input-preparation",
+      "retrieved": [
+        {
+          "chunk_id": "generation_strategies:reusing-generates-input-preparation:0",
+          "page_id": "generation_strategies",
+          "anchor": "reusing-generates-input-preparation",
+          "score": 5.5046
+        },
+        {
+          "chunk_id": "peft:managing-multiple-adapters:0",
+          "page_id": "peft",
+          "anchor": "managing-multiple-adapters",
+          "score": 4.1984
+        },
+        {
+          "chunk_id": "peft:fully-fine-tuning-specific-layers:0",
+          "page_id": "peft",
+          "anchor": "fully-fine-tuning-specific-layers",
+          "score": 4.09
+        },
+        {
+          "chunk_id": "training:tokenization:0",
+          "page_id": "training",
+          "anchor": "tokenization",
+          "score": 3.5433
+        },
+        {
+          "chunk_id": "generation_strategies:creating-a-custom-generation-method:0",
+          "page_id": "generation_strategies",
+          "anchor": "creating-a-custom-generation-method",
+          "score": 3.1952
+        }
+      ],
+      "latency_s": 1.2,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "Insufficient evidence in the retrieved documentation.",
+      "raw": "Insufficient evidence in the retrieved documentation."
+    },
+    {
+      "qid": "pt-02",
+      "split": "test",
+      "topic": "out-of-scope",
+      "category": "parametric",
+      "expected": "abstain",
+      "question": "In what year was the original Transformer paper published?",
+      "reference": "2017. World knowledge, absent from the corpus.",
+      "gold": "",
+      "status": "abstained",
+      "reason": null,
+      "error": null,
+      "abstained": true,
+      "model_abstained": true,
+      "forced_abstain_attempt": false,
+      "expected_abstain": true,
+      "behavior_ok": true,
+      "over_answer": false,
+      "false_abstain": false,
+      "format_ok": true,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": null,
+      "page_citation_hit": null,
+      "citation_precision": null,
+      "retrieval_hit": false,
+      "retrieval_page_hit": false,
+      "retrieved_top1": "quicktour#None",
+      "retrieved": [
+        {
+          "chunk_id": "quicktour:_intro:0",
+          "page_id": "quicktour",
+          "anchor": null,
+          "score": 5.6218
+        },
+        {
+          "chunk_id": "generation_strategies:creating-a-custom-generation-method:2",
+          "page_id": "generation_strategies",
+          "anchor": "creating-a-custom-generation-method",
+          "score": 3.1891
+        },
+        {
+          "chunk_id": "generation_strategies:creating-a-custom-generation-method:1",
+          "page_id": "generation_strategies",
+          "anchor": "creating-a-custom-generation-method",
+          "score": 3.0339
+        },
+        {
+          "chunk_id": "generation_strategies:creating-a-custom-generation-method:3",
+          "page_id": "generation_strategies",
+          "anchor": "creating-a-custom-generation-method",
+          "score": 2.2956
+        },
+        {
+          "chunk_id": "generation_strategies:custom-generation-methods:1",
+          "page_id": "generation_strategies",
+          "anchor": "custom-generation-methods",
+          "score": 2.2836
+        }
+      ],
+      "latency_s": 1.48,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "Insufficient evidence in the retrieved documentation.",
+      "raw": "Insufficient evidence in the retrieved documentation."
+    },
+    {
+      "qid": "pt-03",
+      "split": "test",
+      "topic": "out-of-scope",
+      "category": "parametric",
+      "expected": "abstain",
+      "question": "What does BERT stand for?",
+      "reference": "Bidirectional Encoder Representations from Transformers. World knowledge, absent from the corpus.",
+      "gold": "",
+      "status": "forced_abstain",
+      "reason": "unverified_url_in_answer",
+      "error": null,
+      "abstained": true,
+      "model_abstained": false,
+      "forced_abstain_attempt": true,
+      "expected_abstain": true,
+      "behavior_ok": false,
+      "over_answer": false,
+      "false_abstain": false,
+      "format_ok": false,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [
+        "https://huggingface.co/google-bert/bert-base-uncased"
+      ],
+      "citation_hit": null,
+      "page_citation_hit": null,
+      "citation_precision": null,
+      "retrieval_hit": false,
+      "retrieval_page_hit": false,
+      "retrieved_top1": "models#models-and-configurations",
+      "retrieved": [
+        {
+          "chunk_id": "models:models-and-configurations:0",
+          "page_id": "models",
+          "anchor": "models-and-configurations",
+          "score": 7.9662
+        }
+      ],
+      "latency_s": 5.56,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "An *architecture* refers to the model's skeleton and a *checkpoint* refers to the model's weights for a given architecture. For example, [BERT](./model_doc/bert) is an architecture while [google-bert/bert-base-uncased](https://huggingface.co/google-bert/bert-base-uncased) is a checkpoint.",
+      "raw": "An *architecture* refers to the model's skeleton and a *checkpoint* refers to the model's weights for a given architecture. For example, [BERT](./model_doc/bert) is an architecture while [google-bert/bert-base-uncased](https://huggingface.co/google-bert/bert-base-uncased) is a checkpoint."
+    },
+    {
+      "qid": "pt-04",
+      "split": "test",
+      "topic": "out-of-scope",
+      "category": "parametric",
+      "expected": "abstain",
+      "question": "How many parameters does GPT-2 XL have?",
+      "reference": "About 1.5 billion. World knowledge, absent from the corpus.",
+      "gold": "",
+      "status": "abstained",
+      "reason": null,
+      "error": null,
+      "abstained": true,
+      "model_abstained": true,
+      "forced_abstain_attempt": false,
+      "expected_abstain": true,
+      "behavior_ok": true,
+      "over_answer": false,
+      "false_abstain": false,
+      "format_ok": true,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": null,
+      "page_citation_hit": null,
+      "citation_precision": null,
+      "retrieval_hit": false,
+      "retrieval_page_hit": false,
+      "retrieved_top1": "tasks_language_modeling#None",
+      "retrieved": [
+        {
+          "chunk_id": "tasks_language_modeling:_intro:0",
+          "page_id": "tasks_language_modeling",
+          "anchor": null,
+          "score": 5.2039
+        },
+        {
+          "chunk_id": "llm_tutorial:generation-configuration:0",
+          "page_id": "llm_tutorial",
+          "anchor": "generation-configuration",
+          "score": 4.1834
+        },
+        {
+          "chunk_id": "quicktour:trainer:0",
+          "page_id": "quicktour",
+          "anchor": "trainer",
+          "score": 3.7969
+        },
+        {
+          "chunk_id": "models:_intro:0",
+          "page_id": "models",
+          "anchor": null,
+          "score": 3.2252
+        },
+        {
+          "chunk_id": "models:model-classes:0",
+          "page_id": "models",
+          "anchor": "model-classes",
+          "score": 3.1716
+        }
+      ],
+      "latency_s": 1.47,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "Insufficient evidence in the retrieved documentation.",
+      "raw": "Insufficient evidence in the retrieved documentation."
+    },
+    {
+      "qid": "pt-05",
+      "split": "test",
+      "topic": "out-of-scope",
+      "category": "parametric",
+      "expected": "abstain",
+      "question": "What does LoRA stand for?",
+      "reference": "Low-Rank Adaptation. World knowledge, absent from the corpus.",
+      "gold": "",
+      "status": "forced_abstain",
+      "reason": "no_valid_citations",
+      "error": null,
+      "abstained": true,
+      "model_abstained": false,
+      "forced_abstain_attempt": true,
+      "expected_abstain": true,
+      "behavior_ok": false,
+      "over_answer": false,
+      "false_abstain": false,
+      "format_ok": false,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": null,
+      "page_citation_hit": null,
+      "citation_precision": null,
+      "retrieval_hit": false,
+      "retrieval_page_hit": false,
+      "retrieved_top1": "peft#distributed-training",
+      "retrieved": [
+        {
+          "chunk_id": "peft:distributed-training:0",
+          "page_id": "peft",
+          "anchor": "distributed-training",
+          "score": 9.5613
+        },
+        {
+          "chunk_id": "peft:hotswapping-adapters:0",
+          "page_id": "peft",
+          "anchor": "hotswapping-adapters",
+          "score": 8.9253
+        },
+        {
+          "chunk_id": "peft:_intro:0",
+          "page_id": "peft",
+          "anchor": null,
+          "score": 8.3716
+        },
+        {
+          "chunk_id": "peft:torchcompile:0",
+          "page_id": "peft",
+          "anchor": "torchcompile",
+          "score": 6.3514
+        }
+      ],
+      "latency_s": 0.89,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "Adaptive Low-Rank Approximation.",
+      "raw": "Adaptive Low-Rank Approximation."
+    },
+    {
+      "qid": "un-01",
+      "split": "test",
+      "topic": "out-of-scope",
+      "category": "unanswerable",
+      "expected": "abstain",
+      "question": "How do I configure DeepSpeed ZeRO-3 with Trainer?",
+      "reference": "Not covered by the selected pages: DeepSpeed configuration is absent.",
+      "gold": "",
+      "status": "forced_abstain",
+      "reason": "no_valid_citations",
+      "error": null,
+      "abstained": true,
+      "model_abstained": false,
+      "forced_abstain_attempt": true,
+      "expected_abstain": true,
+      "behavior_ok": false,
+      "over_answer": false,
+      "false_abstain": false,
+      "format_ok": false,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": null,
+      "page_citation_hit": null,
+      "citation_precision": null,
+      "retrieval_hit": false,
+      "retrieval_page_hit": false,
+      "retrieved_top1": "peft#distributed-training",
+      "retrieved": [
+        {
+          "chunk_id": "peft:distributed-training:0",
+          "page_id": "peft",
+          "anchor": "distributed-training",
+          "score": 13.7235
+        },
+        {
+          "chunk_id": "training:_intro:0",
+          "page_id": "training",
+          "anchor": null,
+          "score": 6.2006
+        },
+        {
+          "chunk_id": "peft:training:0",
+          "page_id": "peft",
+          "anchor": "training",
+          "score": 5.3636
+        },
+        {
+          "chunk_id": "quicktour:next-steps:0",
+          "page_id": "quicktour",
+          "anchor": "next-steps",
+          "score": 5.3233
+        },
+        {
+          "chunk_id": "tasks_language_modeling:train:0",
+          "page_id": "tasks_language_modeling",
+          "anchor": "train",
+          "score": 4.6313
+        }
+      ],
+      "latency_s": 6.55,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "ZeRO-3 works seamlessly with Trainer, but there are some adjustments needed. Specifically, you should pass `exclude_frozen_parameters=True` when saving checkpoints with a PEFT model. This ensures that only the trainable adapter parameters are saved, reducing checkpoint size and saving time during the training process. Additionally, for QLoRA (quantized base model + LoRA), you might need to adjust the mixed precision policy to match the quantization storage dtype.",
+      "raw": "ZeRO-3 works seamlessly with Trainer, but there are some adjustments needed. Specifically, you should pass `exclude_frozen_parameters=True` when saving checkpoints with a PEFT model. This ensures that only the trainable adapter parameters are saved, reducing checkpoint size and saving time during the training process. Additionally, for QLoRA (quantized base model + LoRA), you might need to adjust the mixed precision policy to match the quantization storage dtype."
+    },
+    {
+      "qid": "un-02",
+      "split": "test",
+      "topic": "out-of-scope",
+      "category": "unanswerable",
+      "expected": "abstain",
+      "question": "How do I serve a model with vLLM?",
+      "reference": "Not covered by the selected pages: vLLM is absent.",
+      "gold": "",
+      "status": "forced_abstain",
+      "reason": "no_valid_citations",
+      "error": null,
+      "abstained": true,
+      "model_abstained": false,
+      "forced_abstain_attempt": true,
+      "expected_abstain": true,
+      "behavior_ok": false,
+      "over_answer": false,
+      "false_abstain": false,
+      "format_ok": false,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [
+        {
+          "action": "removed_out_of_range_citation",
+          "n": 0
+        }
+      ],
+      "unverified_urls": [],
+      "citation_hit": null,
+      "page_citation_hit": null,
+      "citation_precision": null,
+      "retrieval_hit": false,
+      "retrieval_page_hit": false,
+      "retrieved_top1": "llm_tutorial#None",
+      "retrieved": [
+        {
+          "chunk_id": "llm_tutorial:_intro:0",
+          "page_id": "llm_tutorial",
+          "anchor": null,
+          "score": 9.8683
+        },
+        {
+          "chunk_id": "peft:choosing-which-layers-to-adapt:0",
+          "page_id": "peft",
+          "anchor": "choosing-which-layers-to-adapt",
+          "score": 5.5298
+        },
+        {
+          "chunk_id": "llm_tutorial:default-generate:0",
+          "page_id": "llm_tutorial",
+          "anchor": "default-generate",
+          "score": 4.4282
+        },
+        {
+          "chunk_id": "peft:hotswapping-adapters:0",
+          "page_id": "peft",
+          "anchor": "hotswapping-adapters",
+          "score": 4.3959
+        },
+        {
+          "chunk_id": "models:model-classes:0",
+          "page_id": "models",
+          "anchor": "model-classes",
+          "score": 0.5588
+        }
+      ],
+      "latency_s": 15.96,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "First, ensure that the necessary libraries are installed. Install `bitsandbytes` if needed:\n\n```bash\n!pip install -U transformers bitsandbytes\n```\n\nNext, prepare your model and tokenizer. Here’s how you might do it:\n\n```python\nfrom transformers import AutoModelForCausalLM, AutoTokenizer\n\n# Load your model and tokenizer\nmodel = AutoModelForCausalLM.from_pretrained(\"your_model_checkpoint\")\ntokenizer = AutoTokenizer.from_pretrained(\"your_tokenizer_checkpoint\")\n\n# Prepare your input data\ninput_data = [\"Your input here\"]\ninputs = tokenizer(input_data, return_tensors=\"pt\").to(model.device)\n\n# Generate output\noutputs = model.generate(inputs[\"input_ids\"], max_length=100, num_beams=4, early_stopping=True)\n\n# Decode and print the results\ndecoded_output = tokenizer.decode(outputs, skip_special_tokens=True)\nprint(decoded_output)\n```\n\nThis code snippet demonstrates how to load a model and tokenizer, preprocess the input, run inference, and decode the output. Adjust the model and tokenizer paths according to your actual setup.",
+      "raw": "First, ensure that the necessary libraries are installed. Install `bitsandbytes` if needed:\n\n```bash\n!pip install -U transformers bitsandbytes\n```\n\nNext, prepare your model and tokenizer. Here’s how you might do it:\n\n```python\nfrom transformers import AutoModelForCausalLM, AutoTokenizer\n\n# Load your model and tokenizer\nmodel = AutoModelForCausalLM.from_pretrained(\"your_model_checkpoint\")\ntokenizer = AutoTokenizer.from_pretrained(\"your_tokenizer_checkpoint\")\n\n# Prepare your input data\ninput_data = [\"Your input here\"]\ninputs = tokenizer(input_data, return_tensors=\"pt\").to(model.device)\n\n# Generate output\noutputs = model.generate(inputs[\"input_ids\"], max_length=100, num_beams=4, early_stopping=True)\n\n# Decode and print the results\ndecoded_output = tokenizer.decode(outputs[0], skip_special_tokens=True)\nprint(decoded_output)\n```\n\nThis code snippet demonstrates how to load a model and tokenizer, preprocess the input, run inference, and decode the output. Adjust the model and tokenizer paths according to your actual setup."
+    },
+    {
+      "qid": "un-03",
+      "split": "test",
+      "topic": "out-of-scope",
+      "category": "unanswerable",
+      "expected": "abstain",
+      "question": "How do I train a new tokenizer from scratch?",
+      "reference": "Not covered by the selected pages: tokenizer training is absent.",
+      "gold": "",
+      "status": "forced_abstain",
+      "reason": "no_valid_citations",
+      "error": null,
+      "abstained": true,
+      "model_abstained": false,
+      "forced_abstain_attempt": true,
+      "expected_abstain": true,
+      "behavior_ok": false,
+      "over_answer": false,
+      "false_abstain": false,
+      "format_ok": false,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": null,
+      "page_citation_hit": null,
+      "citation_precision": null,
+      "retrieval_hit": false,
+      "retrieval_page_hit": false,
+      "retrieved_top1": "training#training",
+      "retrieved": [
+        {
+          "chunk_id": "training:training:0",
+          "page_id": "training",
+          "anchor": "training",
+          "score": 5.1899
+        },
+        {
+          "chunk_id": "quicktour:trainer:1",
+          "page_id": "quicktour",
+          "anchor": "trainer",
+          "score": 5.0152
+        },
+        {
+          "chunk_id": "training:tokenization:0",
+          "page_id": "training",
+          "anchor": "tokenization",
+          "score": 4.5266
+        },
+        {
+          "chunk_id": "quicktour:trainer:0",
+          "page_id": "quicktour",
+          "anchor": "trainer",
+          "score": 4.2615
+        },
+        {
+          "chunk_id": "models:model-data-type:0",
+          "page_id": "models",
+          "anchor": "model-data-type",
+          "score": 4.2317
+        }
+      ],
+      "latency_s": 19.52,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "To train a new tokenizer from scratch, follow these steps:\n\n1. Load a dataset containing the text you want to tokenize.\n2. Define how you want to tokenize the text using the `tokenizer.tokenize()` method.\n3. Create a custom tokenizer class that inherits from `transformers.PreTrainedTokenizer`.\n4. Override the necessary methods such as `__init__`, `encode`, `decode`, etc., to match your desired tokenization logic.\n5. Instantiate the custom tokenizer class with the appropriate configuration.\n6. Train the tokenizer using the dataset and the custom tokenizer class.\n\nHere’s an example of how you might implement this:\n\n```python\nclass CustomTokenizer(transformers.PreTrainedTokenizer):\n    def __init__(self, **kwargs):\n        super().__init__(**kwargs)\n\n    def encode(self, text):\n        # Your custom encoding logic here\n        return self.tokenizer.encode(text)\n\n    def decode(self, encoded_text):\n        # Your custom decoding logic here\n        return self.tokenizer.decode(encoded_text)\n\n# Example usage\ncustom_tokenizer = CustomTokenizer(vocab_file='path/to/vocab.txt', merges_file='path/to/merges.txt')\nencoded_text = custom_tokenizer.encode('Hello world!')\ndecoded_text = custom_tokenizer.decode(encoded_text)\nprint(decoded_text)  # Output should be 'Hello world!'\n```\n\nThis way, you can adapt the tokenizer to suit your specific needs without relying on existing pretrained models.",
+      "raw": "To train a new tokenizer from scratch, follow these steps:\n\n1. Load a dataset containing the text you want to tokenize.\n2. Define how you want to tokenize the text using the `tokenizer.tokenize()` method.\n3. Create a custom tokenizer class that inherits from `transformers.PreTrainedTokenizer`.\n4. Override the necessary methods such as `__init__`, `encode`, `decode`, etc., to match your desired tokenization logic.\n5. Instantiate the custom tokenizer class with the appropriate configuration.\n6. Train the tokenizer using the dataset and the custom tokenizer class.\n\nHere’s an example of how you might implement this:\n\n```python\nclass CustomTokenizer(transformers.PreTrainedTokenizer):\n    def __init__(self, **kwargs):\n        super().__init__(**kwargs)\n\n    def encode(self, text):\n        # Your custom encoding logic here\n        return self.tokenizer.encode(text)\n\n    def decode(self, encoded_text):\n        # Your custom decoding logic here\n        return self.tokenizer.decode(encoded_text)\n\n# Example usage\ncustom_tokenizer = CustomTokenizer(vocab_file='path/to/vocab.txt', merges_file='path/to/merges.txt')\nencoded_text = custom_tokenizer.encode('Hello world!')\ndecoded_text = custom_tokenizer.decode(encoded_text)\nprint(decoded_text)  # Output should be 'Hello world!'\n```\n\nThis way, you can adapt the tokenizer to suit your specific needs without relying on existing pretrained models."
+    },
+    {
+      "qid": "un-04",
+      "split": "test",
+      "topic": "out-of-scope",
+      "category": "unanswerable",
+      "expected": "abstain",
+      "question": "How do I quantize a model with GPTQ?",
+      "reference": "Not covered by the selected pages: GPTQ is absent.",
+      "gold": "",
+      "status": "forced_abstain",
+      "reason": "no_valid_citations",
+      "error": null,
+      "abstained": true,
+      "model_abstained": false,
+      "forced_abstain_attempt": true,
+      "expected_abstain": true,
+      "behavior_ok": false,
+      "over_answer": false,
+      "false_abstain": false,
+      "format_ok": false,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": null,
+      "page_citation_hit": null,
+      "citation_precision": null,
+      "retrieval_hit": false,
+      "retrieval_page_hit": false,
+      "retrieved_top1": "llm_tutorial#default-generate",
+      "retrieved": [
+        {
+          "chunk_id": "llm_tutorial:default-generate:0",
+          "page_id": "llm_tutorial",
+          "anchor": "default-generate",
+          "score": 3.4229
+        },
+        {
+          "chunk_id": "models:model-classes:0",
+          "page_id": "models",
+          "anchor": "model-classes",
+          "score": 0.5588
+        },
+        {
+          "chunk_id": "quicktour:pretrained-models:0",
+          "page_id": "quicktour",
+          "anchor": "pretrained-models",
+          "score": 0.5401
+        },
+        {
+          "chunk_id": "peft:loading-an-adapter:0",
+          "page_id": "peft",
+          "anchor": "loading-an-adapter",
+          "score": 0.5329
+        },
+        {
+          "chunk_id": "models:big-model-inference:0",
+          "page_id": "models",
+          "anchor": "big-model-inference",
+          "score": 0.5314
+        }
+      ],
+      "latency_s": 17.83,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "To quantize a model with GPTQ, follow these steps:\n\n1. Install the necessary libraries:\n   ```bash\n   !pip install -U transformers bitsandbytes\n   ```\n\n2. Load the model and specify the quantization configuration:\n   ```python\n   from transformers import AutoModelForCausalLM, BitsAndBytesConfig\n   \n   # Set up the quantization configuration\n   quantization_config = BitsAndBytesConfig(load_in_4bit=True)\n   \n   # Load the model\n   model = AutoModelForCausalLM.from_pretrained(\"google/gemma-7b\", device_map=\"auto\", quantization_config=quantization_config)\n   ```\n\n3. Configure the model for Big Model Inference:\n   ```python\n   from transformers import AutoModelForCausalLM\n   \n   # Enable Big Model Inference\n   model = AutoModelForCausalLM.from_pretrained(\"google/gemma-7b\", device_map=\"auto\", quantization_config=quantization_config, load_in_4bit=True)\n   ```\n\nBy setting `device_map=\"auto\"` and specifying the `load_in_4bit=True` flag, you enable Big Model Inference, which helps optimize memory usage and performance during inference.",
+      "raw": "To quantize a model with GPTQ, follow these steps:\n\n1. Install the necessary libraries:\n   ```bash\n   !pip install -U transformers bitsandbytes\n   ```\n\n2. Load the model and specify the quantization configuration:\n   ```python\n   from transformers import AutoModelForCausalLM, BitsAndBytesConfig\n   \n   # Set up the quantization configuration\n   quantization_config = BitsAndBytesConfig(load_in_4bit=True)\n   \n   # Load the model\n   model = AutoModelForCausalLM.from_pretrained(\"google/gemma-7b\", device_map=\"auto\", quantization_config=quantization_config)\n   ```\n\n3. Configure the model for Big Model Inference:\n   ```python\n   from transformers import AutoModelForCausalLM\n   \n   # Enable Big Model Inference\n   model = AutoModelForCausalLM.from_pretrained(\"google/gemma-7b\", device_map=\"auto\", quantization_config=quantization_config, load_in_4bit=True)\n   ```\n\nBy setting `device_map=\"auto\"` and specifying the `load_in_4bit=True` flag, you enable Big Model Inference, which helps optimize memory usage and performance during inference."
+    },
+    {
+      "qid": "un-05",
+      "split": "test",
+      "topic": "out-of-scope",
+      "category": "unanswerable",
+      "expected": "abstain",
+      "question": "Which license does the PEFT library use?",
+      "reference": "Not covered by the selected pages: the PEFT library license is not stated.",
+      "gold": "",
+      "status": "abstained",
+      "reason": null,
+      "error": null,
+      "abstained": true,
+      "model_abstained": true,
+      "forced_abstain_attempt": false,
+      "expected_abstain": true,
+      "behavior_ok": true,
+      "over_answer": false,
+      "false_abstain": false,
+      "format_ok": true,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": null,
+      "page_citation_hit": null,
+      "citation_precision": null,
+      "retrieval_hit": false,
+      "retrieval_page_hit": false,
+      "retrieved_top1": "peft#None",
+      "retrieved": [
+        {
+          "chunk_id": "peft:_intro:0",
+          "page_id": "peft",
+          "anchor": null,
+          "score": 8.6061
+        },
+        {
+          "chunk_id": "peft:managing-multiple-adapters:0",
+          "page_id": "peft",
+          "anchor": "managing-multiple-adapters",
+          "score": 5.7697
+        },
+        {
+          "chunk_id": "peft:next-steps:0",
+          "page_id": "peft",
+          "anchor": "next-steps",
+          "score": 4.8449
+        },
+        {
+          "chunk_id": "peft:distributed-training:0",
+          "page_id": "peft",
+          "anchor": "distributed-training",
+          "score": 4.4718
+        },
+        {
+          "chunk_id": "peft:torchcompile:0",
+          "page_id": "peft",
+          "anchor": "torchcompile",
+          "score": 4.4215
+        }
+      ],
+      "latency_s": 1.15,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "Insufficient evidence in the retrieved documentation.",
+      "raw": "Insufficient evidence in the retrieved documentation."
+    },
+    {
+      "qid": "un-06",
+      "split": "test",
+      "topic": "out-of-scope",
+      "category": "unanswerable",
+      "expected": "abstain",
+      "question": "How do I write a custom Trainer callback?",
+      "reference": "Not covered by the selected pages: callbacks are only linked, not explained.",
+      "gold": "",
+      "status": "forced_abstain",
+      "reason": "no_valid_citations",
+      "error": null,
+      "abstained": true,
+      "model_abstained": false,
+      "forced_abstain_attempt": true,
+      "expected_abstain": true,
+      "behavior_ok": false,
+      "over_answer": false,
+      "false_abstain": false,
+      "format_ok": false,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": null,
+      "page_citation_hit": null,
+      "citation_precision": null,
+      "retrieval_hit": false,
+      "retrieval_page_hit": false,
+      "retrieved_top1": "training#next-steps",
+      "retrieved": [
+        {
+          "chunk_id": "training:next-steps:0",
+          "page_id": "training",
+          "anchor": "next-steps",
+          "score": 6.476
+        },
+        {
+          "chunk_id": "generation_strategies:finding-custom-generation-methods:0",
+          "page_id": "generation_strategies",
+          "anchor": "finding-custom-generation-methods",
+          "score": 3.868
+        },
+        {
+          "chunk_id": "generation_strategies:custom-generation-methods:0",
+          "page_id": "generation_strategies",
+          "anchor": "custom-generation-methods",
+          "score": 3.7691
+        },
+        {
+          "chunk_id": "generation_strategies:creating-a-custom-generation-method:1",
+          "page_id": "generation_strategies",
+          "anchor": "creating-a-custom-generation-method",
+          "score": 3.7059
+        },
+        {
+          "chunk_id": "generation_strategies:creating-a-custom-generation-method:3",
+          "page_id": "generation_strategies",
+          "anchor": "creating-a-custom-generation-method",
+          "score": 3.6884
+        }
+      ],
+      "latency_s": 24.12,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "To write a custom Trainer callback, follow these steps:\n\n1. Read the [Trainer callbacks](./trainer_callbacks) guide to understand how to hook into training events for logging, early stopping, and other custom behavior.\n2. Read the [Data collators](./data_collators) guide to learn how to customize how samples are assembled into batches.\n3. Create a new class that inherits from `CallbackHandler`.\n4. Override the necessary methods within your class to define the desired functionality.\n5. Register your callback in the Trainer configuration before training starts.\n\nHere’s an example of a simple custom callback:\n\n```python\nimport torch\nfrom transformers import Trainer, CallbackHandler\n\nclass CustomCallback(CallbackHandler):\n    def __init__(self, logger=None):\n        super().__init__()\n        self.logger = logger\n\n    def on_train_begin(self, args, logs=None):\n        print(\"Training began\")\n\n    def on_train_end(self, args, logs=None):\n        print(\"Training ended\")\n\n    def on_evaluate(self, args, outputs, metrics, epoch, logs=None, trainer=None):\n        print(f\"Epoch {epoch} finished with metrics: {metrics}\")\n\n    def on_log(self, log_outputs, trainer=None):\n        print(log_outputs)\n\n# Example usage\ndef train():\n    # Initialize Trainer with custom callback\n    trainer = Trainer(callbacks=[CustomCallback(logger)])\n\n    # Train your model\n    trainer.train()\n\ntrain()\n```\n\nRemember to register your callback in the Trainer configuration before training begins. You can do this by adding the following line to your Trainer initialization:\n\n```python\ncallbacks=[CustomCallback(logger)]\n```\n\nBy following these steps, you can effectively integrate custom callback functionality into your training process.",
+      "raw": "To write a custom Trainer callback, follow these steps:\n\n1. Read the [Trainer callbacks](./trainer_callbacks) guide to understand how to hook into training events for logging, early stopping, and other custom behavior.\n2. Read the [Data collators](./data_collators) guide to learn how to customize how samples are assembled into batches.\n3. Create a new class that inherits from `CallbackHandler`.\n4. Override the necessary methods within your class to define the desired functionality.\n5. Register your callback in the Trainer configuration before training starts.\n\nHere’s an example of a simple custom callback:\n\n```python\nimport torch\nfrom transformers import Trainer, CallbackHandler\n\nclass CustomCallback(CallbackHandler):\n    def __init__(self, logger=None):\n        super().__init__()\n        self.logger = logger\n\n    def on_train_begin(self, args, logs=None):\n        print(\"Training began\")\n\n    def on_train_end(self, args, logs=None):\n        print(\"Training ended\")\n\n    def on_evaluate(self, args, outputs, metrics, epoch, logs=None, trainer=None):\n        print(f\"Epoch {epoch} finished with metrics: {metrics}\")\n\n    def on_log(self, log_outputs, trainer=None):\n        print(log_outputs)\n\n# Example usage\ndef train():\n    # Initialize Trainer with custom callback\n    trainer = Trainer(callbacks=[CustomCallback(logger)])\n\n    # Train your model\n    trainer.train()\n\ntrain()\n```\n\nRemember to register your callback in the Trainer configuration before training begins. You can do this by adding the following line to your Trainer initialization:\n\n```python\ncallbacks=[CustomCallback(logger)]\n```\n\nBy following these steps, you can effectively integrate custom callback functionality into your training process."
+    },
+    {
+      "qid": "un-07",
+      "split": "test",
+      "topic": "out-of-scope",
+      "category": "unanswerable",
+      "expected": "abstain",
+      "question": "How do I stream a dataset while fine-tuning?",
+      "reference": "Not covered by the selected pages: dataset streaming is absent.",
+      "gold": "",
+      "status": "forced_abstain",
+      "reason": "no_valid_citations",
+      "error": null,
+      "abstained": true,
+      "model_abstained": false,
+      "forced_abstain_attempt": true,
+      "expected_abstain": true,
+      "behavior_ok": false,
+      "over_answer": false,
+      "false_abstain": false,
+      "format_ok": false,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": null,
+      "page_citation_hit": null,
+      "citation_precision": null,
+      "retrieval_hit": false,
+      "retrieval_page_hit": false,
+      "retrieved_top1": "training#None",
+      "retrieved": [
+        {
+          "chunk_id": "training:_intro:0",
+          "page_id": "training",
+          "anchor": null,
+          "score": 8.0493
+        },
+        {
+          "chunk_id": "training:training:0",
+          "page_id": "training",
+          "anchor": "training",
+          "score": 7.7359
+        },
+        {
+          "chunk_id": "training:tokenization:0",
+          "page_id": "training",
+          "anchor": "tokenization",
+          "score": 6.0893
+        },
+        {
+          "chunk_id": "peft:training:0",
+          "page_id": "peft",
+          "anchor": "training",
+          "score": 5.8761
+        },
+        {
+          "chunk_id": "peft:fully-fine-tuning-specific-layers:0",
+          "page_id": "peft",
+          "anchor": "fully-fine-tuning-specific-layers",
+          "score": 4.7298
+        }
+      ],
+      "latency_s": 24.02,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "Use the `map` function within the `load_dataset` method to tokenize the dataset during streaming. Here’s how you can achieve this:\n\n```python\nfrom datasets import load_dataset\n\n# Load your dataset\ndataset = load_dataset(\"your_dataset_url_or_path\")\n\n# Define the tokenizer\ntokenizer = AutoTokenizer.from_pretrained(\"your_base_model\")\n\n# Define the data collator\ndata_collator = DataCollatorForLanguageModeling(tokenizer, mlm=False)\n\n# Define the training arguments\ntraining_args = TrainingArguments(\n    output_dir=\"./output\",\n    num_train_epochs=3,\n    per_device_train_batch_size=4,\n)\n\n# Initialize the trainer\ntrainer = Trainer(\n    model=model,\n    args=training_args,\n    train_dataset=dataset,\n    data_collator=data_collator,\n)\n\n# Stream the dataset\nstreaming_dataset = dataset.stream()\n\nfor batch in streaming_dataset:\n    # Tokenize the current batch\n    processed_batch = tokenizer(\n        batch[\"text\"], \n        truncation=True,\n        max_length=512,\n    )\n    \n    # Prepare the batch for the model\n    input_ids = torch.tensor(processed_batch[\"input_ids\"])\n    attention_mask = torch.tensor(processed_batch[\"attention_mask\"])\n\n    # Forward pass\n    outputs = model(input_ids=input_ids, attention_mask=attention_mask)\n    \n    # Compute the loss\n    loss = outputs.loss\n    \n    # Backward pass\n    loss.backward()\n    \n    # Update the optimizer\n    optimizer.step()\n    optimizer.zero_grad()\n```\n\nThis code will continuously tokenize and feed new batches of data into the model during training, allowing you to stream the dataset without having to store it entirely in memory.",
+      "raw": "Use the `map` function within the `load_dataset` method to tokenize the dataset during streaming. Here’s how you can achieve this:\n\n```python\nfrom datasets import load_dataset\n\n# Load your dataset\ndataset = load_dataset(\"your_dataset_url_or_path\")\n\n# Define the tokenizer\ntokenizer = AutoTokenizer.from_pretrained(\"your_base_model\")\n\n# Define the data collator\ndata_collator = DataCollatorForLanguageModeling(tokenizer, mlm=False)\n\n# Define the training arguments\ntraining_args = TrainingArguments(\n    output_dir=\"./output\",\n    num_train_epochs=3,\n    per_device_train_batch_size=4,\n)\n\n# Initialize the trainer\ntrainer = Trainer(\n    model=model,\n    args=training_args,\n    train_dataset=dataset,\n    data_collator=data_collator,\n)\n\n# Stream the dataset\nstreaming_dataset = dataset.stream()\n\nfor batch in streaming_dataset:\n    # Tokenize the current batch\n    processed_batch = tokenizer(\n        batch[\"text\"], \n        truncation=True,\n        max_length=512,\n    )\n    \n    # Prepare the batch for the model\n    input_ids = torch.tensor(processed_batch[\"input_ids\"])\n    attention_mask = torch.tensor(processed_batch[\"attention_mask\"])\n\n    # Forward pass\n    outputs = model(input_ids=input_ids, attention_mask=attention_mask)\n    \n    # Compute the loss\n    loss = outputs.loss\n    \n    # Backward pass\n    loss.backward()\n    \n    # Update the optimizer\n    optimizer.step()\n    optimizer.zero_grad()\n```\n\nThis code will continuously tokenize and feed new batches of data into the model during training, allowing you to stream the dataset without having to store it entirely in memory."
+    },
+    {
+      "qid": "un-08",
+      "split": "test",
+      "topic": "out-of-scope",
+      "category": "unanswerable",
+      "expected": "abstain",
+      "question": "How do I compute BLEU for generated text?",
+      "reference": "Not covered by the selected pages: BLEU evaluation is absent.",
+      "gold": "",
+      "status": "forced_abstain",
+      "reason": "no_valid_citations",
+      "error": null,
+      "abstained": true,
+      "model_abstained": false,
+      "forced_abstain_attempt": true,
+      "expected_abstain": true,
+      "behavior_ok": false,
+      "over_answer": false,
+      "false_abstain": false,
+      "format_ok": false,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [
+        {
+          "action": "removed_out_of_range_citation",
+          "n": 0
+        }
+      ],
+      "unverified_urls": [],
+      "citation_hit": null,
+      "page_citation_hit": null,
+      "citation_precision": null,
+      "retrieval_hit": false,
+      "retrieval_page_hit": false,
+      "retrieved_top1": "llm_tutorial#default-generate",
+      "retrieved": [
+        {
+          "chunk_id": "llm_tutorial:default-generate:1",
+          "page_id": "llm_tutorial",
+          "anchor": "default-generate",
+          "score": 4.8563
+        },
+        {
+          "chunk_id": "generation_strategies:_intro:0",
+          "page_id": "generation_strategies",
+          "anchor": null,
+          "score": 4.4364
+        },
+        {
+          "chunk_id": "quicktour:pretrained-models:1",
+          "page_id": "quicktour",
+          "anchor": "pretrained-models",
+          "score": 4.1915
+        },
+        {
+          "chunk_id": "llm_tutorial:output-length:0",
+          "page_id": "llm_tutorial",
+          "anchor": "output-length",
+          "score": 4.1623
+        },
+        {
+          "chunk_id": "llm_tutorial:decoding-strategy:0",
+          "page_id": "llm_tutorial",
+          "anchor": "decoding-strategy",
+          "score": 4.0122
+        }
+      ],
+      "latency_s": 24.07,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "To compute BLEU for generated text, you need to follow these steps:\n\n1. Tokenize the reference translations using the same tokenizer used during training.\n2. Generate candidate translations from your model.\n3. Compute the n-gram overlap between each candidate translation and the reference translation.\n4. Calculate the average precision over all n-grams.\n5. Normalize the score by dividing by the maximum possible score (which is typically 1 for English).\n6. Compare the normalized score against the BLEU scores reported by external tools such as `bleu.py`.\n\nHere's an example code snippet in Python:\n\n```python\nfrom transformers import AutoTokenizer, AutoModelWithLM\n\n# Load the tokenizer and model\ntokenizer = AutoTokenizer.from_pretrained(\"your_model_name\")\nmodel = AutoModelWithLM.from_pretrained(\"your_model_name\")\n\n# Tokenize the reference translation\nreference_translation = [\"The quick brown fox jumps over the lazy dog.\"]\nreference_tokenized = tokenizer(reference_translation)\n\n# Generate candidate translations\ncandidate_translations = []\nfor _ in range(10):  # Generate multiple candidates\n    generated_ids = model.generate(**model_inputs, max_length=100)\n    candidate_translation = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)\n    candidate_translations.append(candidate_translation)\n\n# Compute BLEU scores\nimport nltk\nfrom nltk.translate.bleu_score import corpus_bleu\n\nscores = {}\nfor i, candidate_translation in enumerate(candidate_translations):\n    bleu_score = corpus_bleu([reference_translation], [candidate_translation])\n    scores[f\"Candidate {i+1}\"] = bleu_score\n\nprint(scores)\n```\n\nThis script generates 10 candidate translations and computes the BLEU score for",
+      "raw": "To compute BLEU for generated text, you need to follow these steps:\n\n1. Tokenize the reference translations using the same tokenizer used during training.\n2. Generate candidate translations from your model.\n3. Compute the n-gram overlap between each candidate translation and the reference translation.\n4. Calculate the average precision over all n-grams.\n5. Normalize the score by dividing by the maximum possible score (which is typically 1 for English).\n6. Compare the normalized score against the BLEU scores reported by external tools such as `bleu.py`.\n\nHere's an example code snippet in Python:\n\n```python\nfrom transformers import AutoTokenizer, AutoModelWithLM\n\n# Load the tokenizer and model\ntokenizer = AutoTokenizer.from_pretrained(\"your_model_name\")\nmodel = AutoModelWithLM.from_pretrained(\"your_model_name\")\n\n# Tokenize the reference translation\nreference_translation = [\"The quick brown fox jumps over the lazy dog.\"]\nreference_tokenized = tokenizer(reference_translation)\n\n# Generate candidate translations\ncandidate_translations = []\nfor _ in range(10):  # Generate multiple candidates\n    generated_ids = model.generate(**model_inputs, max_length=100)\n    candidate_translation = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]\n    candidate_translations.append(candidate_translation)\n\n# Compute BLEU scores\nimport nltk\nfrom nltk.translate.bleu_score import corpus_bleu\n\nscores = {}\nfor i, candidate_translation in enumerate(candidate_translations):\n    bleu_score = corpus_bleu([reference_translation], [candidate_translation])\n    scores[f\"Candidate {i+1}\"] = bleu_score\n\nprint(scores)\n```\n\nThis script generates 10 candidate translations and computes the BLEU score for"
+    },
+    {
+      "qid": "un-09",
+      "split": "test",
+      "topic": "out-of-scope",
+      "category": "unanswerable",
+      "expected": "abstain",
+      "question": "How do I launch a multi-GPU training run with accelerate config?",
+      "reference": "Not covered by the selected pages: accelerate launch configuration is absent.",
+      "gold": "",
+      "status": "forced_abstain",
+      "reason": "no_valid_citations",
+      "error": null,
+      "abstained": true,
+      "model_abstained": false,
+      "forced_abstain_attempt": true,
+      "expected_abstain": true,
+      "behavior_ok": false,
+      "over_answer": false,
+      "false_abstain": false,
+      "format_ok": false,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": null,
+      "page_citation_hit": null,
+      "citation_precision": null,
+      "retrieval_hit": false,
+      "retrieval_page_hit": false,
+      "retrieved_top1": "llm_tutorial#default-generate",
+      "retrieved": [
+        {
+          "chunk_id": "llm_tutorial:default-generate:0",
+          "page_id": "llm_tutorial",
+          "anchor": "default-generate",
+          "score": 8.6796
+        },
+        {
+          "chunk_id": "training:next-steps:0",
+          "page_id": "training",
+          "anchor": "next-steps",
+          "score": 7.8442
+        },
+        {
+          "chunk_id": "training:training-configuration:0",
+          "page_id": "training",
+          "anchor": "training-configuration",
+          "score": 6.3853
+        },
+        {
+          "chunk_id": "models:disk-offloading:0",
+          "page_id": "models",
+          "anchor": "disk-offloading",
+          "score": 5.7779
+        },
+        {
+          "chunk_id": "quicktour:set-up:0",
+          "page_id": "quicktour",
+          "anchor": "set-up",
+          "score": 5.7679
+        }
+      ],
+      "latency_s": 15.97,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "To launch a multi-GPU training run with accelerate config, follow these steps:\n\n1. Install necessary packages:\n   ```bash\n   !pip install -U transformers bitsandbytes\n   ```\n\n2. Load a model with accelerate:\n   ```python\n   from transformers import AutoModelForCausalLM\n   from bitsandbytes import BitsAndBytesConfig\n   \n   # Assuming 'model_name_or_path' is defined\n   model = AutoModelForCausalLM.from_pretrained(\n       \"model_name_or_path\",\n       device_map=\"auto\",\n       quantization_config=BitsAndBytesConfig(load_in_4bit=True),\n   )\n   \n   # Configure the model for big model inference\n   model.config.use_cache = False\n   model.config.torch_dtype = torch.float16\n   model.config.gradient_checkpointing = True\n   ```\n\n3. Offload the model to disk:\n   ```python\n   model.save_pretrained(\"./offload\")\n   ```\n\nThis setup allows you to leverage multiple GPUs efficiently, reducing memory usage and improving performance. Remember to adjust the configurations according to your specific needs and hardware capabilities.",
+      "raw": "To launch a multi-GPU training run with accelerate config, follow these steps:\n\n1. Install necessary packages:\n   ```bash\n   !pip install -U transformers bitsandbytes\n   ```\n\n2. Load a model with accelerate:\n   ```python\n   from transformers import AutoModelForCausalLM\n   from bitsandbytes import BitsAndBytesConfig\n   \n   # Assuming 'model_name_or_path' is defined\n   model = AutoModelForCausalLM.from_pretrained(\n       \"model_name_or_path\",\n       device_map=\"auto\",\n       quantization_config=BitsAndBytesConfig(load_in_4bit=True),\n   )\n   \n   # Configure the model for big model inference\n   model.config.use_cache = False\n   model.config.torch_dtype = torch.float16\n   model.config.gradient_checkpointing = True\n   ```\n\n3. Offload the model to disk:\n   ```python\n   model.save_pretrained(\"./offload\")\n   ```\n\nThis setup allows you to leverage multiple GPUs efficiently, reducing memory usage and improving performance. Remember to adjust the configurations according to your specific needs and hardware capabilities."
+    },
+    {
+      "qid": "un-10",
+      "split": "test",
+      "topic": "out-of-scope",
+      "category": "unanswerable",
+      "expected": "abstain",
+      "question": "What is the default value of max_shard_size in save_pretrained?",
+      "reference": "Not stated: the docs give the 50GB automatic sharding threshold but not the max_shard_size default.",
+      "gold": "",
+      "status": "forced_abstain",
+      "reason": "no_valid_citations",
+      "error": null,
+      "abstained": true,
+      "model_abstained": false,
+      "forced_abstain_attempt": true,
+      "expected_abstain": true,
+      "behavior_ok": false,
+      "over_answer": false,
+      "false_abstain": false,
+      "format_ok": false,
+      "citations": [],
+      "sources": [],
+      "invalid_source_entries": [],
+      "repairs": [],
+      "unverified_urls": [],
+      "citation_hit": null,
+      "page_citation_hit": null,
+      "citation_precision": null,
+      "retrieval_hit": false,
+      "retrieval_page_hit": false,
+      "retrieved_top1": "models#sharded-checkpoints",
+      "retrieved": [
+        {
+          "chunk_id": "models:sharded-checkpoints:0",
+          "page_id": "models",
+          "anchor": "sharded-checkpoints",
+          "score": 16.2846
+        },
+        {
+          "chunk_id": "generation_strategies:creating-a-custom-generation-method:2",
+          "page_id": "generation_strategies",
+          "anchor": "creating-a-custom-generation-method",
+          "score": 9.9013
+        },
+        {
+          "chunk_id": "models:model-data-type:0",
+          "page_id": "models",
+          "anchor": "model-data-type",
+          "score": 8.0426
+        },
+        {
+          "chunk_id": "llm_tutorial:common-options:0",
+          "page_id": "llm_tutorial",
+          "anchor": "common-options",
+          "score": 7.0899
+        },
+        {
+          "chunk_id": "peft:training:0",
+          "page_id": "peft",
+          "anchor": "training",
+          "score": 6.4581
+        }
+      ],
+      "latency_s": 1.99,
+      "answer": "Insufficient evidence in the retrieved documentation.",
+      "extracted_answer": "[max_shard_size] in save_pretrained has a default value of \"50GB\".",
+      "raw": "[max_shard_size] in save_pretrained has a default value of \"50GB\"."
+    }
+  ]
+}
