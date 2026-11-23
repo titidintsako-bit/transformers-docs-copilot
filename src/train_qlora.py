@@ -85,6 +85,39 @@ def build_tokenized(rows: list[dict], tokenizer, max_length: int) -> tuple[list[
     return tokenized, skipped
 
 
+
+def training_arguments(*, output_dir: Path, epochs: int, config: dict, bf16: bool):
+    from transformers import TrainingArguments
+
+    qlora = config["models"]["qlora"]
+    return TrainingArguments(
+        output_dir=str(output_dir),
+        num_train_epochs=epochs,
+        per_device_train_batch_size=1,
+        per_device_eval_batch_size=1,
+        gradient_accumulation_steps=8,
+        activation_checkpointing=True,
+        activation_checkpointing_kwargs={"use_reentrant": False},
+        learning_rate=qlora["learning_rate"],
+        lr_scheduler_type="cosine",
+        warmup_steps=2,
+        max_grad_norm=0.3,
+        logging_steps=5,
+        eval_strategy="epoch",
+        save_strategy="epoch",
+        save_total_limit=2,
+        load_best_model_at_end=True,
+        metric_for_best_model="eval_loss",
+        greater_is_better=False,
+        fp16=not bf16,
+        bf16=bf16,
+        optim="paged_adamw_8bit",
+        report_to="none",
+        remove_unused_columns=False,
+        seed=config["project"]["seed"],
+        data_seed=config["project"]["seed"],
+    )
+
 def train(
     *,
     train_path: Path,
@@ -174,32 +207,8 @@ def train(
     model.print_trainable_parameters()
 
     bf16 = _torch.cuda.is_bf16_supported()
-    args = TrainingArguments(
-        output_dir=str(output_dir),
-        num_train_epochs=epochs,
-        per_device_train_batch_size=1,
-        per_device_eval_batch_size=1,
-        gradient_accumulation_steps=8,
-        gradient_checkpointing=True,
-        gradient_checkpointing_kwargs={"use_reentrant": False},
-        learning_rate=qlora["learning_rate"],
-        lr_scheduler_type="cosine",
-        warmup_ratio=0.03,
-        max_grad_norm=0.3,
-        logging_steps=5,
-        eval_strategy="epoch",
-        save_strategy="epoch",
-        save_total_limit=2,
-        load_best_model_at_end=True,
-        metric_for_best_model="eval_loss",
-        greater_is_better=False,
-        fp16=not bf16,
-        bf16=bf16,
-        optim="paged_adamw_8bit",
-        report_to="none",
-        remove_unused_columns=False,
-        seed=config["project"]["seed"],
-        data_seed=config["project"]["seed"],
+    args = training_arguments(
+        output_dir=output_dir, epochs=epochs, config=config, bf16=bf16
     )
     trainer = Trainer(
         model=model,

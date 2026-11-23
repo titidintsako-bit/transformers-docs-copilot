@@ -1,6 +1,9 @@
+import tempfile
 import unittest
+from pathlib import Path
 
-from src.train_qlora import CausalCollator, build_tokenized, tokenize_example
+from src.common import load_config
+from src.train_qlora import CausalCollator, build_tokenized, tokenize_example, training_arguments
 
 
 class FakeTokenizer:
@@ -44,6 +47,18 @@ class TokenizeTest(unittest.TestCase):
         rows = [EXAMPLE, {**EXAMPLE, "id": "long"}]
         items, skipped = build_tokenized(rows, FakeTokenizer(), max_length=64)
         self.assertEqual((len(items), skipped), (2, 0))
+
+
+class TrainingArgumentsTest(unittest.TestCase):
+    def test_supported_keywords(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            args = training_arguments(
+                output_dir=Path(tmp), epochs=2, config=load_config(), bf16=False
+            )
+        self.assertEqual(args.num_train_epochs, 2)
+        self.assertEqual(args.per_device_train_batch_size, 1)
+        self.assertEqual(args.gradient_accumulation_steps, 8)
+        self.assertEqual(args.warmup_steps, 2)
 
 
 class CollatorTest(unittest.TestCase):
