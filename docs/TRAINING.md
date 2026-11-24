@@ -100,7 +100,8 @@ The adapter learned the contract and transferred it to the three held-out pages.
 errors: one over-answer on `un-10` (default `max_shard_size`), two false abstentions
 (`lm-05`, `lm-08`), and three answers citing a related section instead of the gold one.
 The executed notebook is `notebooks/colab_train_run.ipynb`; the report is
-`results/answers_tuned.md`. Human support/correctness scoring is still pending.
+`results/answers_tuned.md`. The 43-row scoring guide is `results/review_tuned.md`.
+Human support/correctness scoring is still pending.
 
 ## What to compare
 
