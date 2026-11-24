@@ -206,6 +206,7 @@ def markdown(payload: dict) -> str:
         f"- Model: `{payload['model_id']}`"
         + (f" @ `{payload['model_commit'][:12]}`" if payload.get("model_commit") else "")
         + f" ({payload['quantization']}), greedy decoding, max_new_tokens={payload['max_new_tokens']}",
+        f"- Adapter: `{payload['adapter']}`" if payload.get("adapter") else "- Adapter: none (base model)",
         f"- Split: **{payload['split']}**, n={payload['n']}, k={payload['k']} passages",
         "- Contract: `Answer:` plus inline `[n]` citations, canonical `Sources:` rendered by the harness,"
         f" or exactly `{ABSTAIN_TEXT}`",
