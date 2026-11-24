@@ -5,9 +5,10 @@ Transformers documentation, and cites the section each claim comes from. Built a
 first RAG project: keyword retrieval baseline, untuned RAG, then QLoRA fine-tuning for
 answer format, citation behavior and abstention.
 
-**Status: Milestone 5 of 6 (QLoRA).** Retrieval, the 55-question evaluation set, the
-grounded-answer pipeline and the 1.5B baseline are complete. The SFT recipe, QLoRA trainer
-and training notebook are in place; the adapter evaluation is the remaining step.
+**Status: Milestone 5 of 6 complete; milestone 6 (human evaluation) in progress.**
+Retrieval, the 55-question evaluation set, the grounded-answer pipeline, the untuned 1.5B
+baseline and the QLoRA adapter are complete. The remaining work is human scoring of the
+tuned label sheet and the final write-up.
 
 ## Pinned corpus
 
@@ -88,8 +89,27 @@ make train-qlora   # CUDA only
 make eval-tuned    # -> results/answers_tuned.md
 ```
 
-The tuned result is pending until the Colab training run finishes. Data recipe,
-hyperparameters and limitations: [`docs/TRAINING.md`](docs/TRAINING.md).
+The tuned adapter run is committed in [`results/answers_tuned.md`](results/answers_tuned.md);
+the executed run is preserved in
+[`notebooks/colab_train_run.ipynb`](notebooks/colab_train_run.ipynb). On the same
+43-question test split (T4, commit `5ada516`):
+
+| metric | untuned | tuned |
+|---|---|---|
+| exact format | 0.093 | **1.000** |
+| grounded answer (answerable) | 0.000 | **0.821** |
+| behaviour accuracy | 0.116 | **0.930** |
+| answered rate | 0.023 | 0.628 |
+| model abstains on negatives | 0.267 | **0.933** |
+| false abstain (answerable) | 0.964 | **0.071** |
+| median latency | 3.67 s | 5.36 s |
+
+All 43 outputs passed the format and there were no parser-forced abstentions. The adapter
+over-answered one near-miss negative (`un-10`, default `max_shard_size`) and falsely
+abstained on two answerable questions. Three answers cited a related section rather than
+the gold section. These are automated contract metrics; support and factual correctness
+still require the human label sheet. Data recipe, hyperparameters and limitations:
+[`docs/TRAINING.md`](docs/TRAINING.md).
 
 ### Run the baseline on Colab (T4)
 
@@ -176,8 +196,9 @@ docs/GENERATION.md          answer contract, parser rules, metric definitions
 docs/TRAINING.md            SFT recipe, QLoRA config, leakage controls, limitations
 notebooks/colab.ipynb       T4 baseline run with preflight + Drive checkpoint
 notebooks/colab_train.ipynb T4 QLoRA training + tuned evaluation
+notebooks/colab_train_run.ipynb  executed successful training/evaluation run
 LICENSE                    MIT for the code (bundled docs stay Apache-2.0)
-results/                    baseline reports, predictions and label sheets
+results/                    baseline and tuned reports, predictions and label sheets
 tests/                      provenance, chunking, BM25, retrieval, eval set, generation
 ```
 

@@ -81,6 +81,27 @@ python -m src.eval_answers --split test --model base --quantize on \
 The local laptop has no NVIDIA GPU; `make sft` works locally, but `make train-qlora`
 requires CUDA.
 
+## Result
+
+The full T4 run at `5ada516` (2 epochs, full split) produced:
+
+| metric | baseline | tuned |
+|---|---|---|
+| `format_rate` | 0.093 | 1.000 |
+| `grounded_answer_rate` | 0.000 | 0.821 |
+| `behavior_accuracy` | 0.116 | 0.930 |
+| `answered_rate` | 0.023 | 0.628 |
+| `model_abstain_rate_on_negative` | 0.267 | 0.933 |
+| `false_abstain_rate_on_answerable` | 0.964 | 0.071 |
+| `forced_abstain` | 38 | 0 |
+| median latency | 3.67 s | 5.36 s |
+
+The adapter learned the contract and transferred it to the three held-out pages. Remaining
+errors: one over-answer on `un-10` (default `max_shard_size`), two false abstentions
+(`lm-05`, `lm-08`), and three answers citing a related section instead of the gold one.
+The executed notebook is `notebooks/colab_train_run.ipynb`; the report is
+`results/answers_tuned.md`. Human support/correctness scoring is still pending.
+
 ## What to compare
 
 | metric | baseline | what an improvement means |

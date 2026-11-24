@@ -148,6 +148,11 @@ before the harness renders sources. Training recipe: [`TRAINING.md`](TRAINING.md
   compliance: one answered row contained `[1]`, and it still omitted the prefix. This is
   the format gap QLoRA targets, not a parser bug.
 - The full baseline artifacts are committed under `results/`. The SFT split and QLoRA
-  trainer are implemented in `src/build_sft.py` and `src/train_qlora.py`; the adapter run
-  is pending. If the adapter cannot learn the format, the next variable is a stronger base
-  (3B/4B), not more prompt variants.
+  trainer are implemented in `src/build_sft.py` and `src/train_qlora.py`.
+- The QLoRA adapter ran on the same 43-question split at `5ada516` (T4, 4-bit NF4):
+  `format_rate` 1.0, `grounded_answer_rate` 0.821, `behavior_accuracy` 0.930,
+  `model_abstain_rate_on_negative` 0.933, `false_abstain_rate_on_answerable` 0.071;
+  no output was parser-forced. One near-miss negative (`un-10`) was over-answered and two
+  answerable questions were falsely abstained. Human support/correctness labels are still
+  pending. If a future adapter cannot learn the format, the next variable is a stronger
+  base (3B/4B), not more prompt variants.
