@@ -109,7 +109,10 @@ over-answered one near-miss negative (`un-10`, default `max_shard_size`) and fal
 abstained on two answerable questions. Three answers cited a related section rather than
 the gold section. These are automated contract metrics; support and factual correctness
 still require the human label sheet. The 43-row scoring guide is
-[`results/review_tuned.md`](results/review_tuned.md). Data recipe, hyperparameters and limitations:
+[`results/review_tuned.md`](results/review_tuned.md); the short scoring sheet
+[`results/scoring_tuned_simple.csv`](results/scoring_tuned_simple.csv) contains only the
+26 answerable, answered rows with the cited passage and three blank score columns. Data
+recipe, hyperparameters and limitations:
 [`docs/TRAINING.md`](docs/TRAINING.md).
 
 ### Run the baseline on Colab (T4)
