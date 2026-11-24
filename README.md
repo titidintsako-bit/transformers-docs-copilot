@@ -111,8 +111,10 @@ the gold section. These are automated contract metrics; support and factual corr
 still require the human label sheet. The 43-row scoring guide is
 [`results/review_tuned.md`](results/review_tuned.md); the short scoring sheet
 [`results/scoring_tuned_simple.csv`](results/scoring_tuned_simple.csv) contains only the
-26 answerable, answered rows with the cited passage and three blank score columns. Data
-recipe, hyperparameters and limitations:
+26 answerable, answered rows with the cited passage and three blank score columns; the
+Excel version with dropdowns and a short guide is
+[`results/scoring_tuned_simple.xlsx`](results/scoring_tuned_simple.xlsx). Data recipe,
+hyperparameters and limitations:
 [`docs/TRAINING.md`](docs/TRAINING.md).
 
 ### Run the baseline on Colab (T4)
