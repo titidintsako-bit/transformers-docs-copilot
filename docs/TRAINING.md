@@ -101,7 +101,9 @@ errors: one over-answer on `un-10` (default `max_shard_size`), two false abstent
 (`lm-05`, `lm-08`), and three answers citing a related section instead of the gold one.
 The executed notebook is `notebooks/colab_train_run.ipynb`; the report is
 `results/answers_tuned.md`. The 43-row scoring guide is `results/review_tuned.md`.
-Human support/correctness scoring is still pending.
+A first-pass annotation is in `results/human_eval_tuned.md`: 23/26 answered rows are fully
+grounded, but only 15/26 both answer the question and are fully grounded. The remaining
+weakness is question focus, not format; a human spot-check is still pending.
 
 ## What to compare
 

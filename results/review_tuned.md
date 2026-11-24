@@ -1,10 +1,15 @@
-# Tuned adapter — human review packet
+# Tuned adapter — full review packet
 
 Generated from `results/predictions_tuned.jsonl` (n=43). 28 answerable, 15 negatives; 27 answered, 16 abstained.
 
+The 26 answered rows carry the first-pass scores. The 16 abstentions and the `un-10`
+over-answer are handled by the automatic report and are not support-scored.
+
 Automatic flags: false abstentions **lm-05, lm-08**; over-answer **un-10**; answered without a gold-section citation **gs-01, lm-07, peft-03**.
 
-Score by comparing each answer to **the passage it cites**, not to the reference. Fill `supported_0_1_2`, `citation_precision_0_1` and `citation_recall_0_1` in `results/label_sheet_tuned.csv`. Abstentions: score `abstained` only and leave the three support/citation columns blank. Open the reference only after scoring.
+Scores are literal: `supported` asks whether the cited passage backs the answer’s
+claims, not whether the answer addresses the question. See `results/human_eval_tuned.md`
+for the on-question analysis.
 
 ---
 
@@ -14,11 +19,15 @@ Score by comparing each answer to **the passage it cites**, not to the reference
 
 **Question:** Which decoding strategy does generate use by default, and how many new tokens can it produce at most when no GenerationConfig is specified?
 
-**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✗ · gold-page citation ✗ · auto precision 0.00 · gold `generation_strategies#greedy-search`
+**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✗ · gold-page citation ✗ · gold `generation_strategies#greedy-search`
 
 **Model answer:**
 
 > The default decoding strategy in `~GenerationMixin.generate` is greedy search [1]. It selects the next most likely token at each step [1]. Unless specified in `GenerationConfig`, this strategy generates a maximum of 20 new tokens [1]. Greedy search works well for tasks with relatively short outputs where creativity is not a priority [1].
+
+**First pass:** supported 1/2 · citation precision 1/1 · citation recall 0/1
+
+**Note:** The 20-token limit is not in the cited llm_tutorial passage.
 
 **Cited passage(s):**
 
@@ -59,9 +68,7 @@ tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
 
 </details>
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 Greedy search is the default. Without a GenerationConfig it generates at most 20 new tokens.
 
@@ -73,11 +80,13 @@ Greedy search is the default. Without a GenerationConfig it generates at most 20
 
 **Question:** Why does greedy search break down when generating long sequences?
 
-**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · auto precision 1.00 · gold `generation_strategies#greedy-search`
+**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · gold `generation_strategies#greedy-search`
 
 **Model answer:**
 
 > Greedy search works well for tasks with relatively short outputs where creativity is not a priority [1]. However, it breaks down when generating longer sequences because it begins to repeat itself [1].
+
+**First pass:** supported 2/2 · citation precision 1/1 · citation recall 1/1
 
 **Cited passage(s):**
 
@@ -112,9 +121,7 @@ tokenizer.batch_decode(outputs, skip_special_tokens=True)
 
 </details>
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 It begins to repeat itself because it always takes the locally most likely next token.
 
@@ -126,11 +133,13 @@ It begins to repeat itself because it always takes the locally most likely next 
 
 **Question:** How do I enable multinomial sampling instead of greedy decoding?
 
-**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · auto precision 1.00 · gold `generation_strategies#sampling`
+**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · gold `generation_strategies#sampling`
 
 **Model answer:**
 
 > Enable multinomial sampling with `do_sample=True` and `num_beams=1` [2].
+
+**First pass:** supported 2/2 · citation precision 1/1 · citation recall 1/1
 
 **Cited passage(s):**
 
@@ -165,9 +174,7 @@ tokenizer.batch_decode(outputs, skip_special_tokens=True)
 
 </details>
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 Set do_sample=True and num_beams=1.
 
@@ -179,11 +186,15 @@ Set do_sample=True and num_beams=1.
 
 **Question:** What are the benefits of sampling compared with greedy search?
 
-**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · auto precision 1.00 · gold `generation_strategies#sampling`
+**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · gold `generation_strategies#sampling`
 
 **Model answer:**
 
 > Sampling, or multinomial sampling, randomly selects a token based on the probability distribution over the entire model's vocabulary (as opposed to the most likely token, as in greedy search) [2]. This means every token with a non-zero probability has a chance to be selected [2]. Enable multinomial sampling with `do_sample=True` and `num_beams=1` [2].
+
+**First pass:** supported 2/2 · citation precision 1/1 · citation recall 1/1
+
+**Note:** Grounded, but describes the sampling mechanism/how-to and does not state the benefit (less repetition, more diversity).
 
 **Cited passage(s):**
 
@@ -218,9 +229,7 @@ tokenizer.batch_decode(outputs, skip_special_tokens=True)
 
 </details>
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 Sampling reduces repetition and can generate more creative and diverse outputs.
 
@@ -232,11 +241,13 @@ Sampling reduces repetition and can generate more creative and diverse outputs.
 
 **Question:** How does beam search differ from greedy search?
 
-**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · auto precision 1.00 · gold `generation_strategies#beam-search`
+**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · gold `generation_strategies#beam-search`
 
 **Model answer:**
 
 > Beam search keeps track of several generated sequences (beams) at each time step [1]. After a certain number of steps, it selects the sequence with the highest overall probability [1]. Unlike greedy search, this strategy can "look ahead" and pick a sequence with a higher probability overall even if the initial tokens have a lower probability [1]. Beam search is best suited for input-grounded tasks, like describing an image or speech recognition [1]. You can also use `do_sample=True` with beam search to sample at each step, but beam search will still greedily prune out low probability sequences between steps [1]. Enable beam search with the `num_beams` parameter (should be greater than 1 otherwise it's equivalent to greedy search) [1].
+
+**First pass:** supported 2/2 · citation precision 1/1 · citation recall 1/1
 
 **Cited passage(s):**
 
@@ -274,9 +285,7 @@ tokenizer.batch_decode(outputs, skip_special_tokens=True)
 
 </details>
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 Beam search tracks several sequences and selects the one with the highest overall probability, so it can look ahead; greedy search follows only the most likely next token.
 
@@ -288,11 +297,13 @@ Beam search tracks several sequences and selects the one with the highest overal
 
 **Question:** For which kinds of tasks is beam search best suited?
 
-**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · auto precision 1.00 · gold `generation_strategies#beam-search`
+**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · gold `generation_strategies#beam-search`
 
 **Model answer:**
 
 > Beam search keeps track of several generated sequences (beams) at each time step [1]. After a certain number of steps, it selects the sequence with the highest overall probability [1]. Unlike greedy search, this strategy can "look ahead" and pick a sequence with a higher probability overall even if the initial tokens have a lower probability [1]. It is best suited for input-grounded tasks, like describing an image or speech recognition [1]. You can also use `do_sample=True` with beam search to sample at each step, but beam search will still greedily prune out low probability sequences between steps [1].
+
+**First pass:** supported 2/2 · citation precision 1/1 · citation recall 1/1
 
 **Cited passage(s):**
 
@@ -330,9 +341,7 @@ tokenizer.batch_decode(outputs, skip_special_tokens=True)
 
 </details>
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 Input-grounded tasks such as describing an image or speech recognition.
 
@@ -344,11 +353,15 @@ Input-grounded tasks such as describing an image or speech recognition.
 
 **Question:** Which files must a model repository contain to publish a custom generation method?
 
-**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · auto precision 1.00 · gold `generation_strategies#creating-a-custom-generation-method`
+**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · gold `generation_strategies#creating-a-custom-generation-method`
 
 **Model answer:**
 
 > Your custom `generate` method can relative import code from the `custom_generate` folder [3]. Only relative imports from the same-level `custom_generate` folder are supported [3]. Parent/sibling folder imports are not valid [3].
+
+**First pass:** supported 2/2 · citation precision 1/1 · citation recall 1/1
+
+**Note:** Grounded, but describes relative imports and does not list the required files (generate.py, requirements.txt, README tag).
 
 **Cited passage(s):**
 
@@ -399,9 +412,7 @@ Recommended practices:
 
 </details>
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 The model, custom_generate/generate.py, an optional custom_generate/requirements.txt, and a README tagged custom_generate.
 
@@ -413,11 +424,13 @@ The model, custom_generate/generate.py, an optional custom_generate/requirements
 
 **Question:** In a custom generation method, what must the generate function's first argument be?
 
-**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · auto precision 1.00 · gold `generation_strategies#creating-a-custom-generation-method`
+**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · gold `generation_strategies#creating-a-custom-generation-method`
 
 **Model answer:**
 
 > `model` is the model instance, which means you have access to all attributes and methods in the model, including the ones defined in `GenerationMixin` (like the base `generate` method) [1].
+
+**First pass:** supported 2/2 · citation precision 1/1 · citation recall 1/1
 
 **Cited passage(s):**
 
@@ -442,9 +455,7 @@ This means your `generate` can have a mix of original and custom arguments (as w
 
 </details>
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 A model argument.
 
@@ -456,11 +467,15 @@ A model argument.
 
 **Question:** How can I find custom generation methods on the Hub?
 
-**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · auto precision 1.00 · gold `generation_strategies#finding-custom-generation-methods`
+**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · gold `generation_strategies#finding-custom-generation-methods`
 
 **Model answer:**
 
 > You can find all custom generation methods by searching for their custom tag `custom_generate` [1]. In addition to the tag, we curate two collections of `custom_generate` methods: a collection of powerful methods contributed by the community; a collection of reference implementations for methods that previously were part of `transformers`, as well as tutorials for `custom_generate` [1]. Consider the Hub repository `transformers-community/custom_generate_example` as an example [1].
+
+**First pass:** supported 1/2 · citation precision 1/1 · citation recall 1/1
+
+**Note:** The transformers-community/custom_generate_example repo is not in the cited passage.
 
 **Cited passage(s):**
 
@@ -479,9 +494,7 @@ You can find all custom generation methods by [searching for their custom tag.](
 
 </details>
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 Search models for the custom_generate tag or browse the curated community and tutorial collections.
 
@@ -493,11 +506,13 @@ Search models for the custom_generate tag or browse the curated community and tu
 
 **Question:** Can a custom decoding loop reuse generate's input preparation, and what does that preserve?
 
-**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · auto precision 1.00 · gold `generation_strategies#reusing-generates-input-preparation`
+**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · gold `generation_strategies#reusing-generates-input-preparation`
 
 **Model answer:**
 
 > If you're adding a new decoding loop, you might want to preserve the input preparation present in `generate` (batch expansion, attention masks, logits processors, stopping criteria, etc.) [1]. You can also pass a **callable** to `custom_generate` to reuse `~GenerationMixin.generate`'s full preparation pipeline while overriding only the decoding loop [1].
+
+**First pass:** supported 2/2 · citation precision 1/1 · citation recall 1/1
 
 **Cited passage(s):**
 
@@ -534,9 +549,7 @@ output = model.generate(
 
 </details>
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 Yes; pass a callable to custom_generate to reuse batch expansion, attention masks, logits processors and stopping criteria while replacing the decoding loop.
 
@@ -548,11 +561,15 @@ Yes; pass a callable to custom_generate to reuse batch expansion, attention mask
 
 **Question:** What is causal language modeling?
 
-**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · auto precision 1.00 · gold `tasks_language_modeling#`
+**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · gold `tasks_language_modeling#`
 
 **Model answer:**
 
 > There are two types of language modeling, causal and masked [1]. This guide illustrates causal language modeling [1]. Causal language models are frequently used for text generation [1].
+
+**First pass:** supported 2/2 · citation precision 1/1 · citation recall 1/1
+
+**Note:** Grounded but incomplete: does not state the next-token/left-only definition.
 
 **Cited passage(s):**
 
@@ -602,9 +619,7 @@ We encourage you to log in to your Hugging Face account so you can upload and sh
 
 </details>
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 Predicting the next token from the tokens to its left; the model cannot attend to future tokens.
 
@@ -616,11 +631,15 @@ Predicting the next token from the tokens to its left; the model cannot attend t
 
 **Question:** Which pretrained model does the causal language modeling guide fine-tune?
 
-**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · auto precision 1.00 · gold `tasks_language_modeling#`
+**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · gold `tasks_language_modeling#`
 
 **Model answer:**
 
 > There are two types of language modeling, causal and masked [2]. This guide illustrates causal language modeling [2].
+
+**First pass:** supported 2/2 · citation precision 1/1 · citation recall 1/1
+
+**Note:** Grounded but does not answer: does not name DistilGPT2.
 
 **Cited passage(s):**
 
@@ -670,9 +689,7 @@ We encourage you to log in to your Hugging Face account so you can upload and sh
 
 </details>
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 DistilGPT2.
 
@@ -684,11 +701,13 @@ DistilGPT2.
 
 **Question:** Which dataset and how many examples does the guide load for fine-tuning?
 
-**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · auto precision 1.00 · gold `tasks_language_modeling#load-eli5-dataset`
+**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · gold `tasks_language_modeling#load-eli5-dataset`
 
 **Model answer:**
 
 > Start by loading the first 5000 examples from the ELI5-Category dataset with the 🤗 Datasets library [3]. Split the dataset's train split into a train and test set with the ~datasets.Dataset.train_test_split method [3]. Then take a look at an example [3].
+
+**First pass:** supported 2/2 · citation precision 1/1 · citation recall 1/1
 
 **Cited passage(s):**
 
@@ -718,9 +737,7 @@ Then take a look at an example:
 
 </details>
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 The ELI5-Category dataset, first 5,000 examples.
 
@@ -732,11 +749,15 @@ The ELI5-Category dataset, first 5,000 examples.
 
 **Question:** How does the guide split the loaded dataset into train and test sets?
 
-**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · auto precision 1.00 · gold `tasks_language_modeling#load-eli5-dataset`
+**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · gold `tasks_language_modeling#load-eli5-dataset`
 
 **Model answer:**
 
 > Start by loading the first 5000 examples from the ELI5-Category dataset with the 🤗 Datasets library [1]. Split the dataset's train split into a train and test set with the ~datasets.Dataset.train_test_split method [1]. Then take a look at an example [1].
+
+**First pass:** supported 2/2 · citation precision 1/1 · citation recall 1/1
+
+**Note:** Grounded but incomplete: omits test_size=0.2.
 
 **Cited passage(s):**
 
@@ -766,9 +787,7 @@ Then take a look at an example:
 
 </details>
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 train_test_split with test_size=0.2.
 
@@ -782,17 +801,19 @@ train_test_split with test_size=0.2.
 
 **Question:** Why does the guide flatten the ELI5 dataset before tokenizing?
 
-**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✗ · gold-page citation ✗ · auto precision n/a · gold `tasks_language_modeling#preprocess`
+**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✗ · gold-page citation ✗ · gold `tasks_language_modeling#preprocess`
 
 **Model answer:**
 
 > Insufficient evidence in the retrieved documentation.
 
+**First pass:** not support-scored (abstention or negative trap).
+
+**Note:** False abstention; the automatic report counts this as a behaviour error.
+
 No citations (abstained).
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 Because the text field is nested inside answers.
 
@@ -804,11 +825,15 @@ Because the text field is nested inside answers.
 
 **Question:** What does the group_texts function do?
 
-**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · auto precision 1.00 · gold `tasks_language_modeling#preprocess`
+**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · gold `tasks_language_modeling#preprocess`
 
 **Model answer:**
 
 > Apply the `group_texts` function over the entire dataset [1]. Now create a batch of examples using `DataCollatorForLanguageModeling` [1]. It's more efficient to dynamically pad the sentences to the longest length in a batch during collation, instead of padding the whole dataset to the maximum length [1]. Use the end-of-sequence token as the padding token and set `mlm=False` [1]. This will use the inputs as labels shifted to the right by one element [1].
+
+**First pass:** supported 2/2 · citation precision 1/1 · citation recall 1/1
+
+**Note:** Grounded but does not explain group_texts (concatenate, block_size=128, labels=input_ids).
 
 **Cited passage(s):**
 
@@ -840,9 +865,7 @@ Use the end-of-sequence token as the padding token and set `mlm=False`. This wil
 
 </details>
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 Concatenates token sequences, splits them into block_size chunks (128), and copies input_ids into labels.
 
@@ -856,11 +879,15 @@ Concatenates token sequences, splits them into block_size chunks (128), and copi
 
 **Question:** Which data collator does the guide use, and with what mlm setting?
 
-**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✗ · gold-page citation ✗ · auto precision 0.00 · gold `tasks_language_modeling#preprocess`
+**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✗ · gold-page citation ✗ · gold `tasks_language_modeling#preprocess`
 
 **Model answer:**
 
 > Use the `~datasets.train_test_split` method to create a test split for evaluating the model [2]. Set `mlm=False` to avoid randomly masking tokens [2].
+
+**First pass:** supported 2/2 · citation precision 1/1 · citation recall 0/1
+
+**Note:** Names mlm=False but not DataCollatorForLanguageModeling; cites the training page, not the gold preprocess section.
 
 **Cited passage(s):**
 
@@ -915,9 +942,7 @@ data_collator = DataCollatorForLanguageModeling(tokenizer, mlm=False)
 
 </details>
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 DataCollatorForLanguageModeling with mlm=False; the EOS token is used for padding.
 
@@ -931,17 +956,19 @@ DataCollatorForLanguageModeling with mlm=False; the EOS token is used for paddin
 
 **Question:** How does the guide run inference after fine-tuning the causal language model?
 
-**Auto:** format ✓ · retrieval hit ✗ · gold-section citation ✗ · gold-page citation ✗ · auto precision n/a · gold `tasks_language_modeling#inference`
+**Auto:** format ✓ · retrieval hit ✗ · gold-section citation ✗ · gold-page citation ✗ · gold `tasks_language_modeling#inference`
 
 **Model answer:**
 
 > Insufficient evidence in the retrieved documentation.
 
+**First pass:** not support-scored (abstention or negative trap).
+
+**Note:** False abstention; the automatic report counts this as a behaviour error.
+
 No citations (abstained).
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 Use pipeline('text-generation', model=...) or load with AutoModelForCausalLM and call generate with max_new_tokens.
 
@@ -953,11 +980,13 @@ Use pipeline('text-generation', model=...) or load with AutoModelForCausalLM and
 
 **Question:** Why do PEFT methods use less memory than full fine-tuning?
 
-**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · auto precision 1.00 · gold `peft#`
+**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · gold `peft#`
 
 **Model answer:**
 
 > Because only adapter parameters are updated, the optimizer tracks far fewer gradients and states, reducing memory usage significantly [3]. Adapter parameters are lightweight, making them convenient to share, store, and load [3].
+
+**First pass:** supported 2/2 · citation precision 1/1 · citation recall 1/1
 
 **Cited passage(s):**
 
@@ -981,9 +1010,7 @@ pip install -U peft
 
 </details>
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 Only adapter parameters are updated, so the optimizer tracks far fewer gradients and states.
 
@@ -995,11 +1022,15 @@ Only adapter parameters are updated, so the optimizer tracks far fewer gradients
 
 **Question:** Which mixin class gives all PreTrainedModel classes adapter support?
 
-**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · auto precision 1.00 · gold `peft#`
+**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · gold `peft#`
 
 **Model answer:**
 
 > Install PEFT to get started [2]. The integration requires `peft >= 0.20.0` [2].
+
+**First pass:** supported 2/2 · citation precision 1/1 · citation recall 1/1
+
+**Note:** Grounded but does not answer: does not name PeftAdapterMixin.
 
 **Cited passage(s):**
 
@@ -1023,9 +1054,7 @@ pip install -U peft
 
 </details>
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 PeftAdapterMixin.
 
@@ -1039,11 +1068,15 @@ PeftAdapterMixin.
 
 **Question:** How do I attach a LoRA adapter to a model?
 
-**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✗ · gold-page citation ✓ · auto precision 0.00 · gold `peft#add-an-adapter`
+**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✗ · gold-page citation ✓ · gold `peft#add-an-adapter`
 
 **Model answer:**
 
 > Create a PEFT config, like `~peft.LoraConfig` for example, and attach it to a model with `~integrations.PeftAdapterMixin.add_adapter` [4].
+
+**First pass:** supported 0/2 · citation precision 0/1 · citation recall 0/1
+
+**Note:** Answer is correct per the reference, but the cited torch.compile section does not support LoraConfig/add_adapter.
 
 **Cited passage(s):**
 
@@ -1081,9 +1114,7 @@ Recompilation may still occur if the hotswapped adapter targets more layers than
 
 </details>
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 Create a LoraConfig and call model.add_adapter(config, adapter_name=...).
 
@@ -1095,11 +1126,13 @@ Create a LoraConfig and call model.add_adapter(config, adapter_name=...).
 
 **Question:** How can I fully fine-tune the language model head alongside a LoRA adapter?
 
-**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · auto precision 1.00 · gold `peft#fully-fine-tuning-specific-layers`
+**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · gold `peft#fully-fine-tuning-specific-layers`
 
 **Model answer:**
 
 > To train additional modules alongside an adapter (for example, the language model head), specify them in `modules_to_save` [1]. `modules_to_save` specifies layers that are fully fine-tuned alongside the adapter, so *all* of their parameters are updated [1]. This is useful when certain layers need updates, for example the language model head (`lm_head`) [1].
+
+**First pass:** supported 2/2 · citation precision 1/1 · citation recall 1/1
 
 **Cited passage(s):**
 
@@ -1123,9 +1156,7 @@ model.add_adapter(lora_config)
 
 </details>
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 Set modules_to_save=['lm_head'] in the LoraConfig.
 
@@ -1137,11 +1168,13 @@ Set modules_to_save=['lm_head'] in the LoraConfig.
 
 **Question:** Do I need to specify target_modules for Llama or Gemma models?
 
-**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · auto precision 1.00 · gold `peft#choosing-which-layers-to-adapt`
+**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · gold `peft#choosing-which-layers-to-adapt`
 
 **Model answer:**
 
 > For common architectures (Llama, Gemma, Qwen, etc.), PEFT has predefined default targets (like `q_proj` and `v_proj`) [1]. So you don't need to specify `target_modules` explicitly as a list of module names or a regex pattern [1].
+
+**First pass:** supported 2/2 · citation precision 1/1 · citation recall 1/1
 
 **Cited passage(s):**
 
@@ -1165,9 +1198,7 @@ model.add_adapter(lora_config)
 
 </details>
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 No; PEFT provides defaults such as q_proj and v_proj for common architectures. Specify target_modules for other layers or architectures without defaults.
 
@@ -1179,11 +1210,13 @@ No; PEFT provides defaults such as q_proj and v_proj for common architectures. S
 
 **Question:** What do Trainer checkpoints contain when training a PEFT model?
 
-**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · auto precision 1.00 · gold `peft#training`
+**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · gold `peft#training`
 
 **Model answer:**
 
 > During training, `Trainer` checkpoints contain only the adapter weights (`adapter_model.safetensors`) and configuration (`adapter_config.json`), keeping checkpoints small [1]. The base model isn't included [1].
+
+**First pass:** supported 2/2 · citation precision 1/1 · citation recall 1/1
 
 **Cited passage(s):**
 
@@ -1225,9 +1258,7 @@ model.save_pretrained("./my_adapter")
 
 </details>
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 Only adapter_model.safetensors and adapter_config.json; the base model is not included.
 
@@ -1239,11 +1270,13 @@ Only adapter_model.safetensors and adapter_config.json; the base model is not in
 
 **Question:** Does Trainer detect adapter checkpoints automatically when resuming?
 
-**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · auto precision 1.00 · gold `peft#resuming-from-a-checkpoint`
+**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · gold `peft#resuming-from-a-checkpoint`
 
 **Model answer:**
 
 > `Trainer` automatically detects adapter checkpoints when resuming [1]. `Trainer` scans the checkpoint directory for subdirectories containing adapter weights and reloads each adapter with the correct trainable state [1].
+
+**First pass:** supported 2/2 · citation precision 1/1 · citation recall 1/1
 
 **Cited passage(s):**
 
@@ -1263,9 +1296,7 @@ trainer.train(resume_from_checkpoint="./output/checkpoint-1000")
 
 </details>
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 Yes; Trainer scans for adapter checkpoints and reloads each adapter with its trainable state.
 
@@ -1277,11 +1308,13 @@ Yes; Trainer scans for adapter checkpoints and reloads each adapter with its tra
 
 **Question:** What must a repository or directory contain for from_pretrained to load an adapter automatically?
 
-**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · auto precision 1.00 · gold `peft#loading-an-adapter`
+**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · gold `peft#loading-an-adapter`
 
 **Model answer:**
 
 > To load an adapter, the Hub repository or local directory must contain an `adapter_config.json` file and the adapter weights [1].
+
+**First pass:** supported 2/2 · citation precision 1/1 · citation recall 1/1
 
 **Cited passage(s):**
 
@@ -1336,9 +1369,7 @@ model = AutoModelForCausalLM.from_pretrained(
 
 </details>
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 adapter_config.json and the adapter weights; base_model_name_or_path points to the correct base model.
 
@@ -1350,11 +1381,13 @@ adapter_config.json and the adapter weights; base_model_name_or_path points to t
 
 **Question:** How do I switch to a different adapter when a model has several attached?
 
-**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · auto precision 1.00 · gold `peft#managing-multiple-adapters`
+**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · gold `peft#managing-multiple-adapters`
 
 **Model answer:**
 
 > A model can hold multiple adapters at once [1]. Add adapters with unique names, and switch between them as needed [1]. Use `~integrations.PeftAdapterMixin.set_adapter` to activate a specific adapter [1]. `~integrations.PeftAdapterMixin.enable_adapters` enables all attached adapters, and `~integrations.PeftAdapterMixin.disable_adapters` disables all of them [1]. Use `~integrations.PeftAdapterMixin.active_adapters` to see which adapters are currently active [1]. Remove adapters you no longer need with `~integrations.PeftAdapterMixin.delete_adapter` to free memory [1].
+
+**First pass:** supported 2/2 · citation precision 1/1 · citation recall 1/1
 
 **Cited passage(s):**
 
@@ -1406,9 +1439,7 @@ model.delete_adapter("adapter_1")
 
 </details>
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 Call model.set_adapter(name); the other adapters are disabled but remain in memory.
 
@@ -1420,11 +1451,13 @@ Call model.set_adapter(name); the other adapters are disabled but remain in memo
 
 **Question:** What is adapter hotswapping and which adapter type does it support?
 
-**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · auto precision 1.00 · gold `peft#hotswapping-adapters`
+**Auto:** format ✓ · retrieval hit ✓ · gold-section citation ✓ · gold-page citation ✓ · gold `peft#hotswapping-adapters`
 
 **Model answer:**
 
 > Loading a new adapter each time you serve a request allocates new memory [1]. Hotswapping replaces adapter weights in-place, avoiding both issues [1]. Only LoRA adapters are supported [1]. Pass `hotswap=True` when loading a LoRA adapter to swap its weights into an existing adapter slot [1]. Set `adapter_name` to the name of the adapter to replace (`"default"` is the default adapter name) [1].
+
+**First pass:** supported 2/2 · citation precision 1/1 · citation recall 1/1
 
 **Cited passage(s):**
 
@@ -1453,9 +1486,7 @@ model.load_adapter(adapter_path_2, hotswap=True, adapter_name="default")
 
 </details>
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 Replacing adapter weights in place to avoid new memory allocation and torch.compile recompilation; only LoRA is supported.
 
@@ -1467,17 +1498,17 @@ Replacing adapter weights in place to avoid new memory allocation and torch.comp
 
 **Question:** Who authored the paper 'Attention Is All You Need'?
 
-**Auto:** format ✓ · retrieval hit ✗ · gold-section citation ✗ · gold-page citation ✗ · auto precision n/a · gold ``
+**Auto:** format ✓ · retrieval hit ✗ · gold-section citation ✗ · gold-page citation ✗ · gold ``
 
 **Model answer:**
 
 > Insufficient evidence in the retrieved documentation.
 
+**First pass:** not support-scored (abstention or negative trap).
+
 No citations (abstained).
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 Vaswani et al. World knowledge, absent from the corpus.
 
@@ -1489,17 +1520,17 @@ Vaswani et al. World knowledge, absent from the corpus.
 
 **Question:** In what year was the original Transformer paper published?
 
-**Auto:** format ✓ · retrieval hit ✗ · gold-section citation ✗ · gold-page citation ✗ · auto precision n/a · gold ``
+**Auto:** format ✓ · retrieval hit ✗ · gold-section citation ✗ · gold-page citation ✗ · gold ``
 
 **Model answer:**
 
 > Insufficient evidence in the retrieved documentation.
 
+**First pass:** not support-scored (abstention or negative trap).
+
 No citations (abstained).
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 2017. World knowledge, absent from the corpus.
 
@@ -1511,17 +1542,17 @@ No citations (abstained).
 
 **Question:** What does BERT stand for?
 
-**Auto:** format ✓ · retrieval hit ✗ · gold-section citation ✗ · gold-page citation ✗ · auto precision n/a · gold ``
+**Auto:** format ✓ · retrieval hit ✗ · gold-section citation ✗ · gold-page citation ✗ · gold ``
 
 **Model answer:**
 
 > Insufficient evidence in the retrieved documentation.
 
+**First pass:** not support-scored (abstention or negative trap).
+
 No citations (abstained).
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 Bidirectional Encoder Representations from Transformers. World knowledge, absent from the corpus.
 
@@ -1533,17 +1564,17 @@ Bidirectional Encoder Representations from Transformers. World knowledge, absent
 
 **Question:** How many parameters does GPT-2 XL have?
 
-**Auto:** format ✓ · retrieval hit ✗ · gold-section citation ✗ · gold-page citation ✗ · auto precision n/a · gold ``
+**Auto:** format ✓ · retrieval hit ✗ · gold-section citation ✗ · gold-page citation ✗ · gold ``
 
 **Model answer:**
 
 > Insufficient evidence in the retrieved documentation.
 
+**First pass:** not support-scored (abstention or negative trap).
+
 No citations (abstained).
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 About 1.5 billion. World knowledge, absent from the corpus.
 
@@ -1555,17 +1586,17 @@ About 1.5 billion. World knowledge, absent from the corpus.
 
 **Question:** What does LoRA stand for?
 
-**Auto:** format ✓ · retrieval hit ✗ · gold-section citation ✗ · gold-page citation ✗ · auto precision n/a · gold ``
+**Auto:** format ✓ · retrieval hit ✗ · gold-section citation ✗ · gold-page citation ✗ · gold ``
 
 **Model answer:**
 
 > Insufficient evidence in the retrieved documentation.
 
+**First pass:** not support-scored (abstention or negative trap).
+
 No citations (abstained).
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 Low-Rank Adaptation. World knowledge, absent from the corpus.
 
@@ -1577,17 +1608,17 @@ Low-Rank Adaptation. World knowledge, absent from the corpus.
 
 **Question:** How do I configure DeepSpeed ZeRO-3 with Trainer?
 
-**Auto:** format ✓ · retrieval hit ✗ · gold-section citation ✗ · gold-page citation ✗ · auto precision n/a · gold ``
+**Auto:** format ✓ · retrieval hit ✗ · gold-section citation ✗ · gold-page citation ✗ · gold ``
 
 **Model answer:**
 
 > Insufficient evidence in the retrieved documentation.
 
+**First pass:** not support-scored (abstention or negative trap).
+
 No citations (abstained).
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 Not covered by the selected pages: DeepSpeed configuration is absent.
 
@@ -1599,17 +1630,17 @@ Not covered by the selected pages: DeepSpeed configuration is absent.
 
 **Question:** How do I serve a model with vLLM?
 
-**Auto:** format ✓ · retrieval hit ✗ · gold-section citation ✗ · gold-page citation ✗ · auto precision n/a · gold ``
+**Auto:** format ✓ · retrieval hit ✗ · gold-section citation ✗ · gold-page citation ✗ · gold ``
 
 **Model answer:**
 
 > Insufficient evidence in the retrieved documentation.
 
+**First pass:** not support-scored (abstention or negative trap).
+
 No citations (abstained).
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 Not covered by the selected pages: vLLM is absent.
 
@@ -1621,17 +1652,17 @@ Not covered by the selected pages: vLLM is absent.
 
 **Question:** How do I train a new tokenizer from scratch?
 
-**Auto:** format ✓ · retrieval hit ✗ · gold-section citation ✗ · gold-page citation ✗ · auto precision n/a · gold ``
+**Auto:** format ✓ · retrieval hit ✗ · gold-section citation ✗ · gold-page citation ✗ · gold ``
 
 **Model answer:**
 
 > Insufficient evidence in the retrieved documentation.
 
+**First pass:** not support-scored (abstention or negative trap).
+
 No citations (abstained).
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 Not covered by the selected pages: tokenizer training is absent.
 
@@ -1643,17 +1674,17 @@ Not covered by the selected pages: tokenizer training is absent.
 
 **Question:** How do I quantize a model with GPTQ?
 
-**Auto:** format ✓ · retrieval hit ✗ · gold-section citation ✗ · gold-page citation ✗ · auto precision n/a · gold ``
+**Auto:** format ✓ · retrieval hit ✗ · gold-section citation ✗ · gold-page citation ✗ · gold ``
 
 **Model answer:**
 
 > Insufficient evidence in the retrieved documentation.
 
+**First pass:** not support-scored (abstention or negative trap).
+
 No citations (abstained).
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 Not covered by the selected pages: GPTQ is absent.
 
@@ -1665,17 +1696,17 @@ Not covered by the selected pages: GPTQ is absent.
 
 **Question:** Which license does the PEFT library use?
 
-**Auto:** format ✓ · retrieval hit ✗ · gold-section citation ✗ · gold-page citation ✗ · auto precision n/a · gold ``
+**Auto:** format ✓ · retrieval hit ✗ · gold-section citation ✗ · gold-page citation ✗ · gold ``
 
 **Model answer:**
 
 > Insufficient evidence in the retrieved documentation.
 
+**First pass:** not support-scored (abstention or negative trap).
+
 No citations (abstained).
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 Not covered by the selected pages: the PEFT library license is not stated.
 
@@ -1687,17 +1718,17 @@ Not covered by the selected pages: the PEFT library license is not stated.
 
 **Question:** How do I write a custom Trainer callback?
 
-**Auto:** format ✓ · retrieval hit ✗ · gold-section citation ✗ · gold-page citation ✗ · auto precision n/a · gold ``
+**Auto:** format ✓ · retrieval hit ✗ · gold-section citation ✗ · gold-page citation ✗ · gold ``
 
 **Model answer:**
 
 > Insufficient evidence in the retrieved documentation.
 
+**First pass:** not support-scored (abstention or negative trap).
+
 No citations (abstained).
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 Not covered by the selected pages: callbacks are only linked, not explained.
 
@@ -1709,17 +1740,17 @@ Not covered by the selected pages: callbacks are only linked, not explained.
 
 **Question:** How do I stream a dataset while fine-tuning?
 
-**Auto:** format ✓ · retrieval hit ✗ · gold-section citation ✗ · gold-page citation ✗ · auto precision n/a · gold ``
+**Auto:** format ✓ · retrieval hit ✗ · gold-section citation ✗ · gold-page citation ✗ · gold ``
 
 **Model answer:**
 
 > Insufficient evidence in the retrieved documentation.
 
+**First pass:** not support-scored (abstention or negative trap).
+
 No citations (abstained).
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 Not covered by the selected pages: dataset streaming is absent.
 
@@ -1731,17 +1762,17 @@ Not covered by the selected pages: dataset streaming is absent.
 
 **Question:** How do I compute BLEU for generated text?
 
-**Auto:** format ✓ · retrieval hit ✗ · gold-section citation ✗ · gold-page citation ✗ · auto precision n/a · gold ``
+**Auto:** format ✓ · retrieval hit ✗ · gold-section citation ✗ · gold-page citation ✗ · gold ``
 
 **Model answer:**
 
 > Insufficient evidence in the retrieved documentation.
 
+**First pass:** not support-scored (abstention or negative trap).
+
 No citations (abstained).
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 Not covered by the selected pages: BLEU evaluation is absent.
 
@@ -1753,17 +1784,17 @@ Not covered by the selected pages: BLEU evaluation is absent.
 
 **Question:** How do I launch a multi-GPU training run with accelerate config?
 
-**Auto:** format ✓ · retrieval hit ✗ · gold-section citation ✗ · gold-page citation ✗ · auto precision n/a · gold ``
+**Auto:** format ✓ · retrieval hit ✗ · gold-section citation ✗ · gold-page citation ✗ · gold ``
 
 **Model answer:**
 
 > Insufficient evidence in the retrieved documentation.
 
+**First pass:** not support-scored (abstention or negative trap).
+
 No citations (abstained).
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 Not covered by the selected pages: accelerate launch configuration is absent.
 
@@ -1777,11 +1808,15 @@ Not covered by the selected pages: accelerate launch configuration is absent.
 
 **Question:** What is the default value of max_shard_size in save_pretrained?
 
-**Auto:** format ✓ · retrieval hit ✗ · gold-section citation ✗ · gold-page citation ✗ · auto precision 0.00 · gold ``
+**Auto:** format ✓ · retrieval hit ✗ · gold-section citation ✗ · gold-page citation ✗ · gold ``
 
 **Model answer:**
 
 > Parameters load in parallel and peak memory only depends on model size [1]. Use `max_shard_size` in `~PreTrainedModel.save_pretrained` to set the maximum checkpoint size before sharding [1].
+
+**First pass:** not support-scored (abstention or negative trap).
+
+**Note:** Over-answer; the automatic report counts this as a behaviour error.
 
 **Cited passage(s):**
 
@@ -1836,9 +1871,7 @@ index["weight_map"]
 
 </details>
 
-**Scores:** supported ___/2 · citation precision __/1 · citation recall __/1
-
-<details><summary>Reference (read after scoring)</summary>
+<details><summary>Reference (for context)</summary>
 
 Not stated: the docs give the 50GB automatic sharding threshold but not the max_shard_size default.
 

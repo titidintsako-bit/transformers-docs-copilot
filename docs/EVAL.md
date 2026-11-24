@@ -93,6 +93,15 @@ answerable vs the 15 abstain questions. Always include `n`; a percentage over 4 
 questions is not a trend. The dev split is for iteration and is reported separately if at
 all.
 
+## Tuned first pass (26 answered rows)
+
+The first pass on the tuned adapter found 23/26 fully grounded answers (88.5%), citation
+precision 25/26 (96.2%) and citation recall 23/26 (88.5%). But only 15/26 both answered the
+question and were fully grounded: 8 were grounded in a nearby passage yet incomplete or
+off-topic, and 3 had a support/citation problem. The literal support rubric measures
+grounding, not answer relevance; report the two views separately and do not present 88.5%
+as answer accuracy. Details: `results/human_eval_tuned.md`.
+
 ## Caveats
 
 - Single annotator, small n. Differences under ~0.08 on n=43 are noise.

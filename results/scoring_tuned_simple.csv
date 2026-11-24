@@ -1,4 +1,4 @@
-qid,question,model_answer,cited_passage,gold,supported_0_1_2,citation_precision_0_1,citation_recall_0_1
+qid,question,model_answer,cited_passage,gold,supported_0_1_2,citation_precision_0_1,citation_recall_0_1,notes
 gs-01,"Which decoding strategy does generate use by default, and how many new tokens can it produce at most when no GenerationConfig is specified?","The default decoding strategy in `~GenerationMixin.generate` is greedy search [1]. It selects the next most likely token at each step [1]. Unless specified in `GenerationConfig`, this strategy generates a maximum of 20 new tokens [1]. Greedy search works well for tasks with relatively short outputs where creativity is not a priority [1].","[1] Pitfalls > Decoding strategy (llm_tutorial:decoding-strategy:0)
 Transformers v5.24.0 > Text generation > Pitfalls > Decoding strategy
 
@@ -27,7 +27,7 @@ tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
 ```
 
 </hfoption>
-</hfoptions>",generation_strategies#greedy-search,,,
+</hfoptions>",generation_strategies#greedy-search,1,1,0,The 20-token limit is not in the cited llm_tutorial passage.
 gs-02,Why does greedy search break down when generating long sequences?,"Greedy search works well for tasks with relatively short outputs where creativity is not a priority [1]. However, it breaks down when generating longer sequences because it begins to repeat itself [1].","[1] Basic decoding methods > Greedy search (generation_strategies:greedy-search:0)
 Transformers v5.24.0 > Generation strategies > Basic decoding methods > Greedy search
 
@@ -50,7 +50,7 @@ model = AutoModelForCausalLM.from_pretrained(""meta-llama/Llama-2-7b-hf"", dtype
 outputs = model.generate(**inputs, max_new_tokens=20)
 tokenizer.batch_decode(outputs, skip_special_tokens=True)
 'Hugging Face is an open-source company that provides a suite of tools and services for building, deploying, and maintaining natural language processing'
-```",generation_strategies#greedy-search,,,
+```",generation_strategies#greedy-search,2,1,1,
 gs-03,How do I enable multinomial sampling instead of greedy decoding?,Enable multinomial sampling with `do_sample=True` and `num_beams=1` [2].,"[2] Basic decoding methods > Sampling (generation_strategies:sampling:0)
 Transformers v5.24.0 > Generation strategies > Basic decoding methods > Sampling
 
@@ -73,7 +73,7 @@ model = AutoModelForCausalLM.from_pretrained(""meta-llama/Llama-2-7b-hf"", dtype
 outputs = model.generate(**inputs, max_new_tokens=50, do_sample=True, num_beams=1)
 tokenizer.batch_decode(outputs, skip_special_tokens=True)
 'Hugging Face is an open-source company 🤗\nWe are open-source and believe that open-source is the best way to build technology. Our mission is to make AI accessible to everyone, and we believe that open-source is the best way to achieve that.'
-```",generation_strategies#sampling,,,
+```",generation_strategies#sampling,2,1,1,
 gs-04,What are the benefits of sampling compared with greedy search?,"Sampling, or multinomial sampling, randomly selects a token based on the probability distribution over the entire model's vocabulary (as opposed to the most likely token, as in greedy search) [2]. This means every token with a non-zero probability has a chance to be selected [2]. Enable multinomial sampling with `do_sample=True` and `num_beams=1` [2].","[2] Basic decoding methods > Sampling (generation_strategies:sampling:0)
 Transformers v5.24.0 > Generation strategies > Basic decoding methods > Sampling
 
@@ -96,7 +96,7 @@ model = AutoModelForCausalLM.from_pretrained(""meta-llama/Llama-2-7b-hf"", dtype
 outputs = model.generate(**inputs, max_new_tokens=50, do_sample=True, num_beams=1)
 tokenizer.batch_decode(outputs, skip_special_tokens=True)
 'Hugging Face is an open-source company 🤗\nWe are open-source and believe that open-source is the best way to build technology. Our mission is to make AI accessible to everyone, and we believe that open-source is the best way to achieve that.'
-```",generation_strategies#sampling,,,
+```",generation_strategies#sampling,2,1,1,"Grounded, but describes the sampling mechanism/how-to and does not state the benefit (less repetition, more diversity)."
 gs-05,How does beam search differ from greedy search?,"Beam search keeps track of several generated sequences (beams) at each time step [1]. After a certain number of steps, it selects the sequence with the highest overall probability [1]. Unlike greedy search, this strategy can ""look ahead"" and pick a sequence with a higher probability overall even if the initial tokens have a lower probability [1]. Beam search is best suited for input-grounded tasks, like describing an image or speech recognition [1]. You can also use `do_sample=True` with beam search to sample at each step, but beam search will still greedily prune out low probability sequences between steps [1]. Enable beam search with the `num_beams` parameter (should be greater than 1 otherwise it's equivalent to greedy search) [1].","[1] Basic decoding methods > Beam search (generation_strategies:beam-search:0)
 Transformers v5.24.0 > Generation strategies > Basic decoding methods > Beam search
 
@@ -122,7 +122,7 @@ model = AutoModelForCausalLM.from_pretrained(""meta-llama/Llama-2-7b-hf"", dtype
 outputs = model.generate(**inputs, max_new_tokens=50, num_beams=2)
 tokenizer.batch_decode(outputs, skip_special_tokens=True)
 ""['Hugging Face is an open-source company that develops and maintains the Hugging Face platform, which is a collection of tools and libraries for building and deploying natural language processing (NLP) models. Hugging Face was founded in 2018 by Thomas Wolf']""
-```",generation_strategies#beam-search,,,
+```",generation_strategies#beam-search,2,1,1,
 gs-06,For which kinds of tasks is beam search best suited?,"Beam search keeps track of several generated sequences (beams) at each time step [1]. After a certain number of steps, it selects the sequence with the highest overall probability [1]. Unlike greedy search, this strategy can ""look ahead"" and pick a sequence with a higher probability overall even if the initial tokens have a lower probability [1]. It is best suited for input-grounded tasks, like describing an image or speech recognition [1]. You can also use `do_sample=True` with beam search to sample at each step, but beam search will still greedily prune out low probability sequences between steps [1].","[1] Basic decoding methods > Beam search (generation_strategies:beam-search:0)
 Transformers v5.24.0 > Generation strategies > Basic decoding methods > Beam search
 
@@ -148,7 +148,7 @@ model = AutoModelForCausalLM.from_pretrained(""meta-llama/Llama-2-7b-hf"", dtype
 outputs = model.generate(**inputs, max_new_tokens=50, num_beams=2)
 tokenizer.batch_decode(outputs, skip_special_tokens=True)
 ""['Hugging Face is an open-source company that develops and maintains the Hugging Face platform, which is a collection of tools and libraries for building and deploying natural language processing (NLP) models. Hugging Face was founded in 2018 by Thomas Wolf']""
-```",generation_strategies#beam-search,,,
+```",generation_strategies#beam-search,2,1,1,
 gs-07,Which files must a model repository contain to publish a custom generation method?,Your custom `generate` method can relative import code from the `custom_generate` folder [3]. Only relative imports from the same-level `custom_generate` folder are supported [3]. Parent/sibling folder imports are not valid [3].,"[3] Custom generation methods > Creating a custom generation method (generation_strategies:creating-a-custom-generation-method:3)
 Transformers v5.24.0 > Generation strategies > Custom generation methods > Creating a custom generation method
 
@@ -187,7 +187,7 @@ tags:
 (your markdown content here)
 ```
 
-Recommended practices:",generation_strategies#creating-a-custom-generation-method,,,
+Recommended practices:",generation_strategies#creating-a-custom-generation-method,2,1,1,"Grounded, but describes relative imports and does not list the required files (generate.py, requirements.txt, README tag)."
 gs-08,"In a custom generation method, what must the generate function's first argument be?","`model` is the model instance, which means you have access to all attributes and methods in the model, including the ones defined in `GenerationMixin` (like the base `generate` method) [1].","[1] Custom generation methods > Creating a custom generation method (generation_strategies:creating-a-custom-generation-method:1)
 Transformers v5.24.0 > Generation strategies > Custom generation methods > Creating a custom generation method
 
@@ -200,14 +200,14 @@ This is the core of your generation method. It *must* contain a method named `ge
 
 Under the hood, when the base [`~GenerationMixin.generate`] method is called with a `custom_generate` argument, it first checks its Python requirements (if any), then locates the custom `generate` method in `generate.py`, and finally calls the custom `generate`. All received arguments and `model` are forwarded to your custom `generate` method, with the exception of the arguments used to trigger the custom generation (`trust_remote_code` and `custom_generate`).
 
-This means your `generate` can have a mix of original and custom arguments (as well as a different output type) as shown below.",generation_strategies#creating-a-custom-generation-method,,,
+This means your `generate` can have a mix of original and custom arguments (as well as a different output type) as shown below.",generation_strategies#creating-a-custom-generation-method,2,1,1,
 gs-09,How can I find custom generation methods on the Hub?,"You can find all custom generation methods by searching for their custom tag `custom_generate` [1]. In addition to the tag, we curate two collections of `custom_generate` methods: a collection of powerful methods contributed by the community; a collection of reference implementations for methods that previously were part of `transformers`, as well as tutorials for `custom_generate` [1]. Consider the Hub repository `transformers-community/custom_generate_example` as an example [1].","[1] Custom generation methods > Finding custom generation methods (generation_strategies:finding-custom-generation-methods:0)
 Transformers v5.24.0 > Generation strategies > Custom generation methods > Finding custom generation methods
 
 You can find all custom generation methods by [searching for their custom tag.](https://huggingface.co/models?other=custom_generate), `custom_generate`. In addition to the tag, we curate two collections of `custom_generate` methods:
 
 - [Custom generation methods - Community](https://huggingface.co/collections/transformers-community/custom-generation-methods-community-6888fb1da0efbc592d3a8ab6) -- a collection of powerful methods contributed by the community;
-- [Custom generation methods - Tutorials](https://huggingface.co/collections/transformers-community/custom-generation-methods-tutorials-6823589657a94940ea02cfec) -- a collection of reference implementations for methods that previously were part of `transformers`, as well as tutorials for `custom_generate`.",generation_strategies#finding-custom-generation-methods,,,
+- [Custom generation methods - Tutorials](https://huggingface.co/collections/transformers-community/custom-generation-methods-tutorials-6823589657a94940ea02cfec) -- a collection of reference implementations for methods that previously were part of `transformers`, as well as tutorials for `custom_generate`.",generation_strategies#finding-custom-generation-methods,1,1,1,The transformers-community/custom_generate_example repo is not in the cited passage.
 gs-10,"Can a custom decoding loop reuse generate's input preparation, and what does that preserve?","If you're adding a new decoding loop, you might want to preserve the input preparation present in `generate` (batch expansion, attention masks, logits processors, stopping criteria, etc.) [1]. You can also pass a **callable** to `custom_generate` to reuse `~GenerationMixin.generate`'s full preparation pipeline while overriding only the decoding loop [1].","[1] Custom generation methods > Reusing `generate`'s input preparation (generation_strategies:reusing-generates-input-preparation:0)
 Transformers v5.24.0 > Generation strategies > Custom generation methods > Reusing `generate`'s input preparation
 
@@ -232,7 +232,7 @@ output = model.generate(
 ```
 
 > [!TIP]
-> If you publish a `custom_generate` repository, your `generate` implementation can itself define a callable and pass it to `model.generate()`. This lets you customize the decoding loop while still benefiting from Transformers' built-in input preparation logic.",generation_strategies#reusing-generates-input-preparation,,,
+> If you publish a `custom_generate` repository, your `generate` implementation can itself define a callable and pass it to `model.generate()`. This lets you customize the decoding loop while still benefiting from Transformers' built-in input preparation logic.",generation_strategies#reusing-generates-input-preparation,2,1,1,
 lm-01,What is causal language modeling?,"There are two types of language modeling, causal and masked [1]. This guide illustrates causal language modeling [1]. Causal language models are frequently used for text generation [1].","[1] Causal language modeling (tasks_language_modeling:_intro:0)
 Transformers v5.24.0 > Causal language modeling
 
@@ -270,7 +270,7 @@ We encourage you to log in to your Hugging Face account so you can upload and sh
 >>> from huggingface_hub import notebook_login
 
 >>> notebook_login()
-```",tasks_language_modeling#,,,
+```",tasks_language_modeling#,2,1,1,Grounded but incomplete: does not state the next-token/left-only definition.
 lm-02,Which pretrained model does the causal language modeling guide fine-tune?,"There are two types of language modeling, causal and masked [2]. This guide illustrates causal language modeling [2].","[2] Causal language modeling (tasks_language_modeling:_intro:0)
 Transformers v5.24.0 > Causal language modeling
 
@@ -308,7 +308,7 @@ We encourage you to log in to your Hugging Face account so you can upload and sh
 >>> from huggingface_hub import notebook_login
 
 >>> notebook_login()
-```",tasks_language_modeling#,,,
+```",tasks_language_modeling#,2,1,1,Grounded but does not answer: does not name DistilGPT2.
 lm-03,Which dataset and how many examples does the guide load for fine-tuning?,Start by loading the first 5000 examples from the ELI5-Category dataset with the 🤗 Datasets library [3]. Split the dataset's train split into a train and test set with the ~datasets.Dataset.train_test_split method [3]. Then take a look at an example [3].,"[3] Load ELI5 dataset (tasks_language_modeling:load-eli5-dataset:0)
 Transformers v5.24.0 > Causal language modeling > Load ELI5 dataset
 
@@ -326,7 +326,7 @@ Split the dataset's `train` split into a train and test set with the [`~datasets
 >>> eli5 = eli5.train_test_split(test_size=0.2)
 ```
 
-Then take a look at an example:",tasks_language_modeling#load-eli5-dataset,,,
+Then take a look at an example:",tasks_language_modeling#load-eli5-dataset,2,1,1,
 lm-04,How does the guide split the loaded dataset into train and test sets?,Start by loading the first 5000 examples from the ELI5-Category dataset with the 🤗 Datasets library [1]. Split the dataset's train split into a train and test set with the ~datasets.Dataset.train_test_split method [1]. Then take a look at an example [1].,"[1] Load ELI5 dataset (tasks_language_modeling:load-eli5-dataset:0)
 Transformers v5.24.0 > Causal language modeling > Load ELI5 dataset
 
@@ -344,7 +344,7 @@ Split the dataset's `train` split into a train and test set with the [`~datasets
 >>> eli5 = eli5.train_test_split(test_size=0.2)
 ```
 
-Then take a look at an example:",tasks_language_modeling#load-eli5-dataset,,,
+Then take a look at an example:",tasks_language_modeling#load-eli5-dataset,2,1,1,Grounded but incomplete: omits test_size=0.2.
 lm-06,What does the group_texts function do?,"Apply the `group_texts` function over the entire dataset [1]. Now create a batch of examples using `DataCollatorForLanguageModeling` [1]. It's more efficient to dynamically pad the sentences to the longest length in a batch during collation, instead of padding the whole dataset to the maximum length [1]. Use the end-of-sequence token as the padding token and set `mlm=False` [1]. This will use the inputs as labels shifted to the right by one element [1].","[1] Preprocess (tasks_language_modeling:preprocess:2)
 Transformers v5.24.0 > Causal language modeling > Preprocess
 
@@ -364,7 +364,7 @@ Use the end-of-sequence token as the padding token and set `mlm=False`. This wil
 
 >>> tokenizer.pad_token = tokenizer.eos_token
 >>> data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
-```",tasks_language_modeling#preprocess,,,
+```",tasks_language_modeling#preprocess,2,1,1,"Grounded but does not explain group_texts (concatenate, block_size=128, labels=input_ids)."
 lm-07,"Which data collator does the guide use, and with what mlm setting?",Use the `~datasets.train_test_split` method to create a test split for evaluating the model [2]. Set `mlm=False` to avoid randomly masking tokens [2].,"[2] Tokenization (training:tokenization:0)
 Transformers v5.24.0 > Fine-tuning > Tokenization
 
@@ -407,7 +407,7 @@ A data collator assembles dataset samples into batches for the model to process.
 
 ```py
 data_collator = DataCollatorForLanguageModeling(tokenizer, mlm=False)
-```",tasks_language_modeling#preprocess,,,
+```",tasks_language_modeling#preprocess,2,1,0,"Names mlm=False but not DataCollatorForLanguageModeling; cites the training page, not the gold preprocess section."
 peft-01,Why do PEFT methods use less memory than full fine-tuning?,"Because only adapter parameters are updated, the optimizer tracks far fewer gradients and states, reducing memory usage significantly [3]. Adapter parameters are lightweight, making them convenient to share, store, and load [3].","[3] Parameter-efficient fine-tuning (peft:_intro:0)
 Transformers v5.24.0 > Parameter-efficient fine-tuning
 
@@ -419,7 +419,7 @@ Install PEFT to get started. The integration requires `peft >= 0.20.0`.
 
 ```shell
 pip install -U peft
-```",peft#,,,
+```",peft#,2,1,1,
 peft-02,Which mixin class gives all PreTrainedModel classes adapter support?,Install PEFT to get started [2]. The integration requires `peft >= 0.20.0` [2].,"[2] Parameter-efficient fine-tuning (peft:_intro:0)
 Transformers v5.24.0 > Parameter-efficient fine-tuning
 
@@ -431,7 +431,7 @@ Install PEFT to get started. The integration requires `peft >= 0.20.0`.
 
 ```shell
 pip install -U peft
-```",peft#,,,
+```",peft#,2,1,1,Grounded but does not answer: does not name PeftAdapterMixin.
 peft-03,How do I attach a LoRA adapter to a model?,"Create a PEFT config, like `~peft.LoraConfig` for example, and attach it to a model with `~integrations.PeftAdapterMixin.add_adapter` [4].","[4] Hotswapping adapters > torch.compile (peft:torchcompile:0)
 Transformers v5.24.0 > Parameter-efficient fine-tuning > Hotswapping adapters > torch.compile
 
@@ -457,7 +457,7 @@ After calling `enable_peft_hotswap`, all subsequent `load_adapter` calls hotswap
 Recompilation may still occur if the hotswapped adapter targets more layers than the initial adapter. Load the adapter that targets the most layers first to avoid recompilation.
 
 > [!TIP]
-> Wrap your code in `with torch._dynamo.config.patch(error_on_recompile=True)` to detect unexpected recompilation. If you detect recompilation despite following the steps above, open an issue with [PEFT](https://github.com/huggingface/peft/issues) with a reproducible example.",peft#add-an-adapter,,,
+> Wrap your code in `with torch._dynamo.config.patch(error_on_recompile=True)` to detect unexpected recompilation. If you detect recompilation despite following the steps above, open an issue with [PEFT](https://github.com/huggingface/peft/issues) with a reproducible example.",peft#add-an-adapter,0,0,0,"Answer is correct per the reference, but the cited torch.compile section does not support LoraConfig/add_adapter."
 peft-04,How can I fully fine-tune the language model head alongside a LoRA adapter?,"To train additional modules alongside an adapter (for example, the language model head), specify them in `modules_to_save` [1]. `modules_to_save` specifies layers that are fully fine-tuned alongside the adapter, so *all* of their parameters are updated [1]. This is useful when certain layers need updates, for example the language model head (`lm_head`) [1].","[1] Add an adapter > Fully fine-tuning specific layers (peft:fully-fine-tuning-specific-layers:0)
 Transformers v5.24.0 > Parameter-efficient fine-tuning > Add an adapter > Fully fine-tuning specific layers
 
@@ -469,7 +469,7 @@ lora_config = LoraConfig(
     ...
 )
 model.add_adapter(lora_config)
-```",peft#fully-fine-tuning-specific-layers,,,
+```",peft#fully-fine-tuning-specific-layers,2,1,1,
 peft-05,Do I need to specify target_modules for Llama or Gemma models?,"For common architectures (Llama, Gemma, Qwen, etc.), PEFT has predefined default targets (like `q_proj` and `v_proj`) [1]. So you don't need to specify `target_modules` explicitly as a list of module names or a regex pattern [1].","[1] Add an adapter > Choosing which layers to adapt (peft:choosing-which-layers-to-adapt:0)
 Transformers v5.24.0 > Parameter-efficient fine-tuning > Add an adapter > Choosing which layers to adapt
 
@@ -481,7 +481,7 @@ lora_config = LoraConfig(
     ...
 )
 model.add_adapter(lora_config)
-```",peft#choosing-which-layers-to-adapt,,,
+```",peft#choosing-which-layers-to-adapt,2,1,1,
 peft-06,What do Trainer checkpoints contain when training a PEFT model?,"During training, `Trainer` checkpoints contain only the adapter weights (`adapter_model.safetensors`) and configuration (`adapter_config.json`), keeping checkpoints small [1]. The base model isn't included [1].","[1] Training (peft:training:0)
 Transformers v5.24.0 > Parameter-efficient fine-tuning > Training
 
@@ -511,7 +511,7 @@ After training, save the final adapter with [`~PreTrainedModel.save_pretrained`]
 
 ```py
 model.save_pretrained(""./my_adapter"")
-```",peft#training,,,
+```",peft#training,2,1,1,
 peft-07,Does Trainer detect adapter checkpoints automatically when resuming?,`Trainer` automatically detects adapter checkpoints when resuming [1]. `Trainer` scans the checkpoint directory for subdirectories containing adapter weights and reloads each adapter with the correct trainable state [1].,"[1] Training > Resuming from a checkpoint (peft:resuming-from-a-checkpoint:0)
 Transformers v5.24.0 > Parameter-efficient fine-tuning > Training > Resuming from a checkpoint
 
@@ -519,7 +519,7 @@ Transformers v5.24.0 > Parameter-efficient fine-tuning > Training > Resuming fro
 
 ```py
 trainer.train(resume_from_checkpoint=""./output/checkpoint-1000"")
-```",peft#resuming-from-a-checkpoint,,,
+```",peft#resuming-from-a-checkpoint,2,1,1,
 peft-08,What must a repository or directory contain for from_pretrained to load an adapter automatically?,"To load an adapter, the Hub repository or local directory must contain an `adapter_config.json` file and the adapter weights [1].","[1] Loading an adapter (peft:loading-an-adapter:0)
 Transformers v5.24.0 > Parameter-efficient fine-tuning > Loading an adapter
 
@@ -562,7 +562,7 @@ model = AutoModelForCausalLM.from_pretrained(
     quantization_config=BitsAndBytesConfig(load_in_8bit=True),
     device_map=""auto"",
 )
-```",peft#loading-an-adapter,,,
+```",peft#loading-an-adapter,2,1,1,
 peft-09,How do I switch to a different adapter when a model has several attached?,"A model can hold multiple adapters at once [1]. Add adapters with unique names, and switch between them as needed [1]. Use `~integrations.PeftAdapterMixin.set_adapter` to activate a specific adapter [1]. `~integrations.PeftAdapterMixin.enable_adapters` enables all attached adapters, and `~integrations.PeftAdapterMixin.disable_adapters` disables all of them [1]. Use `~integrations.PeftAdapterMixin.active_adapters` to see which adapters are currently active [1]. Remove adapters you no longer need with `~integrations.PeftAdapterMixin.delete_adapter` to free memory [1].","[1] Managing multiple adapters (peft:managing-multiple-adapters:0)
 Transformers v5.24.0 > Parameter-efficient fine-tuning > Managing multiple adapters
 
@@ -602,7 +602,7 @@ Remove adapters you no longer need with [`~integrations.PeftAdapterMixin.delete_
 
 ```py
 model.delete_adapter(""adapter_1"")
-```",peft#managing-multiple-adapters,,,
+```",peft#managing-multiple-adapters,2,1,1,
 peft-10,What is adapter hotswapping and which adapter type does it support?,"Loading a new adapter each time you serve a request allocates new memory [1]. Hotswapping replaces adapter weights in-place, avoiding both issues [1]. Only LoRA adapters are supported [1]. Pass `hotswap=True` when loading a LoRA adapter to swap its weights into an existing adapter slot [1]. Set `adapter_name` to the name of the adapter to replace (`""default""` is the default adapter name) [1].","[1] Hotswapping adapters (peft:hotswapping-adapters:0)
 Transformers v5.24.0 > Parameter-efficient fine-tuning > Hotswapping adapters
 
@@ -619,4 +619,4 @@ model.load_adapter(adapter_path_1)
 # Hotswap the second adapter in-place
 model.load_adapter(adapter_path_2, hotswap=True, adapter_name=""default"")
 # Generate outputs with adapter 2
-```",peft#hotswapping-adapters,,,
+```",peft#hotswapping-adapters,2,1,1,

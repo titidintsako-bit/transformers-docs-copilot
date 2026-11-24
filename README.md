@@ -5,10 +5,10 @@ Transformers documentation, and cites the section each claim comes from. Built a
 first RAG project: keyword retrieval baseline, untuned RAG, then QLoRA fine-tuning for
 answer format, citation behavior and abstention.
 
-**Status: Milestone 5 of 6 complete; milestone 6 (human evaluation) in progress.**
-Retrieval, the 55-question evaluation set, the grounded-answer pipeline, the untuned 1.5B
-baseline and the QLoRA adapter are complete. The remaining work is human scoring of the
-tuned label sheet and the final write-up.
+**Status: Milestone 6 in progress.** Retrieval, the 55-question evaluation set, the
+grounded-answer pipeline, the untuned 1.5B baseline and the QLoRA adapter are complete. A
+rubric-based first-pass annotation is committed; the remaining step is a human spot-check
+of the flagged rows and the final write-up.
 
 ## Pinned corpus
 
@@ -107,12 +107,27 @@ the executed run is preserved in
 All 43 outputs passed the format and there were no parser-forced abstentions. The adapter
 over-answered one near-miss negative (`un-10`, default `max_shard_size`) and falsely
 abstained on two answerable questions. Three answers cited a related section rather than
-the gold section. These are automated contract metrics; support and factual correctness
-still require the human label sheet. The 43-row scoring guide is
-[`results/review_tuned.md`](results/review_tuned.md); the short scoring sheet
-[`results/scoring_tuned_simple.csv`](results/scoring_tuned_simple.csv) contains only the
-26 answerable, answered rows with the cited passage and three blank score columns; the
-Excel version with dropdowns and a short guide is
+the gold section.
+
+### First-pass annotation
+
+The 26 answered rows were scored against their cited passages (assistant first pass, not an
+independent human label):
+
+| view | result |
+|---|---|
+| fully grounded (`supported = 2`) | 23/26 (88.5%) |
+| citation precision | 25/26 (96.2%) |
+| citation recall | 23/26 (88.5%) |
+| answers the question **and** fully grounded | 15/26 (57.7%) |
+| grounded but incomplete/off-topic | 8/26 (30.8%) |
+| answers but has a support/citation problem | 3/26 (11.5%) |
+
+The adapter learned the format and citation discipline; the remaining weakness is question
+focus. Eight answers are grounded in a nearby passage but do not answer the asked fact, and
+`peft-03` is correct but cites the wrong section. Full notes:
+[`results/human_eval_tuned.md`](results/human_eval_tuned.md). The 43-row review packet is
+[`results/review_tuned.md`](results/review_tuned.md); the scored 26-row helper is
 [`results/scoring_tuned_simple.xlsx`](results/scoring_tuned_simple.xlsx). Data recipe,
 hyperparameters and limitations:
 [`docs/TRAINING.md`](docs/TRAINING.md).
@@ -204,7 +219,7 @@ notebooks/colab.ipynb       T4 baseline run with preflight + Drive checkpoint
 notebooks/colab_train.ipynb T4 QLoRA training + tuned evaluation
 notebooks/colab_train_run.ipynb  executed successful training/evaluation run
 LICENSE                    MIT for the code (bundled docs stay Apache-2.0)
-results/                    baseline/tuned reports, review packet, predictions, label sheets
+results/                    baseline/tuned reports, annotation, predictions, label sheets
 tests/                      provenance, chunking, BM25, retrieval, eval set, generation
 ```
 
