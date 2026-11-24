@@ -102,13 +102,14 @@ the executed run is preserved in
 | answered rate | 0.023 | 0.628 |
 | model abstains on negatives | 0.267 | **0.933** |
 | false abstain (answerable) | 0.964 | **0.071** |
-| median latency | 3.67 s | 5.36 s |
+| median latency | 3.67 s | 5.02 s |
 
 All 43 outputs passed the format and there were no parser-forced abstentions. The adapter
 over-answered one near-miss negative (`un-10`, default `max_shard_size`) and falsely
 abstained on two answerable questions. Three answers cited a related section rather than
 the gold section. These are automated contract metrics; support and factual correctness
-still require the human label sheet. Data recipe, hyperparameters and limitations:
+still require the human label sheet. The 43-row scoring guide is
+[`results/review_tuned.md`](results/review_tuned.md). Data recipe, hyperparameters and limitations:
 [`docs/TRAINING.md`](docs/TRAINING.md).
 
 ### Run the baseline on Colab (T4)
@@ -198,7 +199,7 @@ notebooks/colab.ipynb       T4 baseline run with preflight + Drive checkpoint
 notebooks/colab_train.ipynb T4 QLoRA training + tuned evaluation
 notebooks/colab_train_run.ipynb  executed successful training/evaluation run
 LICENSE                    MIT for the code (bundled docs stay Apache-2.0)
-results/                    baseline and tuned reports, predictions and label sheets
+results/                    baseline/tuned reports, review packet, predictions, label sheets
 tests/                      provenance, chunking, BM25, retrieval, eval set, generation
 ```
 

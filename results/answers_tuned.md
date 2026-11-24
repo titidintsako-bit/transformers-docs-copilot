@@ -27,7 +27,7 @@
 | section retrieval hit@k (answerable) | 0.964 |
 | citation repairs | 0 |
 | forced abstentions | 0 |
-| median latency (s) | 5.36 |
+| median latency (s) | 5.02 |
 
 ## By category
 

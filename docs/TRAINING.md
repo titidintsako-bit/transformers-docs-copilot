@@ -94,7 +94,7 @@ The full T4 run at `5ada516` (2 epochs, full split) produced:
 | `model_abstain_rate_on_negative` | 0.267 | 0.933 |
 | `false_abstain_rate_on_answerable` | 0.964 | 0.071 |
 | `forced_abstain` | 38 | 0 |
-| median latency | 3.67 s | 5.36 s |
+| median latency | 3.67 s | 5.02 s |
 
 The adapter learned the contract and transferred it to the three held-out pages. Remaining
 errors: one over-answer on `un-10` (default `max_shard_size`), two false abstentions
